@@ -1,6 +1,3 @@
 {
-  "presets": [
-    "@babel/preset-typescript",
-    "solid"
-  ]
+  "presets": ["@babel/preset-typescript", "solid"]
 }

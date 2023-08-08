@@ -1,3 +1,3 @@
 module.exports = {
-  hideObject: true
-}
+  hideObject: true,
+};

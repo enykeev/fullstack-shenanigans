@@ -15,12 +15,9 @@
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "noEmit": true,
-    "types": [
-      "web",
-      "bun-types",
-    ],
+    "types": ["web", "bun-types"],
     "paths": {
-      "esbuild": ["./esbuild.ts"],
+      "esbuild": ["./esbuild.ts"]
     }
   }
 }
