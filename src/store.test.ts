@@ -1,8 +1,7 @@
 import { expect, test, describe, beforeEach, setSystemTime } from "bun:test";
 
 import * as store from "./store";
-
-const ISO8601 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
+import { ISO8601 } from "./utils";
 
 function advanceTime(ms: number) {
   const now = new Date();
