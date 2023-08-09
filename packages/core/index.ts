@@ -7,14 +7,14 @@ import { serveStatic } from "./serveStatic";
 // @ts-ignore
 import { solidPlugin } from "esbuild-plugin-solid";
 
-import flags from "./routes/flags";
+import api from "./routes/api";
 
 const logger = pino();
 
 const app = new Hono<{ Variables: Variables }>();
 
 await Bun.build({
-  entrypoints: ["./web/index.tsx"],
+  entrypoints: ["./packages/web/index.tsx"],
   outdir: "./dist",
   minify: false,
   plugins: [solidPlugin()],
@@ -32,26 +32,6 @@ app.use(async (c, next) => {
 });
 
 app.use(async (c, next) => {
-  const header = c.req.headers.get("Authorization");
-  if (!header) {
-    return c.json({ error: "unauthorized" }, 401);
-  }
-
-  const [type, token] = header.split(" ");
-  if (type !== "Bearer") {
-    return c.json({ error: "unauthorized" }, 401);
-  }
-
-  if (token !== "secret") {
-    return c.json({ error: "unauthorized" }, 401);
-  }
-
-  c.set("X-App-Id", "some-app-id");
-
-  await next();
-});
-
-app.use(async (c, next) => {
   await next();
 
   const { req, res } = c;
@@ -64,7 +44,7 @@ app.use(async (c, next) => {
   );
 });
 
-app.route("/api/flags", flags);
+app.route("/api", api);
 
 app.get("/404", () => {
   throw new HTTPException(404);
