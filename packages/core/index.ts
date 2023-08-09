@@ -11,8 +11,6 @@ import api from "./routes/api";
 
 const logger = pino();
 
-const app = new Hono<{ Variables: Variables }>();
-
 await Bun.build({
   entrypoints: ["./packages/web/index.tsx"],
   outdir: "./dist",
@@ -20,15 +18,13 @@ await Bun.build({
   plugins: [solidPlugin()],
 });
 
-app.use(async (c, next) => {
-  try {
-    await next();
-  } catch (e) {
-    if (e instanceof HTTPException) {
-      return c.json({ error: e.message }, e.status);
-    }
-    throw e;
+const app = new Hono<{ Variables: Variables }>();
+
+app.onError((e, c) => {
+  if (e instanceof HTTPException) {
+    return c.json({ error: e.message }, e.status);
   }
+  return c.json({ error: e.message }, 500);
 });
 
 app.use(async (c, next) => {

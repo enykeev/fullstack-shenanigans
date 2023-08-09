@@ -85,7 +85,7 @@ export function getFlag({ appId, flagId }: GetFlagArgs): GetFlagResult {
     return null;
   }
 
-  const { meta, ...rest } = res;
+  const { meta = "{}", ...rest } = res;
 
   return { ...rest, ...JSON.parse(meta) };
 }
@@ -122,6 +122,8 @@ export function updateFlag({
   flagId,
   name,
   description,
+  createdAt: _createdAt,
+  updatedAt: _updatedAt,
   ...rest
 }: updateFlagArgs) {
   const meta = JSON.stringify(rest);
