@@ -1,0 +1,16 @@
+.Logo {
+  font-size: 20px;
+  padding: 10px;
+
+  font-weight: bold;
+
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  cursor: pointer;
+
+  &:hover div {
+    box-shadow: 0 2px color-mix(in srgb, #eee 50%, transparent);
+  }
+}

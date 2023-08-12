@@ -4,6 +4,7 @@ import { solidPlugin } from "esbuild-plugin-solid";
 import { sassPlugin } from "esbuild-sass-plugin";
 import postcss from "postcss";
 import postcssPresetEnv from "postcss-preset-env";
+import postcssNested from "postcss-nested";
 
 import { logger } from "./logger";
 
@@ -21,6 +22,7 @@ export async function buildWeb() {
       sassPlugin({
         async transform(source) {
           const { css } = await postcss([
+            postcssNested(),
             autoprefixer,
             postcssPresetEnv({ stage: 0 }),
           ]).process(source, { from: undefined });
