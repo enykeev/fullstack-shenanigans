@@ -1,22 +1,13 @@
 /// <reference types="bun-types" />
 import { HTTPException } from "hono/http-exception";
 import { Hono } from "hono";
-import pino from "pino";
 import { serveStatic } from "./serveStatic";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { solidPlugin } from "esbuild-plugin-solid";
 
 import api from "./routes/api";
+import { logger } from "./logger";
+import { buildWeb } from "./build";
 
-const logger = pino();
-
-await Bun.build({
-  entrypoints: ["./packages/web/index.tsx"],
-  outdir: "./dist",
-  minify: false,
-  plugins: [solidPlugin()],
-});
+await buildWeb();
 
 const app = new Hono<{ Variables: Variables }>();
 
