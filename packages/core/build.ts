@@ -10,8 +10,7 @@ import { logger } from "./logger";
 // Bun.build clearly is not ready for prime time yet given that it does not support CSS loader.
 // For now, we'll stick with esbuild and evaluate Bun.build later down the line.
 export async function buildWeb() {
-  const buildStartTime = Bun.nanoseconds();
-  await esbuild.build({
+  const context = await esbuild.context({
     entryPoints: ["./packages/web/index.tsx"],
     outdir: "./dist",
     minify: false,
@@ -28,12 +27,25 @@ export async function buildWeb() {
           return css;
         },
       }),
+      {
+        name: "build-notificator",
+        setup(build) {
+          let buildStartTime = 0;
+          build.onStart(() => {
+            buildStartTime = Bun.nanoseconds();
+          });
+          build.onEnd(() => {
+            const buildTimeNs = Bun.nanoseconds() - buildStartTime;
+            logger.info(
+              { logEvent: "buildTime", buildTimeNs },
+              "Built web assets in %dms",
+              Math.floor(buildTimeNs / 10 ** 6),
+            );
+          });
+        },
+      },
     ],
   });
-  const buildTimeNs = Bun.nanoseconds() - buildStartTime;
-  logger.info(
-    { logEvent: "buildTime", buildTimeNs },
-    "Built web assets in %dms",
-    Math.floor(buildTimeNs / 10 ** 6),
-  );
+
+  await context.watch();
 }
