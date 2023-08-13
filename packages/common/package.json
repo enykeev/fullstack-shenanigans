@@ -1,0 +1,5 @@
+{
+  "name": "@feature-flag-service/common",
+  "module": "index.ts",
+  "type": "module"
+}

@@ -1,0 +1,50 @@
+.FlagRow {
+  display: grid; 
+  grid:
+    "title controls" auto
+    "description controls" 1fr
+    "meta controls" auto
+    / 1fr auto;
+
+  border: 1px solid #222;
+  margin: 15px;
+
+  &__title {
+    grid-area: title;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 10px;
+  }
+
+  &__description {
+    grid-area: description;
+    margin: 10px;
+  }
+
+  &__meta {
+    grid-area: meta;
+    margin: 10px;
+  }
+
+  &__controls {
+    grid-area: controls;
+
+    border-left: 1px solid #222;
+
+    padding: 10px;
+
+  }
+}
+
+.FlagControl {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+
+  &__control {
+    flex: 1;
+  }
+
+  &__overrides {}
+}

@@ -1,0 +1,25 @@
+.Checkbox {
+  display: inline-flex;
+  align-items: center;
+
+  &__control {
+    height: 16px;
+    width: 16px;
+    border-radius: 3px;
+    border: 2px solid #888;
+    background-color: #eee;
+  }
+  &__input:focus-visible + &__control {
+    border-color: #222;
+  }
+  &__control[data-checked] {
+    border-color: #888;
+    background-color: #aaa;
+    color: white;
+  }
+  &__label {
+    margin-left: 6px;
+    color: #222;
+    user-select: none;
+  }
+}

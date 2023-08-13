@@ -1,3 +1,4 @@
+import { Flag } from "@feature-flag-service/common";
 import { Database } from "bun:sqlite";
 
 export const db = new Database();
@@ -63,8 +64,6 @@ export const queries = {
     "DELETE FROM flags WHERE appId = ? and flagId = ?",
   ),
 };
-
-export type Flag = Omit<FlagDB, "meta"> & Record<string, unknown>;
 
 export type ListFlagArgs = Pick<FlagDB, "appId">;
 export type ListFlagResult = Flag[];

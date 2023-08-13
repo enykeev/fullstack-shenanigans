@@ -8,6 +8,8 @@ import FlagsPage from "./pages/flags";
 import SectionsPage from "./pages/sections";
 import MissingPage from "./pages/missing";
 
+import "temporal-polyfill/global";
+
 import "./styles.css";
 
 const ROUTES = [
@@ -19,6 +21,11 @@ const ROUTES = [
   {
     path: "/sections",
     title: "Sections",
+    component: SectionsPage,
+  },
+  {
+    path: "/overrides",
+    title: "Overrides",
     component: SectionsPage,
   },
 ];
@@ -41,7 +48,7 @@ function Header({ onNavigate }: { onNavigate: (route: string) => void }) {
 }
 
 function App() {
-  const [state, setState] = createStore({ route: "/ss" });
+  const [state, setState] = createStore({ route: "/flags" });
   return (
     <div class="app">
       <Header onNavigate={(route: string) => setState("route", route)} />
