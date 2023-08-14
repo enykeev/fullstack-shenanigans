@@ -1,11 +1,12 @@
-import { createStore } from "solid-js/store";
 import { For, Match, MountableElement, Switch, render } from "solid-js/web";
 
 import { NavItem, Navigation } from "./components/navigation";
+import { navigate, path } from "./components/navigation/state";
 import { Logo } from "./components/logo";
 
 import FlagsPage from "./pages/flags";
 import SectionsPage from "./pages/sections";
+import OverridesPage from "./pages/overrides";
 import MissingPage from "./pages/missing";
 
 import "temporal-polyfill/global";
@@ -26,7 +27,7 @@ const ROUTES = [
   {
     path: "/overrides",
     title: "Overrides",
-    component: SectionsPage,
+    component: OverridesPage,
   },
 ];
 
@@ -48,17 +49,16 @@ function Header({ onNavigate }: { onNavigate: (route: string) => void }) {
 }
 
 function App() {
-  const [state, setState] = createStore({ route: "/flags" });
   return (
     <div class="app">
-      <Header onNavigate={(route: string) => setState("route", route)} />
+      <Header onNavigate={(route: string) => navigate(route)} />
       <Switch fallback={<MissingPage />}>
-        <Match when={state.route === "/"}>
+        <Match when={path() === "/"}>
           <div>Main page</div>
         </Match>
         <For each={ROUTES}>
           {(item) => (
-            <Match when={state.route === item.path}>
+            <Match when={path() === item.path}>
               <item.component />
             </Match>
           )}
