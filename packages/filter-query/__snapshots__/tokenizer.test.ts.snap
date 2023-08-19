@@ -1,0 +1,1430 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tokenizer empty string 1`] = `[]`;
+
+exports[`Tokenizer space 1`] = `
+[
+  {
+    "tag": "space",
+    "value": " ",
+  },
+]
+`;
+
+exports[`Tokenizer boolean literals 1`] = `
+[
+  {
+    "tag": "true",
+    "value": "true",
+  },
+]
+`;
+
+exports[`Tokenizer boolean literals 2`] = `
+[
+  {
+    "tag": "true",
+    "value": "True",
+  },
+]
+`;
+
+exports[`Tokenizer boolean literals 3`] = `
+[
+  {
+    "tag": "true",
+    "value": "TRUE",
+  },
+]
+`;
+
+exports[`Tokenizer boolean literals 4`] = `
+[
+  {
+    "tag": "false",
+    "value": "false",
+  },
+]
+`;
+
+exports[`Tokenizer boolean literals 5`] = `
+[
+  {
+    "tag": "false",
+    "value": "False",
+  },
+]
+`;
+
+exports[`Tokenizer boolean literals 6`] = `
+[
+  {
+    "tag": "false",
+    "value": "FALSE",
+  },
+]
+`;
+
+exports[`Tokenizer integers 1`] = `
+[
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+]
+`;
+
+exports[`Tokenizer integers 2`] = `
+[
+  {
+    "tag": "integer",
+    "value": "-1",
+  },
+]
+`;
+
+exports[`Tokenizer integers 3`] = `
+[
+  {
+    "tag": "integer",
+    "value": "+1",
+  },
+]
+`;
+
+exports[`Tokenizer integers 4`] = `
+[
+  {
+    "tag": "integer",
+    "value": "50",
+  },
+]
+`;
+
+exports[`Tokenizer integers 5`] = `
+[
+  {
+    "tag": "integer",
+    "value": "999999999999999999999",
+  },
+]
+`;
+
+exports[`Tokenizer floats 1`] = `
+[
+  {
+    "tag": "float",
+    "value": "1.2",
+  },
+]
+`;
+
+exports[`Tokenizer floats 2`] = `
+[
+  {
+    "tag": "float",
+    "value": "-1.2",
+  },
+]
+`;
+
+exports[`Tokenizer floats 3`] = `
+[
+  {
+    "tag": "float",
+    "value": "+1.2",
+  },
+]
+`;
+
+exports[`Tokenizer floats 4`] = `
+[
+  {
+    "tag": "float",
+    "value": "49.99",
+  },
+]
+`;
+
+exports[`Tokenizer floats 5`] = `
+[
+  {
+    "tag": "float",
+    "value": "999999999999999999999.999999999",
+  },
+]
+`;
+
+exports[`Tokenizer comparators 1`] = `
+[
+  {
+    "tag": "key",
+    "value": "a",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "=",
+    "value": "=",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+]
+`;
+
+exports[`Tokenizer comparators 2`] = `
+[
+  {
+    "tag": "key",
+    "value": "a",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "=",
+    "value": "==",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+]
+`;
+
+exports[`Tokenizer comparators 3`] = `
+[
+  {
+    "tag": "key",
+    "value": "a",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "!=",
+    "value": "!=",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+]
+`;
+
+exports[`Tokenizer comparators 4`] = `
+[
+  {
+    "tag": "key",
+    "value": "a",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "!=",
+    "value": "!==",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+]
+`;
+
+exports[`Tokenizer comparators 5`] = `
+[
+  {
+    "tag": "key",
+    "value": "a",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": ">",
+    "value": ">",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+]
+`;
+
+exports[`Tokenizer comparators 6`] = `
+[
+  {
+    "tag": "key",
+    "value": "a",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": ">=",
+    "value": ">=",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+]
+`;
+
+exports[`Tokenizer comparators 7`] = `
+[
+  {
+    "tag": "key",
+    "value": "a",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "<",
+    "value": "<",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+]
+`;
+
+exports[`Tokenizer comparators 8`] = `
+[
+  {
+    "tag": "key",
+    "value": "a",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "<=",
+    "value": "<=",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+]
+`;
+
+exports[`Tokenizer booleans 1`] = `
+[
+  {
+    "tag": "key",
+    "value": "a",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "&&",
+    "value": "&&",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "key",
+    "value": "b",
+  },
+]
+`;
+
+exports[`Tokenizer booleans 2`] = `
+[
+  {
+    "tag": "key",
+    "value": "a",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "&&",
+    "value": "and",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "key",
+    "value": "b",
+  },
+]
+`;
+
+exports[`Tokenizer booleans 3`] = `
+[
+  {
+    "tag": "key",
+    "value": "a",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "||",
+    "value": "||",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "key",
+    "value": "b",
+  },
+]
+`;
+
+exports[`Tokenizer booleans 4`] = `
+[
+  {
+    "tag": "key",
+    "value": "a",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "||",
+    "value": "or",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "key",
+    "value": "b",
+  },
+]
+`;
+
+exports[`Tokenizer booleans 5`] = `
+[
+  {
+    "tag": "!",
+    "value": "!",
+  },
+  {
+    "tag": "key",
+    "value": "a",
+  },
+]
+`;
+
+exports[`Tokenizer booleans 6`] = `
+[
+  {
+    "tag": "!",
+    "value": "not",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "key",
+    "value": "a",
+  },
+]
+`;
+
+exports[`Tokenizer booleans 7`] = `
+[
+  {
+    "tag": "key",
+    "value": "nota",
+  },
+]
+`;
+
+exports[`Tokenizer parens 1`] = `
+[
+  {
+    "tag": "(",
+    "value": "(",
+  },
+  {
+    "tag": "key",
+    "value": "a",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "&&",
+    "value": "&&",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "key",
+    "value": "b",
+  },
+  {
+    "tag": ")",
+    "value": ")",
+  },
+]
+`;
+
+exports[`Tokenizer parens 2`] = `
+[
+  {
+    "tag": "(",
+    "value": "(",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "key",
+    "value": "a",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "&&",
+    "value": "&&",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "key",
+    "value": "b",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": ")",
+    "value": ")",
+  },
+]
+`;
+
+exports[`Tokenizer parens 3`] = `
+[
+  {
+    "tag": "(",
+    "value": "(",
+  },
+  {
+    "tag": "key",
+    "value": "a",
+  },
+  {
+    "tag": ")",
+    "value": ")",
+  },
+]
+`;
+
+exports[`Tokenizer parens 4`] = `
+[
+  {
+    "tag": "(",
+    "value": "(",
+  },
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+  {
+    "tag": ")",
+    "value": ")",
+  },
+]
+`;
+
+exports[`Tokenizer parens 5`] = `
+[
+  {
+    "tag": "(",
+    "value": "(",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": ")",
+    "value": ")",
+  },
+]
+`;
+
+exports[`Tokenizer parens 6`] = `
+[
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "(",
+    "value": "(",
+  },
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+  {
+    "tag": ")",
+    "value": ")",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+]
+`;
+
+exports[`Tokenizer parens 7`] = `
+[
+  {
+    "tag": "key",
+    "value": "f",
+  },
+  {
+    "tag": "(",
+    "value": "(",
+  },
+  {
+    "tag": ")",
+    "value": ")",
+  },
+]
+`;
+
+exports[`Tokenizer parens 8`] = `
+[
+  {
+    "tag": "(",
+    "value": "(",
+  },
+  {
+    "tag": "(",
+    "value": "(",
+  },
+  {
+    "tag": "(",
+    "value": "(",
+  },
+  {
+    "tag": ")",
+    "value": ")",
+  },
+  {
+    "tag": ")",
+    "value": ")",
+  },
+  {
+    "tag": ")",
+    "value": ")",
+  },
+]
+`;
+
+exports[`Tokenizer parens 9`] = `
+[
+  {
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "tag": "key",
+    "value": "a",
+  },
+  {
+    "tag": "]",
+    "value": "]",
+  },
+]
+`;
+
+exports[`Tokenizer parens 10`] = `
+[
+  {
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "key",
+    "value": "a",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "]",
+    "value": "]",
+  },
+]
+`;
+
+exports[`Tokenizer parens 11`] = `
+[
+  {
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+  {
+    "tag": "]",
+    "value": "]",
+  },
+]
+`;
+
+exports[`Tokenizer parens 12`] = `
+[
+  {
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "]",
+    "value": "]",
+  },
+]
+`;
+
+exports[`Tokenizer parens 13`] = `
+[
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+  {
+    "tag": "]",
+    "value": "]",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+]
+`;
+
+exports[`Tokenizer parens 14`] = `
+[
+  {
+    "tag": "key",
+    "value": "f",
+  },
+  {
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "tag": "]",
+    "value": "]",
+  },
+]
+`;
+
+exports[`Tokenizer parens 15`] = `
+[
+  {
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "tag": "]",
+    "value": "]",
+  },
+  {
+    "tag": "]",
+    "value": "]",
+  },
+  {
+    "tag": "]",
+    "value": "]",
+  },
+]
+`;
+
+exports[`Tokenizer lists 1`] = `
+[
+  {
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "tag": "]",
+    "value": "]",
+  },
+]
+`;
+
+exports[`Tokenizer lists 2`] = `
+[
+  {
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+  {
+    "tag": ",",
+    "value": ",",
+  },
+  {
+    "tag": "integer",
+    "value": "2",
+  },
+  {
+    "tag": "]",
+    "value": "]",
+  },
+]
+`;
+
+exports[`Tokenizer lists 3`] = `
+[
+  {
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+  {
+    "tag": ",",
+    "value": ",",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "integer",
+    "value": "2",
+  },
+  {
+    "tag": "]",
+    "value": "]",
+  },
+]
+`;
+
+exports[`Tokenizer lists 4`] = `
+[
+  {
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+  {
+    "tag": ",",
+    "value": ",",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "integer",
+    "value": "2",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "]",
+    "value": "]",
+  },
+]
+`;
+
+exports[`Tokenizer lists 5`] = `
+[
+  {
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "tag": ",",
+    "value": ",",
+  },
+  {
+    "tag": ",",
+    "value": ",",
+  },
+  {
+    "tag": ",",
+    "value": ",",
+  },
+  {
+    "tag": "]",
+    "value": "]",
+  },
+]
+`;
+
+exports[`Tokenizer lists 6`] = `
+[
+  {
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+  {
+    "tag": ",",
+    "value": ",",
+  },
+  {
+    "tag": "integer",
+    "value": "2",
+  },
+  {
+    "tag": ",",
+    "value": ",",
+  },
+  {
+    "tag": "]",
+    "value": "]",
+  },
+]
+`;
+
+exports[`Tokenizer keys 1`] = `
+[
+  {
+    "tag": "key",
+    "value": "a",
+  },
+]
+`;
+
+exports[`Tokenizer keys 2`] = `
+[
+  {
+    "tag": "key",
+    "value": "a1",
+  },
+]
+`;
+
+exports[`Tokenizer keys 3`] = `
+[
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+  {
+    "tag": "key",
+    "value": "a",
+  },
+]
+`;
+
+exports[`Tokenizer strings 1`] = `
+[
+  {
+    "tag": "singleQuotedStringLiteral",
+    "value": "a",
+  },
+]
+`;
+
+exports[`Tokenizer strings 2`] = `
+[
+  {
+    "tag": "singleQuotedStringLiteral",
+    "value": "fizzbuzz",
+  },
+]
+`;
+
+exports[`Tokenizer strings 3`] = `
+[
+  {
+    "tag": "singleQuotedStringLiteral",
+    "value": 
+"a
+
+a"
+,
+  },
+]
+`;
+
+exports[`Tokenizer strings 4`] = `
+[
+  {
+    "tag": "singleQuotedStringLiteral",
+    "value": "a'\'\'\\'",
+  },
+]
+`;
+
+exports[`Tokenizer strings 5`] = `
+[
+  {
+    "tag": "singleQuotedStringLiteral",
+    "value": "1",
+  },
+]
+`;
+
+exports[`Tokenizer strings 6`] = `
+[
+  {
+    "tag": "singleQuotedStringLiteral",
+    "value": "!@#$%^&*()",
+  },
+]
+`;
+
+exports[`Tokenizer strings 7`] = `
+[
+  {
+    "tag": "singleQuotedStringLiteral",
+    "value": "",
+  },
+]
+`;
+
+exports[`Tokenizer strings 8`] = `
+[
+  {
+    "tag": "singleQuotedStringLiteral",
+    "value": " ",
+  },
+]
+`;
+
+exports[`Tokenizer strings 9`] = `
+[
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "singleQuotedStringLiteral",
+    "value": "   ",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+]
+`;
+
+exports[`Tokenizer strings 10`] = `
+[
+  {
+    "tag": "doubleQuotedStringLiteral",
+    "value": "a",
+  },
+]
+`;
+
+exports[`Tokenizer strings 11`] = `
+[
+  {
+    "tag": "doubleQuotedStringLiteral",
+    "value": "fizzbuzz",
+  },
+]
+`;
+
+exports[`Tokenizer strings 12`] = `
+[
+  {
+    "tag": "doubleQuotedStringLiteral",
+    "value": 
+"a
+
+a"
+,
+  },
+]
+`;
+
+exports[`Tokenizer strings 13`] = `
+[
+  {
+    "tag": "doubleQuotedStringLiteral",
+    "value": "a'\'\'\\'",
+  },
+]
+`;
+
+exports[`Tokenizer strings 14`] = `
+[
+  {
+    "tag": "doubleQuotedStringLiteral",
+    "value": "1",
+  },
+]
+`;
+
+exports[`Tokenizer strings 15`] = `
+[
+  {
+    "tag": "doubleQuotedStringLiteral",
+    "value": "!@#$%^&*()",
+  },
+]
+`;
+
+exports[`Tokenizer strings 16`] = `
+[
+  {
+    "tag": "doubleQuotedStringLiteral",
+    "value": "",
+  },
+]
+`;
+
+exports[`Tokenizer strings 17`] = `
+[
+  {
+    "tag": "doubleQuotedStringLiteral",
+    "value": " ",
+  },
+]
+`;
+
+exports[`Tokenizer strings 18`] = `
+[
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "doubleQuotedStringLiteral",
+    "value": "   ",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+]
+`;
+
+exports[`Tokenizer complex 1`] = `
+[
+  {
+    "tag": "key",
+    "value": "aaa.bb.c",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "=",
+    "value": "==",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "float",
+    "value": "1.5",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "&&",
+    "value": "&&",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "(",
+    "value": "(",
+  },
+  {
+    "tag": "key",
+    "value": "res.some",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "!=",
+    "value": "!==",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "doubleQuotedStringLiteral",
+    "value": "thing",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "||",
+    "value": "or",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "false",
+    "value": "FALSE",
+  },
+  {
+    "tag": ")",
+    "value": ")",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "&&",
+    "value": "&&",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "key",
+    "value": "value",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": ">=",
+    "value": ">=",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "integer",
+    "value": "-1",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "&&",
+    "value": "&&",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "key",
+    "value": "value",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "<",
+    "value": "<",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "float",
+    "value": "-.16",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "&&",
+    "value": "and",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "key",
+    "value": "key",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "in",
+    "value": "in",
+  },
+  {
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "tag": "integer",
+    "value": "1",
+  },
+  {
+    "tag": ",",
+    "value": ",",
+  },
+  {
+    "tag": "singleQuotedStringLiteral",
+    "value": "2",
+  },
+  {
+    "tag": ",",
+    "value": ",",
+  },
+  {
+    "tag": "float",
+    "value": "3.0",
+  },
+  {
+    "tag": "]",
+    "value": "]",
+  },
+]
+`;
