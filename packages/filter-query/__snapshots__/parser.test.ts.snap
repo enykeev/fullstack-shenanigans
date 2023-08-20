@@ -1,5 +1,1627 @@
 // Bun Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Query Parser spaces 1`] = `undefined`;
+
+exports[`Query Parser spaces 2`] = `undefined`;
+
+exports[`Query Parser spaces 3`] = `undefined`;
+
+exports[`Query Parser accessors 1`] = `
+{
+  "key": "a",
+  "token": {
+    "end": 1,
+    "start": 0,
+    "tag": "key",
+    "value": "a",
+  },
+  "type": "accessor",
+}
+`;
+
+exports[`Query Parser accessors 2`] = `
+{
+  "key": "some",
+  "token": {
+    "end": 4,
+    "start": 0,
+    "tag": "key",
+    "value": "some",
+  },
+  "type": "accessor",
+}
+`;
+
+exports[`Query Parser accessors 3`] = `
+{
+  "key": "some.thing",
+  "token": {
+    "end": 10,
+    "start": 0,
+    "tag": "key",
+    "value": "some.thing",
+  },
+  "type": "accessor",
+}
+`;
+
+exports[`Query Parser accessors 4`] = `
+{
+  "key": "a.1",
+  "token": {
+    "end": 3,
+    "start": 0,
+    "tag": "key",
+    "value": "a.1",
+  },
+  "type": "accessor",
+}
+`;
+
+exports[`Query Parser values 1`] = `
+{
+  "parent": undefined,
+  "token": {
+    "end": 4,
+    "start": 0,
+    "tag": "true",
+    "value": "true",
+  },
+  "type": "booleanValue",
+  "value": true,
+}
+`;
+
+exports[`Query Parser values 2`] = `
+{
+  "parent": undefined,
+  "token": {
+    "end": 4,
+    "start": 0,
+    "tag": "true",
+    "value": "True",
+  },
+  "type": "booleanValue",
+  "value": true,
+}
+`;
+
+exports[`Query Parser values 3`] = `
+{
+  "parent": undefined,
+  "token": {
+    "end": 4,
+    "start": 0,
+    "tag": "true",
+    "value": "TRUE",
+  },
+  "type": "booleanValue",
+  "value": true,
+}
+`;
+
+exports[`Query Parser values 4`] = `
+{
+  "parent": undefined,
+  "token": {
+    "end": 5,
+    "start": 0,
+    "tag": "false",
+    "value": "false",
+  },
+  "type": "booleanValue",
+  "value": false,
+}
+`;
+
+exports[`Query Parser values 5`] = `
+{
+  "parent": undefined,
+  "token": {
+    "end": 5,
+    "start": 0,
+    "tag": "false",
+    "value": "False",
+  },
+  "type": "booleanValue",
+  "value": false,
+}
+`;
+
+exports[`Query Parser values 6`] = `
+{
+  "parent": undefined,
+  "token": {
+    "end": 5,
+    "start": 0,
+    "tag": "false",
+    "value": "FALSE",
+  },
+  "type": "booleanValue",
+  "value": false,
+}
+`;
+
+exports[`Query Parser comparisons 1`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 5,
+      "start": 4,
+      "tag": "integer",
+      "value": "1",
+    },
+    "type": "value",
+    "value": 1,
+  },
+  "subtype": "=",
+  "token": {
+    "end": 3,
+    "start": 2,
+    "tag": "=",
+    "value": "=",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 2`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 6,
+      "start": 5,
+      "tag": "integer",
+      "value": "1",
+    },
+    "type": "value",
+    "value": 1,
+  },
+  "subtype": "=",
+  "token": {
+    "end": 4,
+    "start": 2,
+    "tag": "=",
+    "value": "==",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 3`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 7,
+      "start": 4,
+      "tag": "singleQuotedStringLiteral",
+      "value": "a",
+    },
+    "type": "value",
+    "value": "a",
+  },
+  "subtype": "=",
+  "token": {
+    "end": 3,
+    "start": 2,
+    "tag": "=",
+    "value": "=",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 4`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 8,
+      "start": 5,
+      "tag": "singleQuotedStringLiteral",
+      "value": "a",
+    },
+    "type": "value",
+    "value": "a",
+  },
+  "subtype": "=",
+  "token": {
+    "end": 4,
+    "start": 2,
+    "tag": "=",
+    "value": "==",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 5`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 7,
+      "start": 4,
+      "tag": "doubleQuotedStringLiteral",
+      "value": "a",
+    },
+    "type": "value",
+    "value": "a",
+  },
+  "subtype": "=",
+  "token": {
+    "end": 3,
+    "start": 2,
+    "tag": "=",
+    "value": "=",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 6`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 8,
+      "start": 5,
+      "tag": "doubleQuotedStringLiteral",
+      "value": "a",
+    },
+    "type": "value",
+    "value": "a",
+  },
+  "subtype": "=",
+  "token": {
+    "end": 4,
+    "start": 2,
+    "tag": "=",
+    "value": "==",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 7`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 6,
+      "start": 5,
+      "tag": "integer",
+      "value": "1",
+    },
+    "type": "value",
+    "value": 1,
+  },
+  "subtype": "!=",
+  "token": {
+    "end": 4,
+    "start": 2,
+    "tag": "!=",
+    "value": "!=",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 8`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 7,
+      "start": 6,
+      "tag": "integer",
+      "value": "1",
+    },
+    "type": "value",
+    "value": 1,
+  },
+  "subtype": "!=",
+  "token": {
+    "end": 5,
+    "start": 2,
+    "tag": "!=",
+    "value": "!==",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 9`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 8,
+      "start": 5,
+      "tag": "singleQuotedStringLiteral",
+      "value": "a",
+    },
+    "type": "value",
+    "value": "a",
+  },
+  "subtype": "!=",
+  "token": {
+    "end": 4,
+    "start": 2,
+    "tag": "!=",
+    "value": "!=",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 10`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 9,
+      "start": 6,
+      "tag": "singleQuotedStringLiteral",
+      "value": "a",
+    },
+    "type": "value",
+    "value": "a",
+  },
+  "subtype": "!=",
+  "token": {
+    "end": 5,
+    "start": 2,
+    "tag": "!=",
+    "value": "!==",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 11`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 8,
+      "start": 5,
+      "tag": "doubleQuotedStringLiteral",
+      "value": "a",
+    },
+    "type": "value",
+    "value": "a",
+  },
+  "subtype": "!=",
+  "token": {
+    "end": 4,
+    "start": 2,
+    "tag": "!=",
+    "value": "!=",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 12`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 9,
+      "start": 6,
+      "tag": "doubleQuotedStringLiteral",
+      "value": "a",
+    },
+    "type": "value",
+    "value": "a",
+  },
+  "subtype": "!=",
+  "token": {
+    "end": 5,
+    "start": 2,
+    "tag": "!=",
+    "value": "!==",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 13`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 5,
+      "start": 4,
+      "tag": "integer",
+      "value": "1",
+    },
+    "type": "value",
+    "value": 1,
+  },
+  "subtype": ">",
+  "token": {
+    "end": 3,
+    "start": 2,
+    "tag": ">",
+    "value": ">",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 14`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 7,
+      "start": 4,
+      "tag": "singleQuotedStringLiteral",
+      "value": "a",
+    },
+    "type": "value",
+    "value": "a",
+  },
+  "subtype": ">",
+  "token": {
+    "end": 3,
+    "start": 2,
+    "tag": ">",
+    "value": ">",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 15`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 7,
+      "start": 4,
+      "tag": "doubleQuotedStringLiteral",
+      "value": "a",
+    },
+    "type": "value",
+    "value": "a",
+  },
+  "subtype": ">",
+  "token": {
+    "end": 3,
+    "start": 2,
+    "tag": ">",
+    "value": ">",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 16`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 8,
+      "start": 4,
+      "tag": "true",
+      "value": "true",
+    },
+    "type": "booleanValue",
+    "value": true,
+  },
+  "subtype": ">",
+  "token": {
+    "end": 3,
+    "start": 2,
+    "tag": ">",
+    "value": ">",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 17`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 6,
+      "start": 5,
+      "tag": "integer",
+      "value": "1",
+    },
+    "type": "value",
+    "value": 1,
+  },
+  "subtype": ">=",
+  "token": {
+    "end": 4,
+    "start": 2,
+    "tag": ">=",
+    "value": ">=",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 18`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 8,
+      "start": 5,
+      "tag": "singleQuotedStringLiteral",
+      "value": "a",
+    },
+    "type": "value",
+    "value": "a",
+  },
+  "subtype": ">=",
+  "token": {
+    "end": 4,
+    "start": 2,
+    "tag": ">=",
+    "value": ">=",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 19`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 8,
+      "start": 5,
+      "tag": "doubleQuotedStringLiteral",
+      "value": "a",
+    },
+    "type": "value",
+    "value": "a",
+  },
+  "subtype": ">=",
+  "token": {
+    "end": 4,
+    "start": 2,
+    "tag": ">=",
+    "value": ">=",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 20`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 9,
+      "start": 5,
+      "tag": "true",
+      "value": "true",
+    },
+    "type": "booleanValue",
+    "value": true,
+  },
+  "subtype": ">=",
+  "token": {
+    "end": 4,
+    "start": 2,
+    "tag": ">=",
+    "value": ">=",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 21`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 5,
+      "start": 4,
+      "tag": "integer",
+      "value": "1",
+    },
+    "type": "value",
+    "value": 1,
+  },
+  "subtype": "<",
+  "token": {
+    "end": 3,
+    "start": 2,
+    "tag": "<",
+    "value": "<",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 22`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 7,
+      "start": 4,
+      "tag": "singleQuotedStringLiteral",
+      "value": "a",
+    },
+    "type": "value",
+    "value": "a",
+  },
+  "subtype": "<",
+  "token": {
+    "end": 3,
+    "start": 2,
+    "tag": "<",
+    "value": "<",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 23`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 7,
+      "start": 4,
+      "tag": "doubleQuotedStringLiteral",
+      "value": "a",
+    },
+    "type": "value",
+    "value": "a",
+  },
+  "subtype": "<",
+  "token": {
+    "end": 3,
+    "start": 2,
+    "tag": "<",
+    "value": "<",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 24`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 8,
+      "start": 4,
+      "tag": "true",
+      "value": "true",
+    },
+    "type": "booleanValue",
+    "value": true,
+  },
+  "subtype": "<",
+  "token": {
+    "end": 3,
+    "start": 2,
+    "tag": "<",
+    "value": "<",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 25`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 6,
+      "start": 5,
+      "tag": "integer",
+      "value": "1",
+    },
+    "type": "value",
+    "value": 1,
+  },
+  "subtype": "<=",
+  "token": {
+    "end": 4,
+    "start": 2,
+    "tag": "<=",
+    "value": "<=",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 26`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 8,
+      "start": 5,
+      "tag": "singleQuotedStringLiteral",
+      "value": "a",
+    },
+    "type": "value",
+    "value": "a",
+  },
+  "subtype": "<=",
+  "token": {
+    "end": 4,
+    "start": 2,
+    "tag": "<=",
+    "value": "<=",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 27`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 8,
+      "start": 5,
+      "tag": "doubleQuotedStringLiteral",
+      "value": "a",
+    },
+    "type": "value",
+    "value": "a",
+  },
+  "subtype": "<=",
+  "token": {
+    "end": 4,
+    "start": 2,
+    "tag": "<=",
+    "value": "<=",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 28`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 9,
+      "start": 5,
+      "tag": "true",
+      "value": "true",
+    },
+    "type": "booleanValue",
+    "value": true,
+  },
+  "subtype": "<=",
+  "token": {
+    "end": 4,
+    "start": 2,
+    "tag": "<=",
+    "value": "<=",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 29`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "children": [
+      {
+        "parent": [Circular],
+        "token": {
+          "end": 7,
+          "start": 6,
+          "tag": "integer",
+          "value": "1",
+        },
+        "type": "value",
+        "value": 1,
+      },
+      {
+        "parent": [Circular],
+        "token": {
+          "end": 9,
+          "start": 8,
+          "tag": "integer",
+          "value": "2",
+        },
+        "type": "value",
+        "value": 2,
+      },
+      {
+        "parent": [Circular],
+        "token": {
+          "end": 11,
+          "start": 10,
+          "tag": "integer",
+          "value": "3",
+        },
+        "type": "value",
+        "value": 3,
+      },
+    ],
+    "parent": [Circular],
+    "token": {
+      "end": 6,
+      "start": 5,
+      "tag": "[",
+      "value": "[",
+    },
+    "type": "list",
+  },
+  "subtype": "in",
+  "token": {
+    "end": 4,
+    "start": 2,
+    "tag": "in",
+    "value": "in",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 30`] = `
+{
+  "left": {
+    "key": "a",
+    "parent": [Circular],
+    "token": {
+      "end": 1,
+      "start": 0,
+      "tag": "key",
+      "value": "a",
+    },
+    "type": "accessor",
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 10,
+      "start": 5,
+      "tag": "singleQuotedStringLiteral",
+      "value": "abc",
+    },
+    "type": "value",
+    "value": "abc",
+  },
+  "subtype": "in",
+  "token": {
+    "end": 4,
+    "start": 2,
+    "tag": "in",
+    "value": "in",
+  },
+  "type": "comparison",
+}
+`;
+
+exports[`Query Parser comparisons 31`] = `
+{
+  "token": {
+    "end": 3,
+    "start": 0,
+    "tag": "!",
+    "value": "not",
+  },
+  "type": "not",
+  "value": {
+    "parent": [Circular],
+    "token": {
+      "end": 5,
+      "start": 4,
+      "tag": "(",
+      "value": "(",
+    },
+    "type": "group",
+    "value": {
+      "left": {
+        "key": "a",
+        "parent": [Circular],
+        "token": {
+          "end": 6,
+          "start": 5,
+          "tag": "key",
+          "value": "a",
+        },
+        "type": "accessor",
+      },
+      "parent": [Circular],
+      "right": {
+        "children": [
+          {
+            "parent": [Circular],
+            "token": {
+              "end": 12,
+              "start": 11,
+              "tag": "integer",
+              "value": "1",
+            },
+            "type": "value",
+            "value": 1,
+          },
+          {
+            "parent": [Circular],
+            "token": {
+              "end": 14,
+              "start": 13,
+              "tag": "integer",
+              "value": "2",
+            },
+            "type": "value",
+            "value": 2,
+          },
+          {
+            "parent": [Circular],
+            "token": {
+              "end": 16,
+              "start": 15,
+              "tag": "integer",
+              "value": "3",
+            },
+            "type": "value",
+            "value": 3,
+          },
+        ],
+        "parent": [Circular],
+        "token": {
+          "end": 11,
+          "start": 10,
+          "tag": "[",
+          "value": "[",
+        },
+        "type": "list",
+      },
+      "subtype": "in",
+      "token": {
+        "end": 9,
+        "start": 7,
+        "tag": "in",
+        "value": "in",
+      },
+      "type": "comparison",
+    },
+  },
+}
+`;
+
+exports[`Query Parser comparisons 32`] = `
+{
+  "token": {
+    "end": 1,
+    "start": 0,
+    "tag": "!",
+    "value": "!",
+  },
+  "type": "not",
+  "value": {
+    "parent": [Circular],
+    "token": {
+      "end": 2,
+      "start": 1,
+      "tag": "(",
+      "value": "(",
+    },
+    "type": "group",
+    "value": {
+      "left": {
+        "key": "a",
+        "parent": [Circular],
+        "token": {
+          "end": 3,
+          "start": 2,
+          "tag": "key",
+          "value": "a",
+        },
+        "type": "accessor",
+      },
+      "parent": [Circular],
+      "right": {
+        "children": [
+          {
+            "parent": [Circular],
+            "token": {
+              "end": 9,
+              "start": 8,
+              "tag": "integer",
+              "value": "1",
+            },
+            "type": "value",
+            "value": 1,
+          },
+          {
+            "parent": [Circular],
+            "token": {
+              "end": 11,
+              "start": 10,
+              "tag": "integer",
+              "value": "2",
+            },
+            "type": "value",
+            "value": 2,
+          },
+          {
+            "parent": [Circular],
+            "token": {
+              "end": 13,
+              "start": 12,
+              "tag": "integer",
+              "value": "3",
+            },
+            "type": "value",
+            "value": 3,
+          },
+        ],
+        "parent": [Circular],
+        "token": {
+          "end": 8,
+          "start": 7,
+          "tag": "[",
+          "value": "[",
+        },
+        "type": "list",
+      },
+      "subtype": "in",
+      "token": {
+        "end": 6,
+        "start": 4,
+        "tag": "in",
+        "value": "in",
+      },
+      "type": "comparison",
+    },
+  },
+}
+`;
+
+exports[`Query Parser booleans 1`] = `
+{
+  "left": {
+    "parent": [Circular],
+    "token": {
+      "end": 4,
+      "start": 0,
+      "tag": "true",
+      "value": "true",
+    },
+    "type": "booleanValue",
+    "value": true,
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 12,
+      "start": 8,
+      "tag": "true",
+      "value": "true",
+    },
+    "type": "booleanValue",
+    "value": true,
+  },
+  "subtype": "&&",
+  "token": {
+    "end": 7,
+    "start": 5,
+    "tag": "&&",
+    "value": "&&",
+  },
+  "type": "boolean",
+}
+`;
+
+exports[`Query Parser booleans 2`] = `
+{
+  "left": {
+    "parent": [Circular],
+    "token": {
+      "end": 5,
+      "start": 0,
+      "tag": "false",
+      "value": "false",
+    },
+    "type": "booleanValue",
+    "value": false,
+  },
+  "parent": undefined,
+  "right": {
+    "parent": [Circular],
+    "token": {
+      "end": 13,
+      "start": 9,
+      "tag": "true",
+      "value": "true",
+    },
+    "type": "booleanValue",
+    "value": true,
+  },
+  "subtype": "||",
+  "token": {
+    "end": 8,
+    "start": 6,
+    "tag": "||",
+    "value": "||",
+  },
+  "type": "boolean",
+}
+`;
+
+exports[`Query Parser booleans 3`] = `
+{
+  "left": {
+    "parent": [Circular],
+    "token": {
+      "end": 4,
+      "start": 0,
+      "tag": "true",
+      "value": "true",
+    },
+    "type": "booleanValue",
+    "value": true,
+  },
+  "parent": undefined,
+  "right": {
+    "left": {
+      "parent": [Circular],
+      "token": {
+        "end": 12,
+        "start": 8,
+        "tag": "true",
+        "value": "true",
+      },
+      "type": "booleanValue",
+      "value": true,
+    },
+    "parent": [Circular],
+    "right": {
+      "parent": [Circular],
+      "token": {
+        "end": 21,
+        "start": 16,
+        "tag": "false",
+        "value": "false",
+      },
+      "type": "booleanValue",
+      "value": false,
+    },
+    "subtype": "&&",
+    "token": {
+      "end": 15,
+      "start": 13,
+      "tag": "&&",
+      "value": "&&",
+    },
+    "type": "boolean",
+  },
+  "subtype": "&&",
+  "token": {
+    "end": 7,
+    "start": 5,
+    "tag": "&&",
+    "value": "&&",
+  },
+  "type": "boolean",
+}
+`;
+
+exports[`Query Parser booleans 4`] = `
+{
+  "left": {
+    "parent": [Circular],
+    "token": {
+      "end": 5,
+      "start": 0,
+      "tag": "false",
+      "value": "false",
+    },
+    "type": "booleanValue",
+    "value": false,
+  },
+  "parent": undefined,
+  "right": {
+    "left": {
+      "parent": [Circular],
+      "token": {
+        "end": 13,
+        "start": 9,
+        "tag": "true",
+        "value": "true",
+      },
+      "type": "booleanValue",
+      "value": true,
+    },
+    "parent": [Circular],
+    "right": {
+      "parent": [Circular],
+      "token": {
+        "end": 22,
+        "start": 17,
+        "tag": "false",
+        "value": "false",
+      },
+      "type": "booleanValue",
+      "value": false,
+    },
+    "subtype": "&&",
+    "token": {
+      "end": 16,
+      "start": 14,
+      "tag": "&&",
+      "value": "&&",
+    },
+    "type": "boolean",
+  },
+  "subtype": "||",
+  "token": {
+    "end": 8,
+    "start": 6,
+    "tag": "||",
+    "value": "||",
+  },
+  "type": "boolean",
+}
+`;
+
 exports[`Query Parser complex 1`] = `
 {
   "left": {
@@ -89,7 +1711,7 @@ exports[`Query Parser complex 1`] = `
             "tag": "false",
             "value": "FALSE",
           },
-          "type": "value",
+          "type": "booleanValue",
           "value": false,
         },
         "subtype": "||",
@@ -275,5 +1897,118 @@ exports[`Query Parser complex 1`] = `
     "value": "&&",
   },
   "type": "boolean",
+}
+`;
+
+exports[`Query Parser complex 2`] = `
+{
+  "left": {
+    "left": {
+      "key": "some",
+      "parent": [Circular],
+      "token": {
+        "end": 4,
+        "start": 0,
+        "tag": "key",
+        "value": "some",
+      },
+      "type": "accessor",
+    },
+    "parent": [Circular],
+    "right": {
+      "parent": [Circular],
+      "token": {
+        "end": 8,
+        "start": 7,
+        "tag": "integer",
+        "value": "5",
+      },
+      "type": "value",
+      "value": 5,
+    },
+    "subtype": "=",
+    "token": {
+      "end": 6,
+      "start": 5,
+      "tag": "=",
+      "value": "=",
+    },
+    "type": "comparison",
+  },
+  "parent": undefined,
+  "right": {
+    "left": {
+      "key": "thing",
+      "parent": [Circular],
+      "token": {
+        "end": 17,
+        "start": 12,
+        "tag": "key",
+        "value": "thing",
+      },
+      "type": "accessor",
+    },
+    "parent": [Circular],
+    "right": {
+      "parent": [Circular],
+      "token": {
+        "end": 27,
+        "start": 21,
+        "tag": "doubleQuotedStringLiteral",
+        "value": "else",
+      },
+      "type": "value",
+      "value": "else",
+    },
+    "subtype": "!=",
+    "token": {
+      "end": 20,
+      "start": 18,
+      "tag": "!=",
+      "value": "!=",
+    },
+    "type": "comparison",
+  },
+  "subtype": "||",
+  "token": {
+    "end": 11,
+    "start": 9,
+    "tag": "||",
+    "value": "or",
+  },
+  "type": "boolean",
+}
+`;
+
+exports[`Query Parser complex 3`] = `
+{
+  "token": {
+    "end": 1,
+    "start": 0,
+    "tag": "!",
+    "value": "!",
+  },
+  "type": "not",
+  "value": {
+    "parent": [Circular],
+    "token": {
+      "end": 2,
+      "start": 1,
+      "tag": "(",
+      "value": "(",
+    },
+    "type": "group",
+    "value": {
+      "parent": [Circular],
+      "token": {
+        "end": 6,
+        "start": 2,
+        "tag": "true",
+        "value": "true",
+      },
+      "type": "booleanValue",
+      "value": true,
+    },
+  },
 }
 `;

@@ -69,6 +69,42 @@ export function parse(str: string) {
           }
         }
       }
+      case "!": {
+        switch (currentNode?.type) {
+          case undefined: {
+            currentNode = {
+              type: "not",
+              token,
+            };
+            continue;
+          }
+          case "not": {
+            const parent = currentNode;
+            currentNode = {
+              type: "not",
+              parent,
+              token,
+            };
+            parent.value = currentNode;
+            continue;
+          }
+          case "boolean": {
+            const parent = currentNode;
+            currentNode = {
+              type: "not",
+              parent,
+              token,
+            };
+            parent.right = currentNode;
+            continue;
+          }
+          default: {
+            throw new Error(
+              `token "${token.tag}" should not follow node of type "${currentNode?.type}"`,
+            );
+          }
+        }
+      }
       case "integer":
       case "float": {
         switch (currentNode?.type) {
@@ -138,14 +174,30 @@ export function parse(str: string) {
       case "true": {
         switch (currentNode?.type) {
           case undefined: {
-            throw new Error(
-              `expression should not start with token "${token.tag}"`,
-            );
+            currentNode = {
+              type: "booleanValue",
+              value: true,
+              parent: currentNode,
+              token,
+            };
+            continue;
+          }
+          case "group":
+          case "not": {
+            const parent = currentNode;
+            currentNode = {
+              type: "booleanValue",
+              value: true,
+              parent,
+              token,
+            };
+            parent.value = currentNode;
+            continue;
           }
           case "comparison":
           case "boolean": {
             currentNode.right = {
-              type: "value",
+              type: "booleanValue",
               value: true,
               parent: currentNode,
               token,
@@ -162,14 +214,29 @@ export function parse(str: string) {
       case "false": {
         switch (currentNode?.type) {
           case undefined: {
-            throw new Error(
-              `expression should not start with token "${token.tag}"`,
-            );
+            currentNode = {
+              type: "booleanValue",
+              value: false,
+              parent: currentNode,
+              token,
+            };
+            continue;
+          }
+          case "group":
+          case "not": {
+            const parent = currentNode;
+            currentNode.value = {
+              type: "booleanValue",
+              value: false,
+              parent,
+              token,
+            };
+            continue;
           }
           case "comparison":
           case "boolean": {
             currentNode.right = {
-              type: "value",
+              type: "booleanValue",
               value: false,
               parent: currentNode,
               token,
@@ -191,6 +258,7 @@ export function parse(str: string) {
               `expression should not start with token "${token.tag}"`,
             );
           }
+          case "booleanValue":
           case "group":
           case "comparison": {
             const left = currentNode;
@@ -206,6 +274,22 @@ export function parse(str: string) {
             if (parent && parent.type === "boolean") {
               parent.right = currentNode;
             }
+            if (parent && parent.type === "group") {
+              parent.value = currentNode;
+            }
+            continue;
+          }
+          case "boolean": {
+            const parent = currentNode;
+            const left = parent.right;
+            currentNode = {
+              type: "boolean",
+              subtype: token.tag,
+              left,
+              parent,
+              token,
+            };
+            parent.right = currentNode;
             continue;
           }
           default: {
@@ -219,6 +303,12 @@ export function parse(str: string) {
         switch (currentNode?.type) {
           case undefined: {
             currentNode = { type: "group", token };
+            continue;
+          }
+          case "not": {
+            const parent = currentNode;
+            currentNode = { type: "group", parent, token };
+            parent.value = currentNode;
             continue;
           }
           case "boolean": {
@@ -249,6 +339,9 @@ export function parse(str: string) {
         }
 
         switch (prevNode?.type) {
+          case undefined:
+            continue;
+          case "booleanValue":
           case "boolean":
           case "comparison": {
             currentNode.value = prevNode;

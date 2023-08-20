@@ -18,6 +18,7 @@ export function printAST(node: Node | undefined, level = 0) {
       printAST(node.right, level + 1);
       break;
     }
+    case "not":
     case "group": {
       printAST(node.value, level + 1);
       break;
@@ -62,6 +63,7 @@ function printASTMermaidNode(
       printASTMermaidNode(ctx, node.right, to);
       break;
     }
+    case "not":
     case "group": {
       printASTMermaidNode(ctx, node.value, to);
       break;
@@ -85,7 +87,8 @@ export function printASTMermaid(node: Node | undefined, title?: string) {
       `---\ntitle: ${title
         .replaceAll("&", "#amp;")
         .replaceAll(">", "#gt;")
-        .replaceAll("<", "#lt;")} \n---`,
+        .replaceAll("<", "#lt;")
+        .replaceAll("!", "#excl;")} \n---`,
     );
   }
 

@@ -1,6 +1,9 @@
 import type { Node } from "./ast";
 
-export function check(obj: Record<string, unknown>, stage: Node): unknown {
+export function check(obj: Record<string, unknown>, stage?: Node): unknown {
+  if (!stage) {
+    return false;
+  }
   switch (stage.type) {
     case "accessor": {
       if (!stage.key) {
@@ -8,6 +11,7 @@ export function check(obj: Record<string, unknown>, stage: Node): unknown {
       }
       return obj[stage.key];
     }
+    case "booleanValue":
     case "value": {
       return stage.value;
     }

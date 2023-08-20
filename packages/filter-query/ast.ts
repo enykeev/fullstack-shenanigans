@@ -17,6 +17,11 @@ export type ValueNode<T> = BaseNode & {
   value: T;
 };
 
+export type BooleanValueNode = BaseNode & {
+  type: "booleanValue";
+  value: boolean;
+};
+
 export type ComparisonNode = BaseNode & {
   type: "comparison";
   subtype: "=" | "!=" | ">" | "<" | ">=" | "<=" | "in";
@@ -48,7 +53,7 @@ export type ListNode = BaseNode & {
 
 export type LogicalNode =
   | ComparisonNode
-  | ValueNode<boolean>
+  | BooleanValueNode
   | AccessorNode
   | BooleanNode
   | NotNode

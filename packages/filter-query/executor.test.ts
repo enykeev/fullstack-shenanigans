@@ -1,257 +1,39 @@
 import { describe, expect, test } from "bun:test";
 
-import { Node } from "./ast";
 import { check } from "./executor";
+import { parse } from "./parser";
 
 describe("Query Executor", () => {
   test("check simple condition", () => {
-    expect(
-      check(
-        {},
-        {
-          type: "comparison",
-          subtype: "=",
-          left: {
-            type: "value",
-            value: 5,
-          },
-          right: {
-            type: "value",
-            value: 5,
-          },
-        },
-      ),
-    ).toEqual(true);
-    expect(
-      check(
-        {},
-        {
-          type: "comparison",
-          subtype: "=",
-          left: {
-            type: "value",
-            value: 6,
-          },
-          right: {
-            type: "value",
-            value: 5,
-          },
-        },
-      ),
-    ).toEqual(false);
+    expect(check({}, parse("true"))).toEqual(true);
+    expect(check({}, parse("false"))).toEqual(false);
   });
 
   test("check accessor condition", () => {
     const obj = {
       some: 5,
     };
-    expect(
-      check(obj, {
-        type: "comparison",
-        subtype: "=",
-        left: {
-          type: "accessor",
-          key: "some",
-        },
-        right: {
-          type: "value",
-          value: 5,
-        },
-      }),
-    ).toEqual(true);
-    expect(
-      check(obj, {
-        type: "comparison",
-        subtype: "=",
-        left: {
-          type: "accessor",
-          key: "some",
-        },
-        right: {
-          type: "value",
-          value: 6,
-        },
-      }),
-    ).toEqual(false);
-    expect(
-      check(obj, {
-        type: "comparison",
-        subtype: "=",
-        left: {
-          type: "accessor",
-          key: "non-existent",
-        },
-        right: {
-          type: "value",
-          value: 5,
-        },
-      }),
-    ).toEqual(false);
+    expect(check(obj, parse("some = 5"))).toEqual(true);
+    expect(check(obj, parse("some = 6"))).toEqual(false);
+    expect(check(obj, parse("nonExistentValue = 5"))).toEqual(false);
   });
 
   test("check boolean conditions", () => {
-    expect(
-      check(
-        {},
-        {
-          type: "boolean",
-          subtype: "&&",
-          left: {
-            type: "value",
-            value: true,
-          },
-          right: {
-            type: "value",
-            value: true,
-          },
-        },
-      ),
-    ).toEqual(true);
-    expect(
-      check(
-        {},
-        {
-          type: "boolean",
-          subtype: "&&",
-          left: {
-            type: "value",
-            value: true,
-          },
-          right: {
-            type: "value",
-            value: false,
-          },
-        },
-      ),
-    ).toEqual(false);
-    expect(
-      check(
-        {},
-        {
-          type: "boolean",
-          subtype: "&&",
-          left: {
-            type: "value",
-            value: false,
-          },
-          right: {
-            type: "value",
-            value: true,
-          },
-        },
-      ),
-    ).toEqual(false);
-    expect(
-      check(
-        {},
-        {
-          type: "boolean",
-          subtype: "&&",
-          left: {
-            type: "value",
-            value: false,
-          },
-          right: {
-            type: "value",
-            value: false,
-          },
-        },
-      ),
-    ).toEqual(false);
+    expect(check({}, parse("true && true"))).toEqual(true);
+    expect(check({}, parse("true && false"))).toEqual(false);
+    expect(check({}, parse("false && true"))).toEqual(false);
+    expect(check({}, parse("false && false"))).toEqual(false);
 
-    expect(
-      check(
-        {},
-        {
-          type: "boolean",
-          subtype: "||",
-          left: {
-            type: "value",
-            value: true,
-          },
-          right: {
-            type: "value",
-            value: true,
-          },
-        },
-      ),
-    ).toEqual(true);
-    expect(
-      check(
-        {},
-        {
-          type: "boolean",
-          subtype: "||",
-          left: {
-            type: "value",
-            value: true,
-          },
-          right: {
-            type: "value",
-            value: false,
-          },
-        },
-      ),
-    ).toEqual(true);
-    expect(
-      check(
-        {},
-        {
-          type: "boolean",
-          subtype: "||",
-          left: {
-            type: "value",
-            value: true,
-          },
-          right: {
-            type: "value",
-            value: false,
-          },
-        },
-      ),
-    ).toEqual(true);
-    expect(
-      check(
-        {},
-        {
-          type: "boolean",
-          subtype: "||",
-          left: {
-            type: "value",
-            value: false,
-          },
-          right: {
-            type: "value",
-            value: false,
-          },
-        },
-      ),
-    ).toEqual(false);
+    expect(check({}, parse("true || true"))).toEqual(true);
+    expect(check({}, parse("true || false"))).toEqual(true);
+    expect(check({}, parse("false || true"))).toEqual(true);
+    expect(check({}, parse("false || false"))).toEqual(false);
 
-    expect(
-      check(
-        {},
-        {
-          type: "not",
-          value: {
-            type: "value",
-            value: true,
-          },
-        },
-      ),
-    ).toEqual(false);
-    expect(
-      check(
-        {},
-        {
-          type: "not",
-          value: {
-            type: "value",
-            value: false,
-          },
-        },
-      ),
-    ).toEqual(true);
+    expect(check({}, parse("!true"))).toEqual(false);
+    expect(check({}, parse("!false"))).toEqual(true);
+    expect(check({}, parse("!!true"))).toEqual(true);
+    expect(check({}, parse("!(true)"))).toEqual(false);
+    expect(check({}, parse("!(true && false)"))).toEqual(true);
   });
 
   test("check complex conditions", () => {
@@ -260,67 +42,8 @@ describe("Query Executor", () => {
       thing: "else",
     };
 
-    let condition: Node = {
-      type: "boolean",
-      subtype: "&&",
-      left: {
-        type: "comparison",
-        subtype: "=",
-        left: {
-          type: "accessor",
-          key: "some",
-        },
-        right: {
-          type: "value",
-          value: 5,
-        },
-      },
-      right: {
-        type: "comparison",
-        subtype: "=",
-        left: {
-          type: "accessor",
-          key: "thing",
-        },
-        right: {
-          type: "value",
-          value: "else",
-        },
-      },
-    };
-    expect(check(obj, condition)).toEqual(true);
-
-    condition = {
-      type: "boolean",
-      subtype: "||",
-      left: {
-        type: "comparison",
-        subtype: "=",
-        left: {
-          type: "accessor",
-          key: "some",
-        },
-        right: {
-          type: "value",
-          value: 5,
-        },
-      },
-      right: {
-        type: "not",
-        value: {
-          type: "comparison",
-          subtype: "=",
-          left: {
-            type: "accessor",
-            key: "thing",
-          },
-          right: {
-            type: "value",
-            value: "else",
-          },
-        },
-      },
-    };
-    expect(check(obj, condition)).toEqual(true);
+    expect(check(obj, parse('some = 5 and thing = "else"'))).toEqual(true);
+    expect(check(obj, parse('some = 5 or thing != "else"'))).toEqual(true); // NOTE: since `some = 5` is already truthful, `thing != "else"` is not going to be evaluated at all
+    expect(check(obj, parse('some = 6 or thing = "else"'))).toEqual(true);
   });
 });
