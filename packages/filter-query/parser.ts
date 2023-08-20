@@ -1,4 +1,4 @@
-import { generateToken } from "./tokenizer";
+import { Tokenizer } from "./tokenizer";
 import type {
   BooleanNode,
   ComparisonNode,
@@ -10,10 +10,9 @@ import type {
 export function parse(str: string) {
   let currentNode: Node | undefined;
   let leftNode: Node | undefined;
-  const generator = generateToken(str);
-  const run = true;
+  const tokenizer = new Tokenizer(str);
   loop: do {
-    const token = generator.next().value;
+    const token = tokenizer.next();
     if (!token) {
       break;
     }
@@ -24,17 +23,17 @@ export function parse(str: string) {
       case "key": {
         switch (currentNode?.type) {
           case undefined: {
-            currentNode = { type: "accessor", key: token.value };
+            currentNode = { type: "accessor", key: token.value, token };
             continue;
           }
           case "group": {
             const parent = currentNode;
-            currentNode = { type: "accessor", key: token.value, parent };
+            currentNode = { type: "accessor", key: token.value, parent, token };
             continue;
           }
           case "boolean": {
             const parent = currentNode;
-            currentNode = { type: "accessor", key: token.value, parent };
+            currentNode = { type: "accessor", key: token.value, parent, token };
             parent.right = currentNode;
             continue;
           }
@@ -52,6 +51,7 @@ export function parse(str: string) {
           subtype: "=",
           left: leftNode,
           parent,
+          token,
         };
         leftNode.parent = currentNode;
         continue;
@@ -67,6 +67,7 @@ export function parse(str: string) {
           subtype: "!=",
           left: leftNode,
           parent,
+          token,
         };
         leftNode.parent = currentNode;
         continue;
@@ -82,6 +83,7 @@ export function parse(str: string) {
           subtype: ">",
           left: leftNode,
           parent,
+          token,
         };
         leftNode.parent = currentNode;
         continue;
@@ -97,6 +99,7 @@ export function parse(str: string) {
           subtype: ">=",
           left: leftNode,
           parent,
+          token,
         };
         leftNode.parent = currentNode;
         continue;
@@ -112,6 +115,7 @@ export function parse(str: string) {
           subtype: "<",
           left: leftNode,
           parent,
+          token,
         };
         leftNode.parent = currentNode;
         continue;
@@ -127,6 +131,7 @@ export function parse(str: string) {
           subtype: "<=",
           left: leftNode,
           parent,
+          token,
         };
         leftNode.parent = currentNode;
         continue;
@@ -142,6 +147,7 @@ export function parse(str: string) {
           subtype: "in",
           left: leftNode,
           parent,
+          token,
         };
         leftNode.parent = currentNode;
         if (parent && parent.type === "boolean") {
@@ -161,6 +167,7 @@ export function parse(str: string) {
               type: "value",
               value: Number(token.value),
               parent: currentNode,
+              token,
             };
             continue;
           }
@@ -169,6 +176,7 @@ export function parse(str: string) {
               type: "value",
               value: Number(token.value),
               parent: currentNode,
+              token,
             };
             continue;
           }
@@ -191,6 +199,7 @@ export function parse(str: string) {
               type: "value",
               value: String(token.value),
               parent: currentNode,
+              token,
             };
             continue;
           }
@@ -199,6 +208,7 @@ export function parse(str: string) {
               type: "value",
               value: Number(token.value),
               parent: currentNode,
+              token,
             };
             continue;
           }
@@ -220,6 +230,7 @@ export function parse(str: string) {
             type: "value",
             value: true,
             parent: currentNode,
+            token,
           };
           continue;
         }
@@ -230,6 +241,7 @@ export function parse(str: string) {
             type: "value",
             value: true,
             parent: currentNode,
+            token,
           };
           continue;
         }
@@ -246,6 +258,7 @@ export function parse(str: string) {
             type: "value",
             value: false,
             parent: currentNode,
+            token,
           };
           continue;
         }
@@ -256,6 +269,7 @@ export function parse(str: string) {
             type: "value",
             value: false,
             parent: currentNode,
+            token,
           };
           continue;
         }
@@ -276,6 +290,7 @@ export function parse(str: string) {
               subtype: "&&",
               left: leftNode,
               parent,
+              token,
             };
             leftNode.parent = currentNode;
             if (parent && parent.type === "boolean") {
@@ -301,6 +316,7 @@ export function parse(str: string) {
               subtype: "||",
               left: leftNode,
               parent,
+              token,
             };
             leftNode.parent = currentNode;
             if (parent && parent.type === "boolean") {
@@ -313,14 +329,14 @@ export function parse(str: string) {
       }
       case "(": {
         if (!currentNode) {
-          currentNode = { type: "group" };
+          currentNode = { type: "group", token };
           continue;
         } else {
           if (!new Set(["boolean"]).has(currentNode.type)) {
             throw new Error("group operation should go after logical node");
           }
           const parentNode = currentNode as BooleanNode;
-          currentNode = { type: "group", parent: parentNode };
+          currentNode = { type: "group", parent: parentNode, token };
           parentNode.right = currentNode;
           continue;
         }
@@ -349,14 +365,19 @@ export function parse(str: string) {
       }
       case "[": {
         if (!currentNode) {
-          currentNode = { type: "list", children: [] };
+          currentNode = { type: "list", children: [], token };
           continue;
         } else {
           if (!new Set(["comparison"]).has(currentNode.type)) {
             throw new Error("list operation should go after comparison node");
           }
           const parentNode = currentNode as ComparisonNode;
-          currentNode = { type: "list", children: [], parent: parentNode };
+          currentNode = {
+            type: "list",
+            children: [],
+            parent: parentNode,
+            token,
+          };
           parentNode.right = currentNode;
           continue;
         }
@@ -401,7 +422,7 @@ export function parse(str: string) {
         break loop;
       }
     }
-  } while (run);
+  } while (!tokenizer.done);
 
   while (currentNode?.parent) {
     currentNode = currentNode.parent;

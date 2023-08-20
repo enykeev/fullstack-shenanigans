@@ -5,6 +5,8 @@ exports[`Tokenizer empty string 1`] = `[]`;
 exports[`Tokenizer space 1`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "space",
     "value": " ",
   },
@@ -14,6 +16,8 @@ exports[`Tokenizer space 1`] = `
 exports[`Tokenizer boolean literals 1`] = `
 [
   {
+    "end": 4,
+    "start": 0,
     "tag": "true",
     "value": "true",
   },
@@ -23,6 +27,8 @@ exports[`Tokenizer boolean literals 1`] = `
 exports[`Tokenizer boolean literals 2`] = `
 [
   {
+    "end": 4,
+    "start": 0,
     "tag": "true",
     "value": "True",
   },
@@ -32,6 +38,8 @@ exports[`Tokenizer boolean literals 2`] = `
 exports[`Tokenizer boolean literals 3`] = `
 [
   {
+    "end": 4,
+    "start": 0,
     "tag": "true",
     "value": "TRUE",
   },
@@ -41,6 +49,8 @@ exports[`Tokenizer boolean literals 3`] = `
 exports[`Tokenizer boolean literals 4`] = `
 [
   {
+    "end": 5,
+    "start": 0,
     "tag": "false",
     "value": "false",
   },
@@ -50,6 +60,8 @@ exports[`Tokenizer boolean literals 4`] = `
 exports[`Tokenizer boolean literals 5`] = `
 [
   {
+    "end": 5,
+    "start": 0,
     "tag": "false",
     "value": "False",
   },
@@ -59,6 +71,8 @@ exports[`Tokenizer boolean literals 5`] = `
 exports[`Tokenizer boolean literals 6`] = `
 [
   {
+    "end": 5,
+    "start": 0,
     "tag": "false",
     "value": "FALSE",
   },
@@ -68,6 +82,8 @@ exports[`Tokenizer boolean literals 6`] = `
 exports[`Tokenizer integers 1`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "integer",
     "value": "1",
   },
@@ -77,6 +93,8 @@ exports[`Tokenizer integers 1`] = `
 exports[`Tokenizer integers 2`] = `
 [
   {
+    "end": 2,
+    "start": 0,
     "tag": "integer",
     "value": "-1",
   },
@@ -86,6 +104,8 @@ exports[`Tokenizer integers 2`] = `
 exports[`Tokenizer integers 3`] = `
 [
   {
+    "end": 2,
+    "start": 0,
     "tag": "integer",
     "value": "+1",
   },
@@ -95,6 +115,8 @@ exports[`Tokenizer integers 3`] = `
 exports[`Tokenizer integers 4`] = `
 [
   {
+    "end": 2,
+    "start": 0,
     "tag": "integer",
     "value": "50",
   },
@@ -104,6 +126,8 @@ exports[`Tokenizer integers 4`] = `
 exports[`Tokenizer integers 5`] = `
 [
   {
+    "end": 21,
+    "start": 0,
     "tag": "integer",
     "value": "999999999999999999999",
   },
@@ -113,6 +137,8 @@ exports[`Tokenizer integers 5`] = `
 exports[`Tokenizer floats 1`] = `
 [
   {
+    "end": 3,
+    "start": 0,
     "tag": "float",
     "value": "1.2",
   },
@@ -122,6 +148,8 @@ exports[`Tokenizer floats 1`] = `
 exports[`Tokenizer floats 2`] = `
 [
   {
+    "end": 4,
+    "start": 0,
     "tag": "float",
     "value": "-1.2",
   },
@@ -131,6 +159,8 @@ exports[`Tokenizer floats 2`] = `
 exports[`Tokenizer floats 3`] = `
 [
   {
+    "end": 4,
+    "start": 0,
     "tag": "float",
     "value": "+1.2",
   },
@@ -140,6 +170,8 @@ exports[`Tokenizer floats 3`] = `
 exports[`Tokenizer floats 4`] = `
 [
   {
+    "end": 5,
+    "start": 0,
     "tag": "float",
     "value": "49.99",
   },
@@ -149,6 +181,8 @@ exports[`Tokenizer floats 4`] = `
 exports[`Tokenizer floats 5`] = `
 [
   {
+    "end": 31,
+    "start": 0,
     "tag": "float",
     "value": "999999999999999999999.999999999",
   },
@@ -158,22 +192,32 @@ exports[`Tokenizer floats 5`] = `
 exports[`Tokenizer comparators 1`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "key",
     "value": "a",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": "=",
     "value": "=",
   },
   {
+    "end": 4,
+    "start": 3,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": "integer",
     "value": "1",
   },
@@ -183,22 +227,32 @@ exports[`Tokenizer comparators 1`] = `
 exports[`Tokenizer comparators 2`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "key",
     "value": "a",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 4,
+    "start": 2,
     "tag": "=",
     "value": "==",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 6,
+    "start": 5,
     "tag": "integer",
     "value": "1",
   },
@@ -208,22 +262,32 @@ exports[`Tokenizer comparators 2`] = `
 exports[`Tokenizer comparators 3`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "key",
     "value": "a",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 4,
+    "start": 2,
     "tag": "!=",
     "value": "!=",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 6,
+    "start": 5,
     "tag": "integer",
     "value": "1",
   },
@@ -233,22 +297,32 @@ exports[`Tokenizer comparators 3`] = `
 exports[`Tokenizer comparators 4`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "key",
     "value": "a",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 5,
+    "start": 2,
     "tag": "!=",
     "value": "!==",
   },
   {
+    "end": 6,
+    "start": 5,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 7,
+    "start": 6,
     "tag": "integer",
     "value": "1",
   },
@@ -258,22 +332,32 @@ exports[`Tokenizer comparators 4`] = `
 exports[`Tokenizer comparators 5`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "key",
     "value": "a",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": ">",
     "value": ">",
   },
   {
+    "end": 4,
+    "start": 3,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": "integer",
     "value": "1",
   },
@@ -283,22 +367,32 @@ exports[`Tokenizer comparators 5`] = `
 exports[`Tokenizer comparators 6`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "key",
     "value": "a",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 4,
+    "start": 2,
     "tag": ">=",
     "value": ">=",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 6,
+    "start": 5,
     "tag": "integer",
     "value": "1",
   },
@@ -308,22 +402,32 @@ exports[`Tokenizer comparators 6`] = `
 exports[`Tokenizer comparators 7`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "key",
     "value": "a",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": "<",
     "value": "<",
   },
   {
+    "end": 4,
+    "start": 3,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": "integer",
     "value": "1",
   },
@@ -333,22 +437,32 @@ exports[`Tokenizer comparators 7`] = `
 exports[`Tokenizer comparators 8`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "key",
     "value": "a",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 4,
+    "start": 2,
     "tag": "<=",
     "value": "<=",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 6,
+    "start": 5,
     "tag": "integer",
     "value": "1",
   },
@@ -358,22 +472,32 @@ exports[`Tokenizer comparators 8`] = `
 exports[`Tokenizer booleans 1`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "key",
     "value": "a",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 4,
+    "start": 2,
     "tag": "&&",
     "value": "&&",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 6,
+    "start": 5,
     "tag": "key",
     "value": "b",
   },
@@ -383,22 +507,32 @@ exports[`Tokenizer booleans 1`] = `
 exports[`Tokenizer booleans 2`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "key",
     "value": "a",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 5,
+    "start": 2,
     "tag": "&&",
     "value": "and",
   },
   {
+    "end": 6,
+    "start": 5,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 7,
+    "start": 6,
     "tag": "key",
     "value": "b",
   },
@@ -408,22 +542,32 @@ exports[`Tokenizer booleans 2`] = `
 exports[`Tokenizer booleans 3`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "key",
     "value": "a",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 4,
+    "start": 2,
     "tag": "||",
     "value": "||",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 6,
+    "start": 5,
     "tag": "key",
     "value": "b",
   },
@@ -433,22 +577,32 @@ exports[`Tokenizer booleans 3`] = `
 exports[`Tokenizer booleans 4`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "key",
     "value": "a",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 4,
+    "start": 2,
     "tag": "||",
     "value": "or",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 6,
+    "start": 5,
     "tag": "key",
     "value": "b",
   },
@@ -458,10 +612,14 @@ exports[`Tokenizer booleans 4`] = `
 exports[`Tokenizer booleans 5`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "!",
     "value": "!",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "key",
     "value": "a",
   },
@@ -471,14 +629,20 @@ exports[`Tokenizer booleans 5`] = `
 exports[`Tokenizer booleans 6`] = `
 [
   {
+    "end": 3,
+    "start": 0,
     "tag": "!",
     "value": "not",
   },
   {
+    "end": 4,
+    "start": 3,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": "key",
     "value": "a",
   },
@@ -488,6 +652,8 @@ exports[`Tokenizer booleans 6`] = `
 exports[`Tokenizer booleans 7`] = `
 [
   {
+    "end": 4,
+    "start": 0,
     "tag": "key",
     "value": "nota",
   },
@@ -497,30 +663,44 @@ exports[`Tokenizer booleans 7`] = `
 exports[`Tokenizer parens 1`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "(",
     "value": "(",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "key",
     "value": "a",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 5,
+    "start": 3,
     "tag": "&&",
     "value": "&&",
   },
   {
+    "end": 6,
+    "start": 5,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 7,
+    "start": 6,
     "tag": "key",
     "value": "b",
   },
   {
+    "end": 8,
+    "start": 7,
     "tag": ")",
     "value": ")",
   },
@@ -530,38 +710,56 @@ exports[`Tokenizer parens 1`] = `
 exports[`Tokenizer parens 2`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "(",
     "value": "(",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": "key",
     "value": "a",
   },
   {
+    "end": 4,
+    "start": 3,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 6,
+    "start": 4,
     "tag": "&&",
     "value": "&&",
   },
   {
+    "end": 7,
+    "start": 6,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 8,
+    "start": 7,
     "tag": "key",
     "value": "b",
   },
   {
+    "end": 9,
+    "start": 8,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 10,
+    "start": 9,
     "tag": ")",
     "value": ")",
   },
@@ -571,14 +769,20 @@ exports[`Tokenizer parens 2`] = `
 exports[`Tokenizer parens 3`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "(",
     "value": "(",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "key",
     "value": "a",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": ")",
     "value": ")",
   },
@@ -588,14 +792,20 @@ exports[`Tokenizer parens 3`] = `
 exports[`Tokenizer parens 4`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "(",
     "value": "(",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "integer",
     "value": "1",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": ")",
     "value": ")",
   },
@@ -605,22 +815,32 @@ exports[`Tokenizer parens 4`] = `
 exports[`Tokenizer parens 5`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "(",
     "value": "(",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": "integer",
     "value": "1",
   },
   {
+    "end": 4,
+    "start": 3,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": ")",
     "value": ")",
   },
@@ -630,22 +850,32 @@ exports[`Tokenizer parens 5`] = `
 exports[`Tokenizer parens 6`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "(",
     "value": "(",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": "integer",
     "value": "1",
   },
   {
+    "end": 4,
+    "start": 3,
     "tag": ")",
     "value": ")",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": "space",
     "value": " ",
   },
@@ -655,14 +885,20 @@ exports[`Tokenizer parens 6`] = `
 exports[`Tokenizer parens 7`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "key",
     "value": "f",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "(",
     "value": "(",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": ")",
     "value": ")",
   },
@@ -672,26 +908,38 @@ exports[`Tokenizer parens 7`] = `
 exports[`Tokenizer parens 8`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "(",
     "value": "(",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "(",
     "value": "(",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": "(",
     "value": "(",
   },
   {
+    "end": 4,
+    "start": 3,
     "tag": ")",
     "value": ")",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": ")",
     "value": ")",
   },
   {
+    "end": 6,
+    "start": 5,
     "tag": ")",
     "value": ")",
   },
@@ -701,14 +949,20 @@ exports[`Tokenizer parens 8`] = `
 exports[`Tokenizer parens 9`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "[",
     "value": "[",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "key",
     "value": "a",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": "]",
     "value": "]",
   },
@@ -718,22 +972,32 @@ exports[`Tokenizer parens 9`] = `
 exports[`Tokenizer parens 10`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "[",
     "value": "[",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": "key",
     "value": "a",
   },
   {
+    "end": 4,
+    "start": 3,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": "]",
     "value": "]",
   },
@@ -743,14 +1007,20 @@ exports[`Tokenizer parens 10`] = `
 exports[`Tokenizer parens 11`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "[",
     "value": "[",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "integer",
     "value": "1",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": "]",
     "value": "]",
   },
@@ -760,22 +1030,32 @@ exports[`Tokenizer parens 11`] = `
 exports[`Tokenizer parens 12`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "[",
     "value": "[",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": "integer",
     "value": "1",
   },
   {
+    "end": 4,
+    "start": 3,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": "]",
     "value": "]",
   },
@@ -785,22 +1065,32 @@ exports[`Tokenizer parens 12`] = `
 exports[`Tokenizer parens 13`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "[",
     "value": "[",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": "integer",
     "value": "1",
   },
   {
+    "end": 4,
+    "start": 3,
     "tag": "]",
     "value": "]",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": "space",
     "value": " ",
   },
@@ -810,14 +1100,20 @@ exports[`Tokenizer parens 13`] = `
 exports[`Tokenizer parens 14`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "key",
     "value": "f",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "[",
     "value": "[",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": "]",
     "value": "]",
   },
@@ -827,26 +1123,38 @@ exports[`Tokenizer parens 14`] = `
 exports[`Tokenizer parens 15`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "[",
     "value": "[",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "[",
     "value": "[",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": "[",
     "value": "[",
   },
   {
+    "end": 4,
+    "start": 3,
     "tag": "]",
     "value": "]",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": "]",
     "value": "]",
   },
   {
+    "end": 6,
+    "start": 5,
     "tag": "]",
     "value": "]",
   },
@@ -856,10 +1164,14 @@ exports[`Tokenizer parens 15`] = `
 exports[`Tokenizer lists 1`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "[",
     "value": "[",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "]",
     "value": "]",
   },
@@ -869,22 +1181,32 @@ exports[`Tokenizer lists 1`] = `
 exports[`Tokenizer lists 2`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "[",
     "value": "[",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "integer",
     "value": "1",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": ",",
     "value": ",",
   },
   {
+    "end": 4,
+    "start": 3,
     "tag": "integer",
     "value": "2",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": "]",
     "value": "]",
   },
@@ -894,26 +1216,38 @@ exports[`Tokenizer lists 2`] = `
 exports[`Tokenizer lists 3`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "[",
     "value": "[",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "integer",
     "value": "1",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": ",",
     "value": ",",
   },
   {
+    "end": 4,
+    "start": 3,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": "integer",
     "value": "2",
   },
   {
+    "end": 6,
+    "start": 5,
     "tag": "]",
     "value": "]",
   },
@@ -923,34 +1257,50 @@ exports[`Tokenizer lists 3`] = `
 exports[`Tokenizer lists 4`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "[",
     "value": "[",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": "integer",
     "value": "1",
   },
   {
+    "end": 4,
+    "start": 3,
     "tag": ",",
     "value": ",",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 6,
+    "start": 5,
     "tag": "integer",
     "value": "2",
   },
   {
+    "end": 7,
+    "start": 6,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 8,
+    "start": 7,
     "tag": "]",
     "value": "]",
   },
@@ -960,22 +1310,32 @@ exports[`Tokenizer lists 4`] = `
 exports[`Tokenizer lists 5`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "[",
     "value": "[",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": ",",
     "value": ",",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": ",",
     "value": ",",
   },
   {
+    "end": 4,
+    "start": 3,
     "tag": ",",
     "value": ",",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": "]",
     "value": "]",
   },
@@ -985,26 +1345,38 @@ exports[`Tokenizer lists 5`] = `
 exports[`Tokenizer lists 6`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "[",
     "value": "[",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "integer",
     "value": "1",
   },
   {
+    "end": 3,
+    "start": 2,
     "tag": ",",
     "value": ",",
   },
   {
+    "end": 4,
+    "start": 3,
     "tag": "integer",
     "value": "2",
   },
   {
+    "end": 5,
+    "start": 4,
     "tag": ",",
     "value": ",",
   },
   {
+    "end": 6,
+    "start": 5,
     "tag": "]",
     "value": "]",
   },
@@ -1014,6 +1386,8 @@ exports[`Tokenizer lists 6`] = `
 exports[`Tokenizer keys 1`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "key",
     "value": "a",
   },
@@ -1023,6 +1397,8 @@ exports[`Tokenizer keys 1`] = `
 exports[`Tokenizer keys 2`] = `
 [
   {
+    "end": 2,
+    "start": 0,
     "tag": "key",
     "value": "a1",
   },
@@ -1032,10 +1408,14 @@ exports[`Tokenizer keys 2`] = `
 exports[`Tokenizer keys 3`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "integer",
     "value": "1",
   },
   {
+    "end": 2,
+    "start": 1,
     "tag": "key",
     "value": "a",
   },
@@ -1045,6 +1425,8 @@ exports[`Tokenizer keys 3`] = `
 exports[`Tokenizer strings 1`] = `
 [
   {
+    "end": 3,
+    "start": 0,
     "tag": "singleQuotedStringLiteral",
     "value": "a",
   },
@@ -1054,6 +1436,8 @@ exports[`Tokenizer strings 1`] = `
 exports[`Tokenizer strings 2`] = `
 [
   {
+    "end": 10,
+    "start": 0,
     "tag": "singleQuotedStringLiteral",
     "value": "fizzbuzz",
   },
@@ -1063,6 +1447,8 @@ exports[`Tokenizer strings 2`] = `
 exports[`Tokenizer strings 3`] = `
 [
   {
+    "end": 6,
+    "start": 0,
     "tag": "singleQuotedStringLiteral",
     "value": 
 "a
@@ -1076,6 +1462,8 @@ a"
 exports[`Tokenizer strings 4`] = `
 [
   {
+    "end": 11,
+    "start": 0,
     "tag": "singleQuotedStringLiteral",
     "value": "a'\'\'\\'",
   },
@@ -1085,6 +1473,8 @@ exports[`Tokenizer strings 4`] = `
 exports[`Tokenizer strings 5`] = `
 [
   {
+    "end": 3,
+    "start": 0,
     "tag": "singleQuotedStringLiteral",
     "value": "1",
   },
@@ -1094,6 +1484,8 @@ exports[`Tokenizer strings 5`] = `
 exports[`Tokenizer strings 6`] = `
 [
   {
+    "end": 12,
+    "start": 0,
     "tag": "singleQuotedStringLiteral",
     "value": "!@#$%^&*()",
   },
@@ -1103,6 +1495,8 @@ exports[`Tokenizer strings 6`] = `
 exports[`Tokenizer strings 7`] = `
 [
   {
+    "end": 2,
+    "start": 0,
     "tag": "singleQuotedStringLiteral",
     "value": "",
   },
@@ -1112,6 +1506,8 @@ exports[`Tokenizer strings 7`] = `
 exports[`Tokenizer strings 8`] = `
 [
   {
+    "end": 3,
+    "start": 0,
     "tag": "singleQuotedStringLiteral",
     "value": " ",
   },
@@ -1121,14 +1517,20 @@ exports[`Tokenizer strings 8`] = `
 exports[`Tokenizer strings 9`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 6,
+    "start": 1,
     "tag": "singleQuotedStringLiteral",
     "value": "   ",
   },
   {
+    "end": 7,
+    "start": 6,
     "tag": "space",
     "value": " ",
   },
@@ -1138,6 +1540,8 @@ exports[`Tokenizer strings 9`] = `
 exports[`Tokenizer strings 10`] = `
 [
   {
+    "end": 3,
+    "start": 0,
     "tag": "doubleQuotedStringLiteral",
     "value": "a",
   },
@@ -1147,6 +1551,8 @@ exports[`Tokenizer strings 10`] = `
 exports[`Tokenizer strings 11`] = `
 [
   {
+    "end": 10,
+    "start": 0,
     "tag": "doubleQuotedStringLiteral",
     "value": "fizzbuzz",
   },
@@ -1156,6 +1562,8 @@ exports[`Tokenizer strings 11`] = `
 exports[`Tokenizer strings 12`] = `
 [
   {
+    "end": 6,
+    "start": 0,
     "tag": "doubleQuotedStringLiteral",
     "value": 
 "a
@@ -1169,6 +1577,8 @@ a"
 exports[`Tokenizer strings 13`] = `
 [
   {
+    "end": 11,
+    "start": 0,
     "tag": "doubleQuotedStringLiteral",
     "value": "a'\'\'\\'",
   },
@@ -1178,6 +1588,8 @@ exports[`Tokenizer strings 13`] = `
 exports[`Tokenizer strings 14`] = `
 [
   {
+    "end": 3,
+    "start": 0,
     "tag": "doubleQuotedStringLiteral",
     "value": "1",
   },
@@ -1187,6 +1599,8 @@ exports[`Tokenizer strings 14`] = `
 exports[`Tokenizer strings 15`] = `
 [
   {
+    "end": 12,
+    "start": 0,
     "tag": "doubleQuotedStringLiteral",
     "value": "!@#$%^&*()",
   },
@@ -1196,6 +1610,8 @@ exports[`Tokenizer strings 15`] = `
 exports[`Tokenizer strings 16`] = `
 [
   {
+    "end": 2,
+    "start": 0,
     "tag": "doubleQuotedStringLiteral",
     "value": "",
   },
@@ -1205,6 +1621,8 @@ exports[`Tokenizer strings 16`] = `
 exports[`Tokenizer strings 17`] = `
 [
   {
+    "end": 3,
+    "start": 0,
     "tag": "doubleQuotedStringLiteral",
     "value": " ",
   },
@@ -1214,14 +1632,20 @@ exports[`Tokenizer strings 17`] = `
 exports[`Tokenizer strings 18`] = `
 [
   {
+    "end": 1,
+    "start": 0,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 6,
+    "start": 1,
     "tag": "doubleQuotedStringLiteral",
     "value": "   ",
   },
   {
+    "end": 7,
+    "start": 6,
     "tag": "space",
     "value": " ",
   },
@@ -1231,198 +1655,296 @@ exports[`Tokenizer strings 18`] = `
 exports[`Tokenizer complex 1`] = `
 [
   {
+    "end": 8,
+    "start": 0,
     "tag": "key",
     "value": "aaa.bb.c",
   },
   {
+    "end": 9,
+    "start": 8,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 11,
+    "start": 9,
     "tag": "=",
     "value": "==",
   },
   {
+    "end": 12,
+    "start": 11,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 15,
+    "start": 12,
     "tag": "float",
     "value": "1.5",
   },
   {
+    "end": 16,
+    "start": 15,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 18,
+    "start": 16,
     "tag": "&&",
     "value": "&&",
   },
   {
+    "end": 19,
+    "start": 18,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 20,
+    "start": 19,
     "tag": "(",
     "value": "(",
   },
   {
+    "end": 28,
+    "start": 20,
     "tag": "key",
     "value": "res.some",
   },
   {
+    "end": 29,
+    "start": 28,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 32,
+    "start": 29,
     "tag": "!=",
     "value": "!==",
   },
   {
+    "end": 33,
+    "start": 32,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 40,
+    "start": 33,
     "tag": "doubleQuotedStringLiteral",
     "value": "thing",
   },
   {
+    "end": 41,
+    "start": 40,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 43,
+    "start": 41,
     "tag": "||",
     "value": "or",
   },
   {
+    "end": 44,
+    "start": 43,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 49,
+    "start": 44,
     "tag": "false",
     "value": "FALSE",
   },
   {
+    "end": 50,
+    "start": 49,
     "tag": ")",
     "value": ")",
   },
   {
+    "end": 51,
+    "start": 50,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 53,
+    "start": 51,
     "tag": "&&",
     "value": "&&",
   },
   {
+    "end": 54,
+    "start": 53,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 59,
+    "start": 54,
     "tag": "key",
     "value": "value",
   },
   {
+    "end": 60,
+    "start": 59,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 62,
+    "start": 60,
     "tag": ">=",
     "value": ">=",
   },
   {
+    "end": 63,
+    "start": 62,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 65,
+    "start": 63,
     "tag": "integer",
     "value": "-1",
   },
   {
+    "end": 66,
+    "start": 65,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 68,
+    "start": 66,
     "tag": "&&",
     "value": "&&",
   },
   {
+    "end": 69,
+    "start": 68,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 74,
+    "start": 69,
     "tag": "key",
     "value": "value",
   },
   {
+    "end": 75,
+    "start": 74,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 76,
+    "start": 75,
     "tag": "<",
     "value": "<",
   },
   {
+    "end": 77,
+    "start": 76,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 81,
+    "start": 77,
     "tag": "float",
     "value": "-.16",
   },
   {
+    "end": 82,
+    "start": 81,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 85,
+    "start": 82,
     "tag": "&&",
     "value": "and",
   },
   {
+    "end": 86,
+    "start": 85,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 89,
+    "start": 86,
     "tag": "key",
     "value": "key",
   },
   {
+    "end": 90,
+    "start": 89,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 92,
+    "start": 90,
     "tag": "in",
     "value": "in",
   },
   {
+    "end": 93,
+    "start": 92,
     "tag": "space",
     "value": " ",
   },
   {
+    "end": 94,
+    "start": 93,
     "tag": "[",
     "value": "[",
   },
   {
+    "end": 95,
+    "start": 94,
     "tag": "integer",
     "value": "1",
   },
   {
+    "end": 96,
+    "start": 95,
     "tag": ",",
     "value": ",",
   },
   {
+    "end": 99,
+    "start": 96,
     "tag": "singleQuotedStringLiteral",
     "value": "2",
   },
   {
+    "end": 100,
+    "start": 99,
     "tag": ",",
     "value": ",",
   },
   {
+    "end": 103,
+    "start": 100,
     "tag": "float",
     "value": "3.0",
   },
   {
+    "end": 104,
+    "start": 103,
     "tag": "]",
     "value": "]",
   },

@@ -1,7 +1,10 @@
+import { Token } from "./tokenizer";
+
 export type BaseNode = {
   type: string;
   subtype?: string;
   parent?: Node;
+  token: Token;
 };
 
 export type AccessorNode = BaseNode & {

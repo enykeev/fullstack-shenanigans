@@ -1,0 +1,279 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Query Parser complex 1`] = `
+{
+  "left": {
+    "left": {
+      "key": "aaa.bb.c",
+      "parent": [Circular],
+      "token": {
+        "end": 8,
+        "start": 0,
+        "tag": "key",
+        "value": "aaa.bb.c",
+      },
+      "type": "accessor",
+    },
+    "parent": [Circular],
+    "right": {
+      "parent": [Circular],
+      "token": {
+        "end": 15,
+        "start": 12,
+        "tag": "float",
+        "value": "1.5",
+      },
+      "type": "value",
+      "value": 1.5,
+    },
+    "subtype": "=",
+    "token": {
+      "end": 11,
+      "start": 9,
+      "tag": "=",
+      "value": "==",
+    },
+    "type": "comparison",
+  },
+  "parent": undefined,
+  "right": {
+    "left": {
+      "parent": [Circular],
+      "token": {
+        "end": 20,
+        "start": 19,
+        "tag": "(",
+        "value": "(",
+      },
+      "type": "group",
+      "value": {
+        "left": {
+          "left": {
+            "key": "res.some",
+            "parent": [Circular],
+            "token": {
+              "end": 28,
+              "start": 20,
+              "tag": "key",
+              "value": "res.some",
+            },
+            "type": "accessor",
+          },
+          "parent": [Circular],
+          "right": {
+            "parent": [Circular],
+            "token": {
+              "end": 40,
+              "start": 33,
+              "tag": "doubleQuotedStringLiteral",
+              "value": "thing",
+            },
+            "type": "value",
+            "value": "thing",
+          },
+          "subtype": "!=",
+          "token": {
+            "end": 32,
+            "start": 29,
+            "tag": "!=",
+            "value": "!==",
+          },
+          "type": "comparison",
+        },
+        "parent": [Circular],
+        "right": {
+          "parent": [Circular],
+          "token": {
+            "end": 49,
+            "start": 44,
+            "tag": "false",
+            "value": "FALSE",
+          },
+          "type": "value",
+          "value": false,
+        },
+        "subtype": "||",
+        "token": {
+          "end": 43,
+          "start": 41,
+          "tag": "||",
+          "value": "or",
+        },
+        "type": "boolean",
+      },
+    },
+    "parent": [Circular],
+    "right": {
+      "left": {
+        "left": {
+          "key": "value",
+          "parent": [Circular],
+          "token": {
+            "end": 59,
+            "start": 54,
+            "tag": "key",
+            "value": "value",
+          },
+          "type": "accessor",
+        },
+        "parent": [Circular],
+        "right": {
+          "parent": [Circular],
+          "token": {
+            "end": 65,
+            "start": 63,
+            "tag": "integer",
+            "value": "-1",
+          },
+          "type": "value",
+          "value": -1,
+        },
+        "subtype": ">=",
+        "token": {
+          "end": 62,
+          "start": 60,
+          "tag": ">=",
+          "value": ">=",
+        },
+        "type": "comparison",
+      },
+      "parent": [Circular],
+      "right": {
+        "left": {
+          "left": {
+            "key": "value",
+            "parent": [Circular],
+            "token": {
+              "end": 74,
+              "start": 69,
+              "tag": "key",
+              "value": "value",
+            },
+            "type": "accessor",
+          },
+          "parent": [Circular],
+          "right": {
+            "parent": [Circular],
+            "token": {
+              "end": 81,
+              "start": 77,
+              "tag": "float",
+              "value": "-.16",
+            },
+            "type": "value",
+            "value": -0.16,
+          },
+          "subtype": "<",
+          "token": {
+            "end": 76,
+            "start": 75,
+            "tag": "<",
+            "value": "<",
+          },
+          "type": "comparison",
+        },
+        "parent": [Circular],
+        "right": {
+          "left": {
+            "key": "key",
+            "parent": [Circular],
+            "token": {
+              "end": 89,
+              "start": 86,
+              "tag": "key",
+              "value": "key",
+            },
+            "type": "accessor",
+          },
+          "parent": [Circular],
+          "right": {
+            "children": [
+              {
+                "parent": [Circular],
+                "token": {
+                  "end": 95,
+                  "start": 94,
+                  "tag": "integer",
+                  "value": "1",
+                },
+                "type": "value",
+                "value": 1,
+              },
+              {
+                "parent": [Circular],
+                "token": {
+                  "end": 99,
+                  "start": 96,
+                  "tag": "singleQuotedStringLiteral",
+                  "value": "2",
+                },
+                "type": "value",
+                "value": 2,
+              },
+              {
+                "parent": [Circular],
+                "token": {
+                  "end": 103,
+                  "start": 100,
+                  "tag": "float",
+                  "value": "3.0",
+                },
+                "type": "value",
+                "value": 3,
+              },
+            ],
+            "parent": [Circular],
+            "token": {
+              "end": 94,
+              "start": 93,
+              "tag": "[",
+              "value": "[",
+            },
+            "type": "list",
+          },
+          "subtype": "in",
+          "token": {
+            "end": 92,
+            "start": 90,
+            "tag": "in",
+            "value": "in",
+          },
+          "type": "comparison",
+        },
+        "subtype": "&&",
+        "token": {
+          "end": 85,
+          "start": 82,
+          "tag": "&&",
+          "value": "and",
+        },
+        "type": "boolean",
+      },
+      "subtype": "&&",
+      "token": {
+        "end": 68,
+        "start": 66,
+        "tag": "&&",
+        "value": "&&",
+      },
+      "type": "boolean",
+    },
+    "subtype": "&&",
+    "token": {
+      "end": 53,
+      "start": 51,
+      "tag": "&&",
+      "value": "&&",
+    },
+    "type": "boolean",
+  },
+  "subtype": "&&",
+  "token": {
+    "end": 18,
+    "start": 16,
+    "tag": "&&",
+    "value": "&&",
+  },
+  "type": "boolean",
+}
+`;

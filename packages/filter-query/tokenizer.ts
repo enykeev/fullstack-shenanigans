@@ -6,6 +6,8 @@ export type TokenMatcher = {
 export type Token = {
   tag: string;
   value: string;
+  start: number;
+  end: number;
 };
 
 export const matchers: TokenMatcher[] = [
@@ -111,24 +113,65 @@ export const matchers: TokenMatcher[] = [
   },
 ];
 
-export const generateToken = function* (
-  str: string,
-): Generator<Token, undefined> {
-  let cursor: number = 0;
-  mainLoop: while (cursor < str.length) {
-    const restString = str.slice(cursor);
+export class Tokenizer {
+  private str: string;
+  private index = 0;
+
+  constructor(str: string) {
+    this.str = str;
+  }
+
+  get done() {
+    return this.index >= this.str.length;
+  }
+
+  reset() {
+    this.index = 0;
+  }
+
+  slice(from: number, to?: number) {
+    return this.str.slice(from, to);
+  }
+
+  next() {
+    if (this.done) {
+      return;
+    }
+
+    const restString = this.slice(this.index);
+
     for (let i = 0; i < matchers.length; i++) {
       const match = restString.match(matchers[i].re);
       if (match && match.groups) {
         const token: Token = {
           tag: matchers[i].tag,
           value: match.groups.value,
+          start: this.index,
+          end: this.index + match[0].length,
         };
-        yield token;
-        cursor += match[0].length;
-        continue mainLoop;
+        this.index = token.end;
+
+        return token;
       }
     }
-    throw new Error(`error at position ${cursor}: ${str.slice(cursor)}`);
+
+    throw new Error(
+      `error at position ${this.index}: no matcher for "${this.slice(
+        this.index,
+      )}"`,
+    );
   }
+}
+
+export const generateToken = function* (
+  str: string,
+): Generator<Token, undefined> {
+  const tokenizer = new Tokenizer(str);
+  let token;
+  do {
+    token = tokenizer.next();
+    if (token) {
+      yield token;
+    }
+  } while (token);
 };
