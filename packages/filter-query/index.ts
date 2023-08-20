@@ -1,12 +1,17 @@
-import { printASTMermaid } from "./debugger";
 import { parse } from "./parser";
+import { check } from "./executor";
 
-const query = `aaa.bb.c == 1.5 && (res.some !== "thing" or FALSE) && value >= -1 && value < -.16 and key in [1,'2',3.0]`;
-const ast = parse(query);
-// console.log(ast);
+export function filterPredicate(filter: string) {
+  const node = parse(filter);
+  return (item: Record<string, unknown>) => {
+    return !!check(item, node);
+  };
+}
 
-printASTMermaid(ast, query);
-
-// ast = parse(`some == 1.5 && value !== -1`);
-
-// console.log(ast, ast && check({ some: 1.5 }, ast))
+export function filter<T extends Record<string, unknown>>(
+  collection: T[],
+  filter: string,
+): T[] {
+  const predicate = filterPredicate(filter);
+  return collection.filter(predicate);
+}
