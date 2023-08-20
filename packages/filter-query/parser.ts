@@ -1,15 +1,8 @@
 import { Tokenizer } from "./tokenizer";
-import type {
-  BooleanNode,
-  ComparisonNode,
-  GroupNode,
-  LogicalNode,
-  Node,
-} from "./ast";
+import type { Node } from "./ast";
 
 export function parse(str: string) {
   let currentNode: Node | undefined;
-  let leftNode: Node | undefined;
   const tokenizer = new Tokenizer(str);
   loop: do {
     const token = tokenizer.next();
@@ -40,128 +33,50 @@ export function parse(str: string) {
         }
         break;
       }
-      case "=": {
-        if (!currentNode) {
-          throw new Error("expression should not start with comparison");
-        }
-        leftNode = currentNode;
-        const parent = leftNode.parent;
-        currentNode = {
-          type: "comparison",
-          subtype: "=",
-          left: leftNode,
-          parent,
-          token,
-        };
-        leftNode.parent = currentNode;
-        continue;
-      }
-      case "!=": {
-        if (!currentNode) {
-          throw new Error("expression should not start with comparison");
-        }
-        leftNode = currentNode;
-        const parent = leftNode.parent;
-        currentNode = {
-          type: "comparison",
-          subtype: "!=",
-          left: leftNode,
-          parent,
-          token,
-        };
-        leftNode.parent = currentNode;
-        continue;
-      }
-      case ">": {
-        if (!currentNode) {
-          throw new Error("expression should not start with comparison");
-        }
-        leftNode = currentNode;
-        const parent = leftNode.parent;
-        currentNode = {
-          type: "comparison",
-          subtype: ">",
-          left: leftNode,
-          parent,
-          token,
-        };
-        leftNode.parent = currentNode;
-        continue;
-      }
-      case ">=": {
-        if (!currentNode) {
-          throw new Error("expression should not start with comparison");
-        }
-        leftNode = currentNode;
-        const parent = leftNode.parent;
-        currentNode = {
-          type: "comparison",
-          subtype: ">=",
-          left: leftNode,
-          parent,
-          token,
-        };
-        leftNode.parent = currentNode;
-        continue;
-      }
-      case "<": {
-        if (!currentNode) {
-          throw new Error("expression should not start with comparison");
-        }
-        leftNode = currentNode;
-        const parent = leftNode.parent;
-        currentNode = {
-          type: "comparison",
-          subtype: "<",
-          left: leftNode,
-          parent,
-          token,
-        };
-        leftNode.parent = currentNode;
-        continue;
-      }
-      case "<=": {
-        if (!currentNode) {
-          throw new Error("expression should not start with comparison");
-        }
-        leftNode = currentNode;
-        const parent = leftNode.parent;
-        currentNode = {
-          type: "comparison",
-          subtype: "<=",
-          left: leftNode,
-          parent,
-          token,
-        };
-        leftNode.parent = currentNode;
-        continue;
-      }
+      case "=":
+      case "!=":
+      case ">":
+      case ">=":
+      case "<":
+      case "<=":
       case "in": {
-        if (!currentNode) {
-          throw new Error("expression should not start with comparison");
+        switch (currentNode?.type) {
+          case undefined: {
+            throw new Error(
+              `expression should not start with token "${token.tag}"`,
+            );
+          }
+          case "accessor": {
+            const left = currentNode;
+            const parent = left.parent;
+            currentNode = {
+              type: "comparison",
+              subtype: token.tag,
+              left,
+              parent,
+              token,
+            };
+            left.parent = currentNode;
+            if (parent && parent.type === "boolean") {
+              parent.right = currentNode;
+            }
+            continue;
+          }
+          default: {
+            throw new Error(
+              `token "${token.tag}" should not follow node of type "${currentNode?.type}"`,
+            );
+          }
         }
-        leftNode = currentNode;
-        const parent = leftNode.parent;
-        currentNode = {
-          type: "comparison",
-          subtype: "in",
-          left: leftNode,
-          parent,
-          token,
-        };
-        leftNode.parent = currentNode;
-        if (parent && parent.type === "boolean") {
-          parent.right = currentNode;
-        }
-        continue;
       }
       case "integer":
       case "float": {
-        if (!currentNode) {
-          throw new Error("expression should not start with a number");
-        }
-
-        switch (currentNode.type) {
+        switch (currentNode?.type) {
+          case undefined: {
+            throw new Error(
+              `expression should not start with token "${token.tag}"`,
+            );
+          }
           case "comparison": {
             currentNode.right = {
               type: "value",
@@ -182,18 +97,19 @@ export function parse(str: string) {
           }
           default: {
             throw new Error(
-              "numeric literal should go after comparison or be an element on the list",
+              `token "${token.tag}" should not follow node of type "${currentNode?.type}"`,
             );
           }
         }
       }
       case "singleQuotedStringLiteral":
       case "doubleQuotedStringLiteral": {
-        if (!currentNode) {
-          throw new Error("expression should not start with string literal");
-        }
-
-        switch (currentNode.type) {
+        switch (currentNode?.type) {
+          case undefined: {
+            throw new Error(
+              `expression should not start with token "${token.tag}"`,
+            );
+          }
           case "comparison": {
             currentNode.right = {
               type: "value",
@@ -214,131 +130,108 @@ export function parse(str: string) {
           }
           default: {
             throw new Error(
-              "string literal should go after comparison or be an element on the list",
+              `token "${token.tag}" should not follow node of type "${currentNode?.type}"`,
             );
           }
         }
       }
       case "true": {
-        if (!currentNode) {
-          throw new Error("boolean literal should go after comparison");
+        switch (currentNode?.type) {
+          case undefined: {
+            throw new Error(
+              `expression should not start with token "${token.tag}"`,
+            );
+          }
+          case "comparison":
+          case "boolean": {
+            currentNode.right = {
+              type: "value",
+              value: true,
+              parent: currentNode,
+              token,
+            };
+            continue;
+          }
+          default: {
+            throw new Error(
+              `token "${token.tag}" should not follow node of type "${currentNode?.type}"`,
+            );
+          }
         }
-
-        if (new Set(["comparison"]).has(currentNode.type)) {
-          currentNode = currentNode as ComparisonNode;
-          currentNode.right = {
-            type: "value",
-            value: true,
-            parent: currentNode,
-            token,
-          };
-          continue;
-        }
-
-        if (new Set(["boolean"]).has(currentNode.type)) {
-          currentNode = currentNode as BooleanNode;
-          currentNode.right = {
-            type: "value",
-            value: true,
-            parent: currentNode,
-            token,
-          };
-          continue;
-        }
-        break;
       }
       case "false": {
-        if (!currentNode) {
-          throw new Error("boolean literal should go after comparison");
-        }
-
-        if (new Set(["comparison"]).has(currentNode.type)) {
-          currentNode = currentNode as ComparisonNode;
-          currentNode.right = {
-            type: "value",
-            value: false,
-            parent: currentNode,
-            token,
-          };
-          continue;
-        }
-
-        if (new Set(["boolean"]).has(currentNode.type)) {
-          currentNode = currentNode as BooleanNode;
-          currentNode.right = {
-            type: "value",
-            value: false,
-            parent: currentNode,
-            token,
-          };
-          continue;
-        }
-        break;
-      }
-      case "&&": {
-        if (!currentNode) {
-          throw new Error("logical operation should go after logical node");
-        }
-
-        switch (currentNode.type) {
-          case "group":
-          case "comparison": {
-            leftNode = currentNode;
-            const parent = leftNode.parent;
-            currentNode = {
-              type: "boolean",
-              subtype: "&&",
-              left: leftNode,
-              parent,
+        switch (currentNode?.type) {
+          case undefined: {
+            throw new Error(
+              `expression should not start with token "${token.tag}"`,
+            );
+          }
+          case "comparison":
+          case "boolean": {
+            currentNode.right = {
+              type: "value",
+              value: false,
+              parent: currentNode,
               token,
             };
-            leftNode.parent = currentNode;
-            if (parent && parent.type === "boolean") {
-              parent.right = currentNode;
-            }
             continue;
           }
+          default: {
+            throw new Error(
+              `token "${token.tag}" should not follow node of type "${currentNode?.type}"`,
+            );
+          }
         }
-        break;
       }
+      case "&&":
       case "||": {
-        if (!currentNode || !new Set(["comparison"]).has(currentNode.type)) {
-          throw new Error("logical operation should go after logical node");
-        }
-
-        switch (currentNode.type) {
+        switch (currentNode?.type) {
+          case undefined: {
+            throw new Error(
+              `expression should not start with token "${token.tag}"`,
+            );
+          }
           case "group":
           case "comparison": {
-            leftNode = currentNode;
-            const parent = leftNode.parent;
+            const left = currentNode;
+            const parent = left.parent;
             currentNode = {
               type: "boolean",
-              subtype: "||",
-              left: leftNode,
+              subtype: token.tag,
+              left,
               parent,
               token,
             };
-            leftNode.parent = currentNode;
+            left.parent = currentNode;
             if (parent && parent.type === "boolean") {
               parent.right = currentNode;
             }
             continue;
           }
+          default: {
+            throw new Error(
+              `token "${token.tag}" should not follow node of type "${currentNode?.type}"`,
+            );
+          }
         }
-        break;
       }
       case "(": {
-        if (!currentNode) {
-          currentNode = { type: "group", token };
-          continue;
-        } else {
-          if (!new Set(["boolean"]).has(currentNode.type)) {
-            throw new Error("group operation should go after logical node");
+        switch (currentNode?.type) {
+          case undefined: {
+            currentNode = { type: "group", token };
+            continue;
           }
-          const parentNode = currentNode as BooleanNode;
-          currentNode = { type: "group", parent: parentNode, token };
-          parentNode.right = currentNode;
-          continue;
+          case "boolean": {
+            const parentNode = currentNode;
+            currentNode = { type: "group", parent: parentNode, token };
+            parentNode.right = currentNode;
+            continue;
+          }
+          default: {
+            throw new Error(
+              `token "${token.tag}" should not follow node of type "${currentNode?.type}"`,
+            );
+          }
         }
       }
       case ")": {
@@ -349,48 +242,60 @@ export function parse(str: string) {
         let prevNode: Node | undefined = undefined;
         while (currentNode.type !== "group") {
           prevNode = currentNode;
-          currentNode = currentNode?.parent as GroupNode;
+          currentNode = currentNode?.parent;
           if (!currentNode) {
             throw new Error("closed parethesis before open parenthesis");
           }
         }
-        if (
-          prevNode &&
-          !new Set(["comparison", "boolean"]).has(prevNode.type)
-        ) {
-          throw new Error("closed parethesis before open parenthesis");
+
+        switch (prevNode?.type) {
+          case "boolean":
+          case "comparison": {
+            currentNode.value = prevNode;
+            continue;
+          }
+          default: {
+            throw new Error("closed parethesis before open parenthesis");
+          }
         }
-        currentNode.value = prevNode as LogicalNode;
-        continue;
       }
       case "[": {
-        if (!currentNode) {
-          currentNode = { type: "list", children: [], token };
-          continue;
-        } else {
-          if (!new Set(["comparison"]).has(currentNode.type)) {
-            throw new Error("list operation should go after comparison node");
+        switch (currentNode?.type) {
+          case undefined: {
+            currentNode = { type: "list", children: [], token };
+            continue;
           }
-          const parentNode = currentNode as ComparisonNode;
-          currentNode = {
-            type: "list",
-            children: [],
-            parent: parentNode,
-            token,
-          };
-          parentNode.right = currentNode;
-          continue;
+          case "comparison": {
+            const parentNode = currentNode;
+            currentNode = {
+              type: "list",
+              children: [],
+              parent: parentNode,
+              token,
+            };
+            parentNode.right = currentNode;
+            continue;
+          }
+          default: {
+            throw new Error(
+              `token "${token.tag}" should not follow node of type "${currentNode?.type}"`,
+            );
+          }
         }
       }
       case ",": {
-        if (!currentNode || currentNode.parent?.type !== "list") {
-          console.log(currentNode);
-          throw new Error("comma should only be used inside a list");
+        switch (currentNode?.parent?.type) {
+          case "list": {
+            currentNode.parent.children.push(currentNode);
+            currentNode = currentNode.parent;
+            continue;
+          }
+          default: {
+            throw new Error(
+              `token "${token.tag}" should only be used inside a list`,
+            );
+          }
         }
-
-        currentNode.parent.children.push(currentNode);
-        currentNode = currentNode.parent;
-        continue;
       }
       case "]": {
         if (!currentNode) {
@@ -398,18 +303,17 @@ export function parse(str: string) {
         }
 
         if (currentNode.type !== "list") {
-          if (currentNode.parent?.type === "list") {
-            currentNode.parent.children.push(currentNode);
-            currentNode = currentNode.parent;
-          } else {
+          if (currentNode.parent?.type !== "list") {
             throw new Error("closed square bracket before open one");
           }
-        }
-        if (!currentNode.parent) {
-          continue;
+          currentNode.parent.children.push(currentNode);
+          currentNode = currentNode.parent;
         }
 
-        switch (currentNode.parent.type) {
+        switch (currentNode.parent?.type) {
+          case undefined: {
+            continue;
+          }
           case "comparison": {
             currentNode.parent.right = currentNode;
             continue;
@@ -418,8 +322,7 @@ export function parse(str: string) {
         break;
       }
       default: {
-        console.log("default: ", token.tag);
-        break loop;
+        throw new Error(`unknown token "${token.tag}"`);
       }
     }
   } while (!tokenizer.done);
