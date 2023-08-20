@@ -1950,3 +1950,68 @@ exports[`Tokenizer complex 1`] = `
   },
 ]
 `;
+
+exports[`Tokenizer complex 2`] = `
+[
+  {
+    "end": 1,
+    "start": 0,
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "end": 2,
+    "start": 1,
+    "tag": "]",
+    "value": "]",
+  },
+  {
+    "end": 3,
+    "start": 2,
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "end": 4,
+    "start": 3,
+    "tag": "]",
+    "value": "]",
+  },
+  {
+    "end": 5,
+    "start": 4,
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "end": 6,
+    "start": 5,
+    "tag": "]",
+    "value": "]",
+  },
+  {
+    "end": 7,
+    "start": 6,
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "end": 8,
+    "start": 7,
+    "tag": "]",
+    "value": "]",
+  },
+  {
+    "end": 9,
+    "start": 8,
+    "tag": "[",
+    "value": "[",
+  },
+  {
+    "end": 10,
+    "start": 9,
+    "tag": "]",
+    "value": "]",
+  },
+]
+`;

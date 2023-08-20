@@ -2,5 +2,8 @@
   "name": "@enykeev/filter-query",
   "version": "1.0.0",
   "type": "module",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "mitata": "^0.1.6"
+  }
 }
