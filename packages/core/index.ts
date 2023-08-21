@@ -6,7 +6,11 @@ import { serveStatic } from "./serveStatic";
 import api from "./routes/api";
 import { logger } from "./logger";
 import { buildWeb } from "./build";
+import { init } from "./store";
 
+init({
+  provisionMockData: Bun.env.PROVISION_MOCK_DATA?.toLowerCase() === "true",
+});
 await buildWeb();
 
 const app = new Hono<{ Variables: Variables }>();
