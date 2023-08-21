@@ -4,7 +4,7 @@ export type BaseNode = {
   type: string;
   subtype?: string;
   parent?: Node;
-  token: Token;
+  token?: Token;
 };
 
 export type AccessorNode = BaseNode & {

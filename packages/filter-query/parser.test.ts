@@ -133,4 +133,11 @@ describe("Query Parser", () => {
     str = `!(true)`;
     expect(parse(str)).toMatchSnapshot();
   });
+
+  describe("options", () => {
+    test("simplify", () => {
+      const str = `aaa.bb.c == 1.5 && (res.some !== "thing" or FALSE) && value >= -1 && value < -.16 and key in [1,'2',3.0]`;
+      expect(parse(str, { simplify: true })).toMatchSnapshot();
+    });
+  });
 });

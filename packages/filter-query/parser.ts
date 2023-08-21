@@ -1,7 +1,12 @@
 import { Tokenizer } from "./tokenizer";
 import type { Node } from "./ast";
+import { traverse } from "./traversal";
 
-export function parse(str: string) {
+export type ParseOpts = {
+  simplify?: boolean;
+};
+
+export function parse(str: string, { simplify = false }: ParseOpts = {}) {
   let currentNode: Node | undefined;
   const tokenizer = new Tokenizer(str);
   loop: do {
@@ -422,6 +427,13 @@ export function parse(str: string) {
 
   while (currentNode?.parent) {
     currentNode = currentNode.parent;
+  }
+
+  if (simplify) {
+    traverse(currentNode, (node: Node) => {
+      delete node.parent;
+      delete node.token;
+    });
   }
 
   return currentNode;

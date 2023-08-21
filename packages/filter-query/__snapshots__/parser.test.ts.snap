@@ -1,5 +1,108 @@
 // Bun Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Query Parser options simplify 1`] = `
+{
+  "left": {
+    "left": {
+      "key": "aaa.bb.c",
+      "type": "accessor",
+    },
+    "right": {
+      "type": "value",
+      "value": 1.5,
+    },
+    "subtype": "=",
+    "type": "comparison",
+  },
+  "right": {
+    "left": {
+      "type": "group",
+      "value": {
+        "left": {
+          "left": {
+            "key": "res.some",
+            "type": "accessor",
+          },
+          "right": {
+            "type": "value",
+            "value": "thing",
+          },
+          "subtype": "!=",
+          "type": "comparison",
+        },
+        "right": {
+          "type": "booleanValue",
+          "value": false,
+        },
+        "subtype": "||",
+        "type": "boolean",
+      },
+    },
+    "right": {
+      "left": {
+        "left": {
+          "key": "value",
+          "type": "accessor",
+        },
+        "right": {
+          "type": "value",
+          "value": -1,
+        },
+        "subtype": ">=",
+        "type": "comparison",
+      },
+      "right": {
+        "left": {
+          "left": {
+            "key": "value",
+            "type": "accessor",
+          },
+          "right": {
+            "type": "value",
+            "value": -0.16,
+          },
+          "subtype": "<",
+          "type": "comparison",
+        },
+        "right": {
+          "left": {
+            "key": "key",
+            "type": "accessor",
+          },
+          "right": {
+            "children": [
+              {
+                "type": "value",
+                "value": 1,
+              },
+              {
+                "type": "value",
+                "value": 2,
+              },
+              {
+                "type": "value",
+                "value": 3,
+              },
+            ],
+            "type": "list",
+          },
+          "subtype": "in",
+          "type": "comparison",
+        },
+        "subtype": "&&",
+        "type": "boolean",
+      },
+      "subtype": "&&",
+      "type": "boolean",
+    },
+    "subtype": "&&",
+    "type": "boolean",
+  },
+  "subtype": "&&",
+  "type": "boolean",
+}
+`;
+
 exports[`Query Parser spaces 1`] = `undefined`;
 
 exports[`Query Parser spaces 2`] = `undefined`;
