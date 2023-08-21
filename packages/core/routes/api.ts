@@ -3,7 +3,7 @@ import flags from "./flags";
 
 const router = new Hono<{ Variables: Variables }>();
 
-router.use(async (c, next) => {
+router.use("*", async (c, next) => {
   const header = c.req.headers.get("Authorization");
   if (!header) {
     return c.json({ error: "unauthorized" }, 401);

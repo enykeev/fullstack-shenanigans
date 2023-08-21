@@ -18,7 +18,7 @@ app.onError((e, c) => {
   return c.json({ error: e.message }, 500);
 });
 
-app.use(async (c, next) => {
+app.use("*", async (c, next) => {
   await next();
 
   const { req, res } = c;
