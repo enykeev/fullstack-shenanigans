@@ -30,6 +30,8 @@
     "*.(ts|tsx)": ["eslint --cache --fix", "prettier -w"]
   },
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "gen:migration": "drizzle-kit generate:sqlite --schema packages/core/schema.ts --out migrations",
+    "run:core": "bun run packages/core/index.ts | bunx pino-pretty"
   }
 }

@@ -4,11 +4,14 @@ import router from "./flags";
 import * as store from "../store";
 import { ISO8601 } from "../utils";
 import { Hono } from "hono";
+import { sql } from "drizzle-orm";
+
+store.init();
 
 describe("router", () => {
   let testRouter: Hono<{ Variables: Variables }>;
   beforeEach(() => {
-    store.db.exec("DELETE FROM flags");
+    store.db.run(sql`DELETE FROM flags`);
     store.createFlag({
       appId: "some-app-id",
       flagId: "test",
@@ -18,7 +21,7 @@ describe("router", () => {
     });
 
     testRouter = new Hono<{ Variables: Variables }>();
-    testRouter.use(async (c, next) => {
+    testRouter.use("*", async (c, next) => {
       c.set("X-App-Id", "some-app-id");
       await next();
     });

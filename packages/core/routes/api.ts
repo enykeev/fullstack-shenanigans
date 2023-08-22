@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import flags from "./flags";
+import audiences from "./audiences";
 
 const router = new Hono<{ Variables: Variables }>();
 
@@ -24,5 +25,6 @@ router.use("*", async (c, next) => {
 });
 
 router.route("/flags", flags);
+router.route("/audiences", audiences);
 
 export default router;

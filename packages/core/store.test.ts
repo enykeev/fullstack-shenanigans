@@ -2,6 +2,9 @@ import { expect, test, describe, beforeEach, setSystemTime } from "bun:test";
 
 import * as store from "./store";
 import { ISO8601 } from "./utils";
+import { sql } from "drizzle-orm";
+
+store.init();
 
 function advanceTime(ms: number) {
   const now = new Date();
@@ -12,7 +15,7 @@ function advanceTime(ms: number) {
 describe("store", () => {
   beforeEach(() => {
     setSystemTime();
-    store.db.exec("DELETE FROM flags");
+    store.db.run(sql`DELETE FROM flags`);
     store.createFlag({
       appId: "test",
       flagId: "test",
