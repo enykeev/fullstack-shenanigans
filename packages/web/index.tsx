@@ -5,7 +5,7 @@ import { navigate, path } from "./components/navigation/state";
 import { Logo } from "./components/logo";
 
 import FlagsPage from "./pages/flags";
-import SectionsPage from "./pages/sections";
+import AudiencesPage from "./pages/audiences";
 import OverridesPage from "./pages/overrides";
 import MissingPage from "./pages/missing";
 
@@ -20,9 +20,9 @@ const ROUTES = [
     component: FlagsPage,
   },
   {
-    path: "/sections",
-    title: "Sections",
-    component: SectionsPage,
+    path: "/audiences",
+    title: "Audiences",
+    component: AudiencesPage,
   },
   {
     path: "/overrides",

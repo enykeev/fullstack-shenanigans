@@ -5,6 +5,7 @@
     "@kobalte/core": "^0.10.0",
     "solid-icons": "^1.0.11",
     "solid-js": "^1.7.9",
+    "solid-spinner": "^0.1.9",
     "temporal-polyfill": "^0.1.1"
   }
 }

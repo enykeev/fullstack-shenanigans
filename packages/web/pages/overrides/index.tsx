@@ -1,3 +1,3 @@
-export default function SectionsPage() {
+export default function OverridesPage() {
   return <div>Overrides Page</div>;
 }
