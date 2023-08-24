@@ -1,0 +1,13 @@
+diff --git a/node_modules/drizzle-orm/sqlite-core/index.mjs b/node_modules/drizzle-orm/sqlite-core/index.mjs
+index 654266a..500d7e3 100644
+--- a/node_modules/drizzle-orm/sqlite-core/index.mjs
++++ b/node_modules/drizzle-orm/sqlite-core/index.mjs
+@@ -40,7 +40,7 @@ class SQLiteBlobJson extends SQLiteColumn {
+         return 'blob';
+     }
+     mapFromDriverValue(value) {
+-        return JSON.parse(value.toString());
++        return JSON.parse(Buffer.from(value).toString('utf8'));
+     }
+     mapToDriverValue(value) {
+         return Buffer.from(JSON.stringify(value));
