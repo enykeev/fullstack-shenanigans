@@ -1,0 +1,39 @@
+.FlexTable {
+  &__table {
+    width: 100%;
+  }
+
+  &__headerRow {
+    display: flex;
+    justify-content: flex-end;
+
+    margin: 15px 15px 0;
+  }
+  &__headerCell {
+    display: block;
+    margin-left: 15px;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &__row {
+    display: flex;
+    flex-wrap: wrap;
+
+    border: 1px solid #222;
+    border-radius: 5px;
+    margin: 15px;
+  }
+  &__rowCell {
+
+  }
+
+  &__fullRowCell {
+    width: 100%;
+  }
+  &__spacerCell {
+    flex: 1;
+  }
+}

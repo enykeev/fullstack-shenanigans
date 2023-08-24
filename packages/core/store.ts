@@ -19,37 +19,42 @@ export function init({ provisionMockData = false }: InitArgs = {}) {
   migrate(db, { migrationsFolder: "migrations" });
 
   if (provisionMockData) {
-    createFlag({
-      appId: "some-app-id",
-      flagId: "maintenance",
-      name: "Maintenance",
-      description:
-        "Enable maintenance mode for the application, routing all affected traffic to a static page",
-      createdAt: "2023-08-12T22:07:37.783Z",
-      updatedAt: "2023-08-12T22:08:02.709Z",
-      value: false,
-    });
+    for (let i = 0; i < 10; i++) {
+      createFlag({
+        appId: "some-app-id",
+        flagId: "maintenance" + i,
+        name: "Maintenance",
+        description:
+          "Enable maintenance mode for the application, routing all affected traffic to a static page",
+        createdAt: "2023-08-12T22:07:37.783Z",
+        updatedAt: "2023-08-12T22:08:02.709Z",
+        type: "boolean",
+        value: false,
+      });
 
-    createFlag({
-      appId: "some-app-id",
-      flagId: "holiday-nl-1",
-      name: "Kings Day",
-      description:
-        "Overrides default theme of the website to an orange one in celebration of the national holiday",
-      createdAt: "2023-08-12T22:07:37.783Z",
-      updatedAt: new Date().toISOString(),
-      value: false,
-    });
+      createFlag({
+        appId: "some-app-id",
+        flagId: "holiday-nl-1" + i,
+        name: "Kings Day",
+        description:
+          "Overrides default theme of the website to an orange one in celebration of the national holiday",
+        createdAt: "2023-08-12T22:07:37.783Z",
+        updatedAt: new Date().toISOString(),
+        type: "boolean",
+        value: false,
+      });
 
-    createFlag({
-      appId: "some-app-id",
-      flagId: "pricing-experiment-44",
-      name: "Pricing experiment #44",
-      description: "Another iteration of introductory pricing experiment",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      value: false,
-    });
+      createFlag({
+        appId: "some-app-id",
+        flagId: "pricing-experiment-44" + i,
+        name: "Pricing experiment #44",
+        description: "Another iteration of introductory pricing experiment",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        type: "boolean",
+        value: false,
+      });
+    }
 
     createAudience({
       appId: "some-app-id",

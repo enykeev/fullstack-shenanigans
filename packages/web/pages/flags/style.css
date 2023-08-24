@@ -1,0 +1,17 @@
+.FlagTable {
+  &__name {
+    padding: 10px 10px 0;
+  }
+  &__description {
+    padding: 10px;
+    border-bottom: 1px solid #222;
+  }
+  &__updatedAt {
+    padding: 10px;
+    border-right: 1px solid #222;
+  }
+  &__actions {
+    padding: 10px;
+    border-left: 1px solid #222;
+  }
+}

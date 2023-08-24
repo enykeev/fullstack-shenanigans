@@ -1,0 +1,106 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Date Util humanTime 1`] = `
+{
+  "units": "seconds",
+  "value": 0,
+}
+`;
+
+exports[`Date Util humanTime 2`] = `
+{
+  "units": "seconds",
+  "value": 0.1,
+}
+`;
+
+exports[`Date Util humanTime 3`] = `
+{
+  "units": "second",
+  "value": 1,
+}
+`;
+
+exports[`Date Util humanTime 4`] = `
+{
+  "units": "seconds",
+  "value": 59,
+}
+`;
+
+exports[`Date Util humanTime 5`] = `
+{
+  "units": "minute",
+  "value": 1,
+}
+`;
+
+exports[`Date Util humanTime 6`] = `
+{
+  "units": "minutes",
+  "value": 1.5,
+}
+`;
+
+exports[`Date Util humanTime 7`] = `
+{
+  "units": "minutes",
+  "value": 59.983333333333334,
+}
+`;
+
+exports[`Date Util humanTime 8`] = `
+{
+  "units": "hour",
+  "value": 1,
+}
+`;
+
+exports[`Date Util humanTime 9`] = `
+{
+  "units": "hours",
+  "value": 23.99972222222222,
+}
+`;
+
+exports[`Date Util humanTime 10`] = `
+{
+  "units": "day",
+  "value": 1,
+}
+`;
+
+exports[`Date Util humanTime 11`] = `
+{
+  "units": "days",
+  "value": 6.999988425925926,
+}
+`;
+
+exports[`Date Util humanTime 12`] = `
+{
+  "units": "week",
+  "value": 1,
+}
+`;
+
+exports[`Date Util humanTime 13`] = `
+{
+  "units": "weeks",
+  "value": 4.285712632275132,
+}
+`;
+
+exports[`Date Util humanTime 14`] = `
+{
+  "units": "weeks",
+  "value": 4.285714285714286,
+}
+`;
+
+exports[`Date Util humanTime 15`] = `
+{
+  "units": "weeks",
+  "value": 52,
+}
+`;
