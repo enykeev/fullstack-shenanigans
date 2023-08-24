@@ -1,3 +1,8 @@
+import {
+  BooleanFlagMeta,
+  NumberFlagMeta,
+  StringFlagMeta,
+} from "@feature-flag-service/common";
 import { text, sqliteTable, blob, primaryKey } from "drizzle-orm/sqlite-core";
 
 export const flagTable = sqliteTable(
@@ -11,7 +16,7 @@ export const flagTable = sqliteTable(
     updatedAt: text("updatedAt").notNull(),
     meta: blob("meta", { mode: "json" })
       .notNull()
-      .$type<Record<string, unknown>>(),
+      .$type<BooleanFlagMeta | StringFlagMeta | NumberFlagMeta>(),
   },
   (t) => ({
     pk: primaryKey(t.appId, t.flagId),
@@ -27,9 +32,7 @@ export const audienceTable = sqliteTable(
     description: text("description"),
     createdAt: text("createdAt").notNull(),
     updatedAt: text("updatedAt").notNull(),
-    meta: blob("meta", { mode: "json" })
-      .notNull()
-      .$type<Record<string, unknown>>(),
+    meta: blob("meta", { mode: "json" }).notNull().$type<{ filter: string }>(),
   },
   (t) => ({
     pk: primaryKey(t.appId, t.audienceId),

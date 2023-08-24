@@ -1,7 +1,7 @@
 import { Suspense, createResource } from "solid-js";
 import { HiOutlineClock } from "solid-icons/hi";
 import { Loader } from "../../components/loader";
-import { Flag } from "@feature-flag-service/common";
+import type { Flag } from "@feature-flag-service/common";
 import { createColumnHelper } from "@tanstack/solid-table";
 import { humanTime } from "@feature-flag-service/common/utils/date";
 import { FlexTable } from "../../components/FlexTable";

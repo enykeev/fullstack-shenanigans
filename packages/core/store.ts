@@ -1,4 +1,4 @@
-import { Audience, Flag } from "@feature-flag-service/common";
+import type { Audience, Flag } from "@feature-flag-service/common";
 import { Database } from "bun:sqlite";
 import { InferSelectModel, and, eq, sql } from "drizzle-orm";
 import { migrate } from "drizzle-orm/bun-sqlite/migrator";
@@ -104,7 +104,7 @@ export function getFlag({ appId, flagId }: GetFlagArgs): GetFlagResult {
     return null;
   }
 
-  const { meta = {}, ...rest } = res;
+  const { meta, ...rest } = res;
 
   return { ...rest, ...meta };
 }
@@ -114,7 +114,7 @@ export type CreateFlagArgs = Omit<
   "meta" | "createdAt" | "updatedAt"
 > &
   Partial<Pick<SelectFlagDB, "createdAt" | "updatedAt">> &
-  Record<string, unknown>;
+  SelectFlagDB["meta"];
 
 export function createFlag({
   appId,
@@ -151,7 +151,7 @@ export type updateFlagArgs = Omit<
   "meta" | "createdAt" | "updatedAt"
 > &
   Partial<Pick<SelectFlagDB, "updatedAt">> &
-  Record<string, unknown>;
+  SelectFlagDB["meta"];
 
 export function updateFlag({
   appId,
@@ -221,7 +221,7 @@ export function getFlagValue({
 }
 
 export type SetFlagValueArgs = Pick<SelectFlagDB, "appId" | "flagId"> &
-  Record<string, unknown>;
+  SelectFlagDB["meta"];
 
 export function setFlagValue({
   appId,
@@ -301,7 +301,7 @@ export function getAudience({
     return null;
   }
 
-  const { meta = {}, ...rest } = res;
+  const { meta, ...rest } = res;
 
   return { ...rest, ...meta };
 }
@@ -311,7 +311,7 @@ export type CreateAudienceArgs = Omit<
   "meta" | "createdAt" | "updatedAt"
 > &
   Partial<Pick<SelectAudienceDB, "createdAt" | "updatedAt">> &
-  Record<string, unknown>;
+  SelectAudienceDB["meta"];
 
 export function createAudience({
   appId,

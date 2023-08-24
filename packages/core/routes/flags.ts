@@ -1,6 +1,6 @@
 import { Hono } from "hono";
-import { z } from "zod";
 import * as store from "../store";
+import { AllMetaTypes, BaseFlag } from "@feature-flag-service/common";
 
 const router = new Hono<{ Variables: Variables }>();
 
@@ -20,12 +20,11 @@ router.get("/:flagId", (c) => {
   return c.json(flag);
 });
 
-export const PostFlagBody = z.object({
-  flagId: z.string(),
-  name: z.string(),
-  description: z.union([z.string(), z.null()]).default(null),
-  value: z.unknown(),
-});
+export const PostFlagBody = BaseFlag.pick({
+  flagId: true,
+  name: true,
+  description: true,
+}).and(AllMetaTypes);
 
 router.post("/", async (c) => {
   const appId = c.get("X-App-Id");
@@ -33,20 +32,18 @@ router.post("/", async (c) => {
   if (!params.success) {
     return c.json({ error: "invalid params" }, 400);
   }
-  const { flagId, name, description, value } = params.data;
+  const { flagId } = params.data;
   const existingFlag = store.getFlag({ appId, flagId });
   if (existingFlag) {
     return c.json({ error: "already exists" }, 409);
   }
-  const flag = store.createFlag({ appId, flagId, name, description, value });
+  const flag = store.createFlag({ ...params.data, appId, flagId });
   return c.json(flag);
 });
 
-export const PutFlagBody = z.object({
-  name: z.string().optional(),
-  description: z.union([z.string(), z.null()]).optional(),
-  value: z.unknown().optional(),
-});
+export const PutFlagBody = BaseFlag.pick({ name: true, description: true }).and(
+  AllMetaTypes,
+);
 
 router.put("/:flagId", async (c) => {
   const appId = c.get("X-App-Id");
