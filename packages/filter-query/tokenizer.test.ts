@@ -99,7 +99,7 @@ describe("Tokenizer", () => {
     expect([...generateToken(`'fizzbuzz'`)]).toMatchSnapshot();
     expect([...generateToken(`'a\n\na'`)]).toMatchSnapshot();
     // eslint-disable-next-line no-useless-escape
-    expect([...generateToken(`'a\'\\'\\\'\\\\''`)]).toMatchSnapshot();
+    expect([...generateToken(`'a\\''`)]).toMatchSnapshot();
     expect([...generateToken(`'1'`)]).toMatchSnapshot();
     expect([...generateToken(`'!@#$%^&*()'`)]).toMatchSnapshot();
     expect([...generateToken(`''`)]).toMatchSnapshot();
@@ -110,7 +110,7 @@ describe("Tokenizer", () => {
     expect([...generateToken(`"fizzbuzz"`)]).toMatchSnapshot();
     expect([...generateToken(`"a\n\na"`)]).toMatchSnapshot();
     // eslint-disable-next-line no-useless-escape
-    expect([...generateToken(`"a\'\\'\\\'\\\\'"`)]).toMatchSnapshot();
+    expect([...generateToken(`"a\\""`)]).toMatchSnapshot();
     expect([...generateToken(`"1"`)]).toMatchSnapshot();
     expect([...generateToken(`"!@#$%^&*()"`)]).toMatchSnapshot();
     expect([...generateToken(`""`)]).toMatchSnapshot();
@@ -122,6 +122,8 @@ describe("Tokenizer", () => {
     let str = `aaa.bb.c == 1.5 && (res.some !== "thing" or FALSE) && value >= -1 && value < -.16 and key in [1,'2',3.0]`;
     expect([...generateToken(str)]).toMatchSnapshot();
     str = `[][][][][]`;
+    expect([...generateToken(str)]).toMatchSnapshot();
+    str = `some.thing == 'a' || some.thing == 'b'`;
     expect([...generateToken(str)]).toMatchSnapshot();
   });
 });

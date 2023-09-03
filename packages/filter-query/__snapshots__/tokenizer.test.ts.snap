@@ -1462,10 +1462,10 @@ a"
 exports[`Tokenizer strings 4`] = `
 [
   {
-    "end": 11,
+    "end": 5,
     "start": 0,
     "tag": "singleQuotedStringLiteral",
-    "value": "a'\'\'\\'",
+    "value": "a\'",
   },
 ]
 `;
@@ -1577,10 +1577,10 @@ a"
 exports[`Tokenizer strings 13`] = `
 [
   {
-    "end": 11,
+    "end": 5,
     "start": 0,
     "tag": "doubleQuotedStringLiteral",
-    "value": "a'\'\'\\'",
+    "value": "a\"",
   },
 ]
 `;
@@ -2012,6 +2012,89 @@ exports[`Tokenizer complex 2`] = `
     "start": 9,
     "tag": "]",
     "value": "]",
+  },
+]
+`;
+
+exports[`Tokenizer complex 3`] = `
+[
+  {
+    "end": 10,
+    "start": 0,
+    "tag": "key",
+    "value": "some.thing",
+  },
+  {
+    "end": 11,
+    "start": 10,
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "end": 13,
+    "start": 11,
+    "tag": "=",
+    "value": "==",
+  },
+  {
+    "end": 14,
+    "start": 13,
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "end": 17,
+    "start": 14,
+    "tag": "singleQuotedStringLiteral",
+    "value": "a",
+  },
+  {
+    "end": 18,
+    "start": 17,
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "end": 20,
+    "start": 18,
+    "tag": "||",
+    "value": "||",
+  },
+  {
+    "end": 21,
+    "start": 20,
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "end": 31,
+    "start": 21,
+    "tag": "key",
+    "value": "some.thing",
+  },
+  {
+    "end": 32,
+    "start": 31,
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "end": 34,
+    "start": 32,
+    "tag": "=",
+    "value": "==",
+  },
+  {
+    "end": 35,
+    "start": 34,
+    "tag": "space",
+    "value": " ",
+  },
+  {
+    "end": 38,
+    "start": 35,
+    "tag": "singleQuotedStringLiteral",
+    "value": "b",
   },
 ]
 `;

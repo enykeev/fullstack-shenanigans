@@ -96,19 +96,20 @@ export const matchers: TokenMatcher[] = [
     tag: "key",
   },
   {
-    re: /^"(?<value>(?:[\\"]|[^"])+)"/,
+    re: /^"(?<value>.*?[^\\])"/s,
     tag: "doubleQuotedStringLiteral",
   },
   {
-    re: /^"(?<value>(?=["]))"/,
-    tag: "doubleQuotedStringLiteral",
-  },
-  {
-    re: /^'(?<value>(?:[\\']|[^'])+)'/,
+    re: /^'(?<value>.*?[^\\])'/s,
     tag: "singleQuotedStringLiteral",
   },
+  // For `''` and `""`
   {
-    re: /^'(?<value>(?=[']))'/,
+    re: /^"(?<value>(?:[^"]?))"/,
+    tag: "doubleQuotedStringLiteral",
+  },
+  {
+    re: /^'(?<value>(?:[^']?))'/,
     tag: "singleQuotedStringLiteral",
   },
 ];
