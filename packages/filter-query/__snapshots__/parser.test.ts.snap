@@ -77,7 +77,7 @@ exports[`Query Parser options simplify 1`] = `
               },
               {
                 "type": "value",
-                "value": 2,
+                "value": "2",
               },
               {
                 "type": "value",
@@ -1933,7 +1933,7 @@ exports[`Query Parser complex 1`] = `
                   "value": "2",
                 },
                 "type": "value",
-                "value": 2,
+                "value": "2",
               },
               {
                 "parent": [Circular],

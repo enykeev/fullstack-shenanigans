@@ -163,7 +163,7 @@ export function parse(str: string, { simplify = false }: ParseOpts = {}) {
           case "list": {
             currentNode = {
               type: "value",
-              value: Number(token.value),
+              value: String(token.value),
               parent: currentNode,
               token,
             };
