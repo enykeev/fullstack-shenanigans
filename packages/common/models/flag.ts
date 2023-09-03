@@ -39,6 +39,8 @@ export const AllMetaTypes = z.union([
   NumberFlagMeta,
 ]);
 
+export type AllMetaTypes = z.infer<typeof AllMetaTypes>;
+
 export const Flag = BaseFlag.and(AllMetaTypes);
 
 export type Flag = z.infer<typeof Flag>;

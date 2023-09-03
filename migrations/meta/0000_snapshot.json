@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "7958111b-a5a2-4bea-bcf1-e91507cc678b",
+  "id": "56ea2de0-8fea-41b7-b450-e6c6ef56ad0d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "audiences": {
@@ -11,14 +11,14 @@
           "name": "appId",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "audienceId": {
           "name": "audienceId",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "name": {
@@ -76,14 +76,14 @@
           "name": "appId",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "flagId": {
           "name": "flagId",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "name": {
@@ -129,6 +129,71 @@
           "columns": [
             "appId",
             "flagId"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "overrides": {
+      "name": "overrides",
+      "columns": {
+        "appId": {
+          "name": "appId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "overrideId": {
+          "name": "overrideId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "flagId": {
+          "name": "flagId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "audienceId": {
+          "name": "audienceId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "meta": {
+          "name": "meta",
+          "type": "blob",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "overrides_appId_overrideId_pk": {
+          "columns": [
+            "appId",
+            "overrideId"
           ]
         }
       },

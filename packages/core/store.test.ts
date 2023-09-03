@@ -21,6 +21,7 @@ describe("store", () => {
       flagId: "test",
       name: "test",
       description: "test",
+      type: "boolean",
       value: true,
     });
   });
@@ -35,6 +36,8 @@ describe("store", () => {
         description: "test",
         createdAt: expect.stringMatching(ISO8601),
         updatedAt: expect.stringMatching(ISO8601),
+        overrides: [],
+        type: "boolean",
         value: true,
       },
     ]);
@@ -49,6 +52,8 @@ describe("store", () => {
       description: "test",
       createdAt: expect.stringMatching(ISO8601),
       updatedAt: expect.stringMatching(ISO8601),
+      overrides: [],
+      type: "boolean",
       value: true,
     });
   });
@@ -59,6 +64,7 @@ describe("store", () => {
       flagId: "test2",
       name: "test2",
       description: "test2",
+      type: "boolean",
       value: false,
     });
     const flag = store.getFlag({ appId: "test", flagId: "test2" });
@@ -69,6 +75,8 @@ describe("store", () => {
       description: "test2",
       createdAt: expect.stringMatching(ISO8601),
       updatedAt: expect.stringMatching(ISO8601),
+      overrides: [],
+      type: "boolean",
       value: false,
     });
   });
@@ -80,6 +88,7 @@ describe("store", () => {
       flagId: "test",
       name: "test2",
       description: "test2",
+      type: "boolean",
       value: false,
     });
     const flag = store.getFlag({ appId: "test", flagId: "test" });
@@ -90,6 +99,8 @@ describe("store", () => {
       description: "test2",
       createdAt: expect.stringMatching(ISO8601),
       updatedAt: expect.stringMatching(ISO8601),
+      overrides: [],
+      type: "boolean",
       value: false,
     });
     expect(flag?.updatedAt).not.toEqual(flag?.createdAt);
@@ -103,14 +114,19 @@ describe("store", () => {
 
   test("getFlagValue", () => {
     const value = store.getFlagValue({ appId: "test", flagId: "test" });
-    expect(value).toEqual({ value: true });
+    expect(value).toEqual({ type: "boolean", value: true });
   });
 
   test("setFlagValue", () => {
     advanceTime(1);
-    store.setFlagValue({ appId: "test", flagId: "test", value: false });
+    store.setFlagValue({
+      appId: "test",
+      flagId: "test",
+      type: "boolean",
+      value: false,
+    });
     const value = store.getFlagValue({ appId: "test", flagId: "test" });
-    expect(value).toEqual({ value: false });
+    expect(value).toEqual({ type: "boolean", value: false });
     const flag = store.getFlag({ appId: "test", flagId: "test" });
     expect(flag?.updatedAt).not.toEqual(flag?.createdAt);
   });

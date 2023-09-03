@@ -37,7 +37,8 @@ router.post("/", async (c) => {
   if (existingFlag) {
     return c.json({ error: "already exists" }, 409);
   }
-  const flag = store.createFlag({ ...params.data, appId, flagId });
+  store.createFlag({ ...params.data, appId, flagId });
+  const flag = store.getFlag({ appId, flagId });
   return c.json(flag);
 });
 
@@ -56,8 +57,20 @@ router.put("/:flagId", async (c) => {
   if (!existingFlag) {
     return c.json({ error: "not found" }, 404);
   }
-  const flag = store.updateFlag({ ...existingFlag, ...params.data });
+  store.updateFlag({ ...existingFlag, ...params.data });
+  const flag = store.getFlag({ appId, flagId });
   return c.json(flag);
+});
+
+router.delete("/:flagId", async (c) => {
+  const appId = c.get("X-App-Id");
+  const { flagId } = c.req.param();
+  const existingFlag = store.getFlag({ appId, flagId });
+  if (!existingFlag) {
+    return c.json({ error: "not found" }, 404);
+  }
+  store.deleteFlag({ appId, flagId });
+  return c.json(existingFlag);
 });
 
 export default router;

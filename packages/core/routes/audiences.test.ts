@@ -1,6 +1,6 @@
 import { test, describe, expect, beforeEach } from "bun:test";
 
-import router from "./flags";
+import router from "./audiences";
 import * as store from "../store";
 import { ISO8601 } from "../utils";
 import { Hono } from "hono";
@@ -8,19 +8,18 @@ import { sql } from "drizzle-orm";
 
 store.init();
 
-describe("Flags Router", () => {
+describe("Audiences Router", () => {
   let testRouter: Hono<{ Variables: Variables }>;
   beforeEach(() => {
     store.db.run(sql`DELETE FROM flags`);
     store.db.run(sql`DELETE FROM audiences`);
     store.db.run(sql`DELETE FROM overrides`);
-    store.createFlag({
+    store.createAudience({
       appId: "some-app-id",
-      flagId: "test",
+      audienceId: "test",
       name: "test",
       description: "test",
-      type: "boolean",
-      value: true,
+      filter: "some == 'thing'",
     });
 
     testRouter = new Hono<{ Variables: Variables }>();
@@ -39,35 +38,33 @@ describe("Flags Router", () => {
       {
         appId: "some-app-id",
         createdAt: expect.stringMatching(ISO8601),
-        updatedAt: expect.stringMatching(ISO8601),
         description: "test",
-        flagId: "test",
+        audienceId: "test",
         name: "test",
+        updatedAt: expect.stringMatching(ISO8601),
         overrides: [],
-        type: "boolean",
-        value: true,
+        filter: "some == 'thing'",
       },
     ]);
   });
 
-  test("get /:flagId", async () => {
+  test("get /:audienceId", async () => {
     const req = new Request("http://localhost/test");
     const res = await testRouter.request(req);
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({
       appId: "some-app-id",
       createdAt: expect.stringMatching(ISO8601),
-      updatedAt: expect.stringMatching(ISO8601),
       description: "test",
-      flagId: "test",
+      audienceId: "test",
       name: "test",
+      updatedAt: expect.stringMatching(ISO8601),
       overrides: [],
-      type: "boolean",
-      value: true,
+      filter: "some == 'thing'",
     });
   });
 
-  test("get /:flagId not found", async () => {
+  test("get /:audienceId not found", async () => {
     const req = new Request("http://localhost/unknown");
     const res = await testRouter.request(req);
     expect(res.status).toBe(404);
@@ -78,11 +75,10 @@ describe("Flags Router", () => {
     const req = new Request("http://localhost/", {
       method: "POST",
       body: JSON.stringify({
-        flagId: "test2",
+        audienceId: "test2",
         name: "test2",
         description: "test2",
-        type: "boolean",
-        value: true,
+        filter: "some == 'thing'",
       }),
     });
     const res = await testRouter.request(req);
@@ -90,13 +86,12 @@ describe("Flags Router", () => {
     expect(await res.json()).toEqual({
       appId: "some-app-id",
       createdAt: expect.stringMatching(ISO8601),
-      updatedAt: expect.stringMatching(ISO8601),
       description: "test2",
-      flagId: "test2",
+      audienceId: "test2",
       name: "test2",
+      updatedAt: expect.stringMatching(ISO8601),
       overrides: [],
-      type: "boolean",
-      value: true,
+      filter: "some == 'thing'",
     });
   });
 
@@ -104,11 +99,10 @@ describe("Flags Router", () => {
     const req = new Request("http://localhost/", {
       method: "POST",
       body: JSON.stringify({
-        flagId: "test",
-        name: "test2",
-        description: "test2",
-        type: "boolean",
-        value: true,
+        audienceId: "test",
+        name: "test",
+        description: "test",
+        filter: "some == 'thing'",
       }),
     });
     const res = await testRouter.request(req);
@@ -120,10 +114,9 @@ describe("Flags Router", () => {
     const req = new Request("http://localhost/", {
       method: "POST",
       body: JSON.stringify({
-        flagId: "test2",
-        name: "test2",
-        description: "test2",
-        type: "boolean",
+        audienceId: "test",
+        name: "test",
+        description: "test",
       }),
     });
     const res = await testRouter.request(req);
@@ -131,14 +124,13 @@ describe("Flags Router", () => {
     expect(await res.json()).toEqual({ error: "invalid params" });
   });
 
-  test("put /:flagId", async () => {
+  test("put /:audienceId", async () => {
     const req = new Request("http://localhost/test", {
       method: "PUT",
       body: JSON.stringify({
         name: "test2",
         description: "test2",
-        type: "boolean",
-        value: true,
+        filter: "some == 'thing'",
       }),
     });
     const res = await testRouter.request(req);
@@ -146,24 +138,22 @@ describe("Flags Router", () => {
     expect(await res.json()).toEqual({
       appId: "some-app-id",
       createdAt: expect.stringMatching(ISO8601),
-      updatedAt: expect.stringMatching(ISO8601),
       description: "test2",
-      flagId: "test",
+      audienceId: "test",
       name: "test2",
+      updatedAt: expect.stringMatching(ISO8601),
       overrides: [],
-      type: "boolean",
-      value: true,
+      filter: "some == 'thing'",
     });
   });
 
-  test("put /:flagId not found", async () => {
+  test("put /:audienceId not found", async () => {
     const req = new Request("http://localhost/unknown", {
       method: "PUT",
       body: JSON.stringify({
         name: "test2",
         description: "test2",
-        type: "boolean",
-        value: true,
+        filter: "some == 'thing'",
       }),
     });
     const res = await testRouter.request(req);
@@ -171,13 +161,12 @@ describe("Flags Router", () => {
     expect(await res.json()).toEqual({ error: "not found" });
   });
 
-  test("put /:flagId invalid params", async () => {
+  test("put /:audienceId invalid params", async () => {
     const req = new Request("http://localhost/test", {
       method: "PUT",
       body: JSON.stringify({
         name: "test2",
         description: "test2",
-        type: "boolean",
       }),
     });
     const res = await testRouter.request(req);
@@ -185,29 +174,24 @@ describe("Flags Router", () => {
     expect(await res.json()).toEqual({ error: "invalid params" });
   });
 
-  test("delete /:flagId", async () => {
-    const req = new Request("http://localhost/test", {
-      method: "DELETE",
-    });
+  test("delete /:audienceId", async () => {
+    const req = new Request("http://localhost/test", { method: "DELETE" });
     const res = await testRouter.request(req);
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({
       appId: "some-app-id",
       createdAt: expect.stringMatching(ISO8601),
-      updatedAt: expect.stringMatching(ISO8601),
       description: "test",
-      flagId: "test",
+      audienceId: "test",
       name: "test",
+      updatedAt: expect.stringMatching(ISO8601),
       overrides: [],
-      type: "boolean",
-      value: true,
+      filter: "some == 'thing'",
     });
   });
 
-  test("delete /:flagId not found", async () => {
-    const req = new Request("http://localhost/unknown", {
-      method: "DELETE",
-    });
+  test("delete /:audienceId not found", async () => {
+    const req = new Request("http://localhost/unknown", { method: "DELETE" });
     const res = await testRouter.request(req);
     expect(res.status).toBe(404);
     expect(await res.json()).toEqual({ error: "not found" });
