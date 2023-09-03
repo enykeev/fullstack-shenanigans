@@ -3,19 +3,41 @@ import { InferSelectModel, and, eq, sql } from "drizzle-orm";
 import { migrate } from "drizzle-orm/bun-sqlite/migrator";
 import { drizzle } from "drizzle-orm/bun-sqlite";
 import * as schema from "./schema";
+import { SQLiteColumn } from "drizzle-orm/sqlite-core";
 
 const { flagTable, audienceTable, overrideTable } = schema;
 
 export const sqlite = new Database();
 export const db = drizzle(sqlite, { schema });
 
-type SelectFlagDB = InferSelectModel<typeof flagTable>;
-type SelectAudienceDB = InferSelectModel<typeof audienceTable>;
-type SelectOverrideDB = InferSelectModel<typeof overrideTable>;
+export type SelectFlagDB = InferSelectModel<typeof flagTable>;
+export type SelectAudienceDB = InferSelectModel<typeof audienceTable>;
+export type SelectOverrideDB = InferSelectModel<typeof overrideTable>;
 
 export type InitArgs = {
   provisionMockData?: boolean;
 };
+
+function unwrapMeta<T extends { meta: Record<string, unknown> }>({
+  meta,
+  ...rest
+}: T): T["meta"] & Omit<T, "meta"> {
+  return { ...rest, ...meta };
+}
+
+function fixMeta<T extends { meta: Record<string, unknown> }>(
+  fieldName: SQLiteColumn,
+) {
+  return {
+    // NOTE: Out the box, drizzle has some problems handling json fields in relations so we're making them custom fileds instead.
+    columns: {
+      meta: false,
+    },
+    extras: {
+      meta: sql<T["meta"]>`json(${fieldName})`.as("meta"),
+    },
+  };
+}
 
 export async function init({ provisionMockData = false }: InitArgs = {}) {
   migrate(db, { migrationsFolder: "migrations" });
@@ -67,10 +89,64 @@ export async function init({ provisionMockData = false }: InitArgs = {}) {
         "user.email in ['james@qa.local', 'mike@qa.local', 'dan@leadership.local']",
     });
 
+    createAudience({
+      appId: "some-app-id",
+      audienceId: "beta",
+      name: "Beta Testers",
+      description: "Users that are part of the beta testing group",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      filter:
+        "user.email in ['jack@users.local', 'mike@users.local', 'dan@users.local']",
+    });
+
+    createAudience({
+      appId: "some-app-id",
+      audienceId: "country-nl",
+      name: "Netherlands",
+      description: "Users that are located in the Netherlands",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      filter: "user.country == 'nl'",
+    });
+
     createOverride({
       appId: "some-app-id",
       overrideId: "maintenance-testers",
       flagId: "maintenance",
+      audienceId: "testers",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      type: "boolean",
+      value: false,
+    });
+
+    createOverride({
+      appId: "some-app-id",
+      overrideId: "holiday-nl-1-country-nl",
+      flagId: "holiday-nl-1",
+      audienceId: "country-nl",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      type: "boolean",
+      value: true,
+    });
+
+    createOverride({
+      appId: "some-app-id",
+      overrideId: "pricing-experiment-44-beta",
+      flagId: "pricing-experiment-44",
+      audienceId: "beta",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      type: "boolean",
+      value: true,
+    });
+
+    createOverride({
+      appId: "some-app-id",
+      overrideId: "pricing-experiment-44-testers",
+      flagId: "pricing-experiment-44",
       audienceId: "testers",
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -88,21 +164,10 @@ export function listFlags({ appId }: ListFlagArgs) {
       where: eq(flagTable.appId, sql.placeholder("appId")),
       with: {
         overrides: {
-          // NOTE: Out the box, drizzle has some problems handling json fields in relations so we're making them custom fileds instead.
-          columns: {
-            meta: false,
-          },
-          extras: {
-            meta: sql`json(${flagTable.meta})`.as("meta"),
-          },
+          ...fixMeta<SelectOverrideDB>(overrideTable.meta),
           with: {
             audience: {
-              columns: {
-                meta: false,
-              },
-              extras: {
-                meta: sql`json(${audienceTable.meta})`.as("meta"),
-              },
+              ...fixMeta<SelectAudienceDB>(audienceTable.meta),
             },
           },
         },
@@ -112,8 +177,22 @@ export function listFlags({ appId }: ListFlagArgs) {
     .all({ appId });
 
   return res.map((flag) => {
-    const { meta, ...rest } = flag;
-    return { ...rest, ...meta };
+    const { overrides, ...rest } = unwrapMeta(
+      flag as SelectFlagDB & {
+        overrides: (SelectOverrideDB & { audience: SelectAudienceDB })[];
+      },
+    );
+
+    return {
+      ...rest,
+      overrides: overrides.map((override) => {
+        const { audience, ...rest } = unwrapMeta(override);
+        return {
+          ...rest,
+          audience: unwrapMeta(audience),
+        };
+      }),
+    };
   });
 }
 
@@ -128,21 +207,10 @@ export function getFlag({ appId, flagId }: GetFlagArgs) {
       ),
       with: {
         overrides: {
-          // NOTE: Out the box, drizzle has some problems handling json fields in relations so we're making them custom fileds instead.
-          columns: {
-            meta: false,
-          },
-          extras: {
-            meta: sql`json(${flagTable.meta})`.as("meta"),
-          },
+          ...fixMeta<SelectOverrideDB>(overrideTable.meta),
           with: {
             audience: {
-              columns: {
-                meta: false,
-              },
-              extras: {
-                meta: sql`json(${audienceTable.meta})`.as("meta"),
-              },
+              ...fixMeta<SelectAudienceDB>(audienceTable.meta),
             },
           },
         },
@@ -155,9 +223,7 @@ export function getFlag({ appId, flagId }: GetFlagArgs) {
     return null;
   }
 
-  const { meta, ...rest } = res;
-
-  return { ...rest, ...meta };
+  return unwrapMeta(res);
 }
 
 export type CreateFlagArgs = Omit<
@@ -305,21 +371,10 @@ export function listAudiences({ appId }: ListAudiencesArgs) {
       where: eq(audienceTable.appId, sql.placeholder("appId")),
       with: {
         overrides: {
-          // NOTE: Out the box, drizzle has some problems handling json fields in relations so we're making them custom fileds instead.
-          columns: {
-            meta: false,
-          },
-          extras: {
-            meta: sql`json(${audienceTable.meta})`.as("meta"),
-          },
+          ...fixMeta<SelectOverrideDB>(overrideTable.meta),
           with: {
             flag: {
-              columns: {
-                meta: false,
-              },
-              extras: {
-                meta: sql`json(${flagTable.meta})`.as("meta"),
-              },
+              ...fixMeta<SelectFlagDB>(flagTable.meta),
             },
           },
         },
@@ -329,8 +384,7 @@ export function listAudiences({ appId }: ListAudiencesArgs) {
     .all({ appId });
 
   return res.map((audience) => {
-    const { meta, ...rest } = audience;
-    return { ...rest, ...meta };
+    return unwrapMeta(audience);
   });
 }
 
@@ -345,21 +399,10 @@ export function getAudience({ appId, audienceId }: GetAudienceArgs) {
       ),
       with: {
         overrides: {
-          // NOTE: Out the box, drizzle has some problems handling json fields in relations so we're making them custom fileds instead.
-          columns: {
-            meta: false,
-          },
-          extras: {
-            meta: sql`json(${audienceTable.meta})`.as("meta"),
-          },
+          ...fixMeta<SelectOverrideDB>(overrideTable.meta),
           with: {
             flag: {
-              columns: {
-                meta: false,
-              },
-              extras: {
-                meta: sql`json(${flagTable.meta})`.as("meta"),
-              },
+              ...fixMeta<SelectFlagDB>(flagTable.meta),
             },
           },
         },
@@ -372,9 +415,7 @@ export function getAudience({ appId, audienceId }: GetAudienceArgs) {
     return null;
   }
 
-  const { meta, ...rest } = res;
-
-  return { ...rest, ...meta };
+  return unwrapMeta(res);
 }
 
 export type CreateAudienceArgs = Omit<
@@ -471,20 +512,10 @@ export function listOverrides({ appId }: ListOverridesArgs) {
       where: eq(overrideTable.appId, sql.placeholder("appId")),
       with: {
         flag: {
-          columns: {
-            meta: false,
-          },
-          extras: {
-            meta: sql`json(${overrideTable.meta})`.as("meta"),
-          },
+          ...fixMeta<SelectFlagDB>(flagTable.meta),
         },
         audience: {
-          columns: {
-            meta: false,
-          },
-          extras: {
-            meta: sql`json(${overrideTable.meta})`.as("meta"),
-          },
+          ...fixMeta<SelectAudienceDB>(audienceTable.meta),
         },
       },
     })
@@ -492,8 +523,17 @@ export function listOverrides({ appId }: ListOverridesArgs) {
     .all({ appId });
 
   return res.map((override) => {
-    const { meta, ...rest } = override;
-    return { ...rest, ...meta };
+    const { flag, audience, ...rest } = unwrapMeta(
+      override as SelectOverrideDB & {
+        flag: SelectFlagDB;
+        audience: SelectAudienceDB;
+      },
+    );
+    return {
+      ...rest,
+      flag: unwrapMeta(flag),
+      audience: unwrapMeta(audience),
+    };
   });
 }
 
@@ -508,20 +548,10 @@ export function getOverride({ appId, overrideId }: GetOverrideArgs) {
       ),
       with: {
         flag: {
-          columns: {
-            meta: false,
-          },
-          extras: {
-            meta: sql`json(${overrideTable.meta})`.as("meta"),
-          },
+          ...fixMeta<SelectFlagDB>(flagTable.meta),
         },
         audience: {
-          columns: {
-            meta: false,
-          },
-          extras: {
-            meta: sql`json(${overrideTable.meta})`.as("meta"),
-          },
+          ...fixMeta<SelectAudienceDB>(audienceTable.meta),
         },
       },
     })
@@ -532,9 +562,18 @@ export function getOverride({ appId, overrideId }: GetOverrideArgs) {
     return null;
   }
 
-  const { meta, ...rest } = res;
+  const { flag, audience, ...rest } = unwrapMeta(
+    res as SelectOverrideDB & {
+      flag: SelectFlagDB;
+      audience: SelectAudienceDB;
+    },
+  );
 
-  return { ...rest, ...meta };
+  return {
+    ...rest,
+    flag: unwrapMeta(flag),
+    audience: unwrapMeta(audience),
+  };
 }
 
 export type CreateOverrideArgs = Omit<

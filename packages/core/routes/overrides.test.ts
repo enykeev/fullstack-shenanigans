@@ -67,10 +67,8 @@ describe("Overrides Router", () => {
           description: "test",
           flagId: "test",
           name: "test",
-          meta: {
-            type: "boolean",
-            value: true,
-          },
+          type: "boolean",
+          value: true,
         },
         audience: {
           appId: "some-app-id",
@@ -79,9 +77,7 @@ describe("Overrides Router", () => {
           audienceId: "test",
           name: "test",
           updatedAt: expect.stringMatching(ISO8601),
-          meta: {
-            filter: "some == 'thing'",
-          },
+          filter: "some == 'thing'",
         },
       },
     ]);
@@ -107,10 +103,8 @@ describe("Overrides Router", () => {
         description: "test",
         flagId: "test",
         name: "test",
-        meta: {
-          type: "boolean",
-          value: true,
-        },
+        type: "boolean",
+        value: true,
       },
       audience: {
         appId: "some-app-id",
@@ -119,9 +113,7 @@ describe("Overrides Router", () => {
         audienceId: "test",
         name: "test",
         updatedAt: expect.stringMatching(ISO8601),
-        meta: {
-          filter: "some == 'thing'",
-        },
+        filter: "some == 'thing'",
       },
     });
   });
@@ -162,10 +154,8 @@ describe("Overrides Router", () => {
         description: "test",
         flagId: "test",
         name: "test",
-        meta: {
-          type: "boolean",
-          value: true,
-        },
+        type: "boolean",
+        value: true,
       },
       audience: {
         appId: "some-app-id",
@@ -174,9 +164,7 @@ describe("Overrides Router", () => {
         audienceId: "test",
         name: "test",
         updatedAt: expect.stringMatching(ISO8601),
-        meta: {
-          filter: "some == 'thing'",
-        },
+        filter: "some == 'thing'",
       },
     });
   });
@@ -223,10 +211,8 @@ describe("Overrides Router", () => {
         description: "test",
         flagId: "test",
         name: "test",
-        meta: {
-          type: "boolean",
-          value: true,
-        },
+        type: "boolean",
+        value: true,
       },
       audience: {
         appId: "some-app-id",
@@ -235,9 +221,7 @@ describe("Overrides Router", () => {
         audienceId: "test",
         name: "test",
         updatedAt: expect.stringMatching(ISO8601),
-        meta: {
-          filter: "some == 'thing'",
-        },
+        filter: "some == 'thing'",
       },
     });
   });
@@ -289,10 +273,8 @@ describe("Overrides Router", () => {
         description: "test",
         flagId: "test",
         name: "test",
-        meta: {
-          type: "boolean",
-          value: true,
-        },
+        type: "boolean",
+        value: true,
       },
       audience: {
         appId: "some-app-id",
@@ -301,9 +283,7 @@ describe("Overrides Router", () => {
         audienceId: "test",
         name: "test",
         updatedAt: expect.stringMatching(ISO8601),
-        meta: {
-          filter: "some == 'thing'",
-        },
+        filter: "some == 'thing'",
       },
     });
   });
