@@ -9,7 +9,13 @@ export function check(obj: Record<string, unknown>, stage?: Node): unknown {
       if (!stage.key) {
         throw new Error("node incomplete");
       }
-      return obj[stage.key];
+      const path = stage.key.split(".");
+      return path.reduce<unknown>((acc, key) => {
+        if (typeof acc === "object" && !Array.isArray(acc)) {
+          return (acc as Record<string, unknown>)[key];
+        }
+        return undefined;
+      }, obj);
     }
     case "booleanValue":
     case "value": {
