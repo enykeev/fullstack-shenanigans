@@ -16,11 +16,34 @@ describe("Flags Router", () => {
     store.db.run(sql`DELETE FROM overrides`);
     store.createFlag({
       appId: "some-app-id",
+      flagId: "test-no-override",
+      name: "test",
+      description: "test",
+      type: "boolean",
+      value: true,
+    });
+    store.createFlag({
+      appId: "some-app-id",
       flagId: "test",
       name: "test",
       description: "test",
       type: "boolean",
       value: true,
+    });
+    store.createAudience({
+      appId: "some-app-id",
+      audienceId: "test",
+      name: "test",
+      description: "test",
+      filter: "some == 'thing'",
+    });
+    store.createOverride({
+      appId: "some-app-id",
+      overrideId: "test",
+      flagId: "test",
+      audienceId: "test",
+      type: "boolean",
+      value: false,
     });
 
     testRouter = new Hono<{ Variables: Variables }>();
@@ -43,7 +66,27 @@ describe("Flags Router", () => {
         description: "test",
         flagId: "test",
         name: "test",
-        overrides: [],
+        overrides: [
+          {
+            appId: "some-app-id",
+            createdAt: expect.stringMatching(ISO8601),
+            overrideId: "test",
+            updatedAt: expect.stringMatching(ISO8601),
+            audienceId: "test",
+            flagId: "test",
+            type: "boolean",
+            value: false,
+            audience: {
+              appId: "some-app-id",
+              createdAt: expect.stringMatching(ISO8601),
+              description: "test",
+              audienceId: "test",
+              name: "test",
+              updatedAt: expect.stringMatching(ISO8601),
+              filter: "some == 'thing'",
+            },
+          },
+        ],
         type: "boolean",
         value: true,
       },
@@ -61,7 +104,27 @@ describe("Flags Router", () => {
       description: "test",
       flagId: "test",
       name: "test",
-      overrides: [],
+      overrides: [
+        {
+          appId: "some-app-id",
+          createdAt: expect.stringMatching(ISO8601),
+          overrideId: "test",
+          updatedAt: expect.stringMatching(ISO8601),
+          audienceId: "test",
+          flagId: "test",
+          type: "boolean",
+          value: false,
+          audience: {
+            appId: "some-app-id",
+            createdAt: expect.stringMatching(ISO8601),
+            description: "test",
+            audienceId: "test",
+            name: "test",
+            updatedAt: expect.stringMatching(ISO8601),
+            filter: "some == 'thing'",
+          },
+        },
+      ],
       type: "boolean",
       value: true,
     });
@@ -150,7 +213,27 @@ describe("Flags Router", () => {
       description: "test2",
       flagId: "test",
       name: "test2",
-      overrides: [],
+      overrides: [
+        {
+          appId: "some-app-id",
+          createdAt: expect.stringMatching(ISO8601),
+          overrideId: "test",
+          updatedAt: expect.stringMatching(ISO8601),
+          audienceId: "test",
+          flagId: "test",
+          type: "boolean",
+          value: false,
+          audience: {
+            appId: "some-app-id",
+            createdAt: expect.stringMatching(ISO8601),
+            description: "test",
+            audienceId: "test",
+            name: "test",
+            updatedAt: expect.stringMatching(ISO8601),
+            filter: "some == 'thing'",
+          },
+        },
+      ],
       type: "boolean",
       value: true,
     });
@@ -198,7 +281,27 @@ describe("Flags Router", () => {
       description: "test",
       flagId: "test",
       name: "test",
-      overrides: [],
+      overrides: [
+        {
+          appId: "some-app-id",
+          createdAt: expect.stringMatching(ISO8601),
+          overrideId: "test",
+          updatedAt: expect.stringMatching(ISO8601),
+          audienceId: "test",
+          flagId: "test",
+          type: "boolean",
+          value: false,
+          audience: {
+            appId: "some-app-id",
+            createdAt: expect.stringMatching(ISO8601),
+            description: "test",
+            audienceId: "test",
+            name: "test",
+            updatedAt: expect.stringMatching(ISO8601),
+            filter: "some == 'thing'",
+          },
+        },
+      ],
       type: "boolean",
       value: true,
     });
@@ -211,5 +314,63 @@ describe("Flags Router", () => {
     const res = await testRouter.request(req);
     expect(res.status).toBe(404);
     expect(await res.json()).toEqual({ error: "not found" });
+  });
+
+  test("post /evaluate", async () => {
+    const req = new Request("http://localhost/evaluate", {
+      method: "POST",
+      body: JSON.stringify({
+        context: {
+          some: "thing",
+        },
+      }),
+    });
+    const res = await testRouter.request(req);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual([
+      {
+        appId: "some-app-id",
+        createdAt: expect.stringMatching(ISO8601),
+        updatedAt: expect.stringMatching(ISO8601),
+        description: "test",
+        flagId: "test",
+        name: "test",
+        overrides: [
+          {
+            appId: "some-app-id",
+            createdAt: expect.stringMatching(ISO8601),
+            overrideId: "test",
+            updatedAt: expect.stringMatching(ISO8601),
+            audienceId: "test",
+            flagId: "test",
+            type: "boolean",
+            value: false,
+            audience: {
+              appId: "some-app-id",
+              createdAt: expect.stringMatching(ISO8601),
+              description: "test",
+              audienceId: "test",
+              name: "test",
+              updatedAt: expect.stringMatching(ISO8601),
+              filter: "some == 'thing'",
+            },
+          },
+        ],
+        type: "boolean",
+        value: false,
+      },
+    ]);
+  });
+
+  test("post /evaluate invalid params", async () => {
+    const req = new Request("http://localhost/evaluate", {
+      method: "POST",
+      body: JSON.stringify({
+        unknown: true,
+      }),
+    });
+    const res = await testRouter.request(req);
+    expect(res.status).toBe(400);
+    expect(await res.json()).toEqual({ error: "invalid params" });
   });
 });

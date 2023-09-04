@@ -185,6 +185,21 @@ describe("Overrides Router", () => {
     expect(await res.json()).toEqual({ error: "already exists" });
   });
 
+  test("post / invalid params", async () => {
+    const req = new Request("http://localhost/", {
+      method: "POST",
+      body: JSON.stringify({
+        flagId: "test2",
+        audienceId: "test",
+        type: "boolean",
+        value: true,
+      }),
+    });
+    const res = await testRouter.request(req);
+    expect(res.status).toBe(400);
+    expect(await res.json()).toEqual({ error: "invalid params" });
+  });
+
   test("put /:overrideId", async () => {
     const req = new Request("http://localhost/test", {
       method: "PUT",
@@ -295,5 +310,49 @@ describe("Overrides Router", () => {
     const res = await testRouter.request(req);
     expect(res.status).toBe(404);
     expect(await res.json()).toEqual({ error: "not found" });
+  });
+
+  test("post /evaluate", async () => {
+    const req = new Request("http://localhost/evaluate", {
+      method: "POST",
+      body: JSON.stringify({
+        context: {
+          some: "thing",
+        },
+      }),
+    });
+    const res = await testRouter.request(req);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual([
+      {
+        appId: "some-app-id",
+        createdAt: expect.stringMatching(ISO8601),
+        overrideId: "test",
+        flagId: "test",
+        audienceId: "test",
+        updatedAt: expect.stringMatching(ISO8601),
+        type: "boolean",
+        value: false,
+        flag: {
+          appId: "some-app-id",
+          createdAt: expect.stringMatching(ISO8601),
+          updatedAt: expect.stringMatching(ISO8601),
+          description: "test",
+          flagId: "test",
+          name: "test",
+          type: "boolean",
+          value: true,
+        },
+        audience: {
+          appId: "some-app-id",
+          createdAt: expect.stringMatching(ISO8601),
+          description: "test",
+          audienceId: "test",
+          name: "test",
+          updatedAt: expect.stringMatching(ISO8601),
+          filter: "some == 'thing'",
+        },
+      },
+    ]);
   });
 });

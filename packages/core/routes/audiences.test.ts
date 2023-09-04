@@ -14,12 +14,28 @@ describe("Audiences Router", () => {
     store.db.run(sql`DELETE FROM flags`);
     store.db.run(sql`DELETE FROM audiences`);
     store.db.run(sql`DELETE FROM overrides`);
+    store.createFlag({
+      appId: "some-app-id",
+      flagId: "test",
+      name: "test",
+      description: "test",
+      type: "boolean",
+      value: true,
+    });
     store.createAudience({
       appId: "some-app-id",
       audienceId: "test",
       name: "test",
       description: "test",
       filter: "some == 'thing'",
+    });
+    store.createOverride({
+      appId: "some-app-id",
+      overrideId: "test",
+      flagId: "test",
+      audienceId: "test",
+      type: "boolean",
+      value: false,
     });
 
     testRouter = new Hono<{ Variables: Variables }>();
@@ -42,7 +58,28 @@ describe("Audiences Router", () => {
         audienceId: "test",
         name: "test",
         updatedAt: expect.stringMatching(ISO8601),
-        overrides: [],
+        overrides: [
+          {
+            appId: "some-app-id",
+            createdAt: expect.stringMatching(ISO8601),
+            overrideId: "test",
+            flagId: "test",
+            audienceId: "test",
+            updatedAt: expect.stringMatching(ISO8601),
+            type: "boolean",
+            value: false,
+            flag: {
+              appId: "some-app-id",
+              createdAt: expect.stringMatching(ISO8601),
+              updatedAt: expect.stringMatching(ISO8601),
+              description: "test",
+              flagId: "test",
+              name: "test",
+              type: "boolean",
+              value: true,
+            },
+          },
+        ],
         filter: "some == 'thing'",
       },
     ]);
@@ -59,7 +96,28 @@ describe("Audiences Router", () => {
       audienceId: "test",
       name: "test",
       updatedAt: expect.stringMatching(ISO8601),
-      overrides: [],
+      overrides: [
+        {
+          appId: "some-app-id",
+          createdAt: expect.stringMatching(ISO8601),
+          overrideId: "test",
+          flagId: "test",
+          audienceId: "test",
+          updatedAt: expect.stringMatching(ISO8601),
+          type: "boolean",
+          value: false,
+          flag: {
+            appId: "some-app-id",
+            createdAt: expect.stringMatching(ISO8601),
+            updatedAt: expect.stringMatching(ISO8601),
+            description: "test",
+            flagId: "test",
+            name: "test",
+            type: "boolean",
+            value: true,
+          },
+        },
+      ],
       filter: "some == 'thing'",
     });
   });
@@ -142,7 +200,28 @@ describe("Audiences Router", () => {
       audienceId: "test",
       name: "test2",
       updatedAt: expect.stringMatching(ISO8601),
-      overrides: [],
+      overrides: [
+        {
+          appId: "some-app-id",
+          createdAt: expect.stringMatching(ISO8601),
+          overrideId: "test",
+          flagId: "test",
+          audienceId: "test",
+          updatedAt: expect.stringMatching(ISO8601),
+          type: "boolean",
+          value: false,
+          flag: {
+            appId: "some-app-id",
+            createdAt: expect.stringMatching(ISO8601),
+            updatedAt: expect.stringMatching(ISO8601),
+            description: "test",
+            flagId: "test",
+            name: "test",
+            type: "boolean",
+            value: true,
+          },
+        },
+      ],
       filter: "some == 'thing'",
     });
   });
@@ -185,7 +264,28 @@ describe("Audiences Router", () => {
       audienceId: "test",
       name: "test",
       updatedAt: expect.stringMatching(ISO8601),
-      overrides: [],
+      overrides: [
+        {
+          appId: "some-app-id",
+          createdAt: expect.stringMatching(ISO8601),
+          overrideId: "test",
+          flagId: "test",
+          audienceId: "test",
+          updatedAt: expect.stringMatching(ISO8601),
+          type: "boolean",
+          value: false,
+          flag: {
+            appId: "some-app-id",
+            createdAt: expect.stringMatching(ISO8601),
+            updatedAt: expect.stringMatching(ISO8601),
+            description: "test",
+            flagId: "test",
+            name: "test",
+            type: "boolean",
+            value: true,
+          },
+        },
+      ],
       filter: "some == 'thing'",
     });
   });
@@ -195,5 +295,51 @@ describe("Audiences Router", () => {
     const res = await testRouter.request(req);
     expect(res.status).toBe(404);
     expect(await res.json()).toEqual({ error: "not found" });
+  });
+
+  test("post /evaluate", async () => {
+    const req = new Request("http://localhost/evaluate", {
+      method: "POST",
+      body: JSON.stringify({
+        context: {
+          some: "thing",
+        },
+      }),
+    });
+    const res = await testRouter.request(req);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual([
+      {
+        appId: "some-app-id",
+        createdAt: expect.stringMatching(ISO8601),
+        description: "test",
+        audienceId: "test",
+        name: "test",
+        updatedAt: expect.stringMatching(ISO8601),
+        overrides: [
+          {
+            appId: "some-app-id",
+            createdAt: expect.stringMatching(ISO8601),
+            overrideId: "test",
+            flagId: "test",
+            audienceId: "test",
+            updatedAt: expect.stringMatching(ISO8601),
+            type: "boolean",
+            value: false,
+            flag: {
+              appId: "some-app-id",
+              createdAt: expect.stringMatching(ISO8601),
+              updatedAt: expect.stringMatching(ISO8601),
+              description: "test",
+              flagId: "test",
+              name: "test",
+              type: "boolean",
+              value: true,
+            },
+          },
+        ],
+        filter: "some == 'thing'",
+      },
+    ]);
   });
 });

@@ -6,3 +6,9 @@ export const MatchRequest = z.object({
 });
 
 export type MatchRequest = z.infer<typeof MatchRequest>;
+
+export const EvaluateRequest = z.object({
+  context: z.record(z.any()),
+});
+
+export type EvaluateRequest = z.infer<typeof EvaluateRequest>;

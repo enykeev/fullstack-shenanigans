@@ -1,6 +1,8 @@
 import { Hono } from "hono";
 import * as store from "../store";
 import { Audience } from "@feature-flag-service/common";
+import { filterPredicate } from "1ql";
+import { EvaluateRequest } from "@feature-flag-service/common/models/match";
 
 const router = new Hono<{ Variables: Variables }>();
 
@@ -74,6 +76,22 @@ router.delete("/:audienceId", async (c) => {
   }
   store.deleteAudience({ appId, audienceId });
   return c.json(existingAudience);
+});
+
+const EvaluateBody = EvaluateRequest;
+
+router.post("/evaluate", async (c) => {
+  const appId = c.get("X-App-Id");
+  const params = EvaluateBody.safeParse(await c.req.json());
+  if (!params.success) {
+    return c.json({ error: "invalid params" }, 400);
+  }
+  const { context } = params.data;
+  const audiences = store.listAudiences({ appId });
+  const res = audiences.filter(({ filter }) => {
+    return filterPredicate(filter)(context);
+  });
+  return c.json(res);
 });
 
 export default router;

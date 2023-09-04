@@ -2,6 +2,8 @@ import { Hono } from "hono";
 import * as store from "../store";
 import { BaseOverride } from "@feature-flag-service/common/models/override";
 import { AllMetaTypes } from "@feature-flag-service/common";
+import { filterPredicate } from "1ql";
+import { EvaluateRequest } from "@feature-flag-service/common/models/match";
 
 const router = new Hono<{ Variables: Variables }>();
 
@@ -70,6 +72,22 @@ router.delete("/:overrideId", async (c) => {
   }
   store.deleteOverride({ appId, overrideId });
   return c.json(existingFlag);
+});
+
+const EvaluateBody = EvaluateRequest;
+
+router.post("/evaluate", async (c) => {
+  const appId = c.get("X-App-Id");
+  const params = EvaluateBody.safeParse(await c.req.json());
+  if (!params.success) {
+    return c.json({ error: "invalid params" }, 400);
+  }
+  const { context } = params.data;
+  const overrides = store.listOverrides({ appId });
+  const res = overrides.filter(({ audience }) => {
+    return filterPredicate(audience.filter)(context);
+  });
+  return c.json(res);
 });
 
 export default router;

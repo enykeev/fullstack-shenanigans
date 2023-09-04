@@ -223,7 +223,22 @@ export function getFlag({ appId, flagId }: GetFlagArgs) {
     return null;
   }
 
-  return unwrapMeta(res);
+  const { overrides, ...rest } = unwrapMeta(
+    res as SelectFlagDB & {
+      overrides: (SelectOverrideDB & { audience: SelectAudienceDB })[];
+    },
+  );
+
+  return {
+    ...rest,
+    overrides: overrides.map((override) => {
+      const { audience, ...rest } = unwrapMeta(override);
+      return {
+        ...rest,
+        audience: unwrapMeta(audience),
+      };
+    }),
+  };
 }
 
 export type CreateFlagArgs = Omit<
@@ -384,7 +399,21 @@ export function listAudiences({ appId }: ListAudiencesArgs) {
     .all({ appId });
 
   return res.map((audience) => {
-    return unwrapMeta(audience);
+    const { overrides, ...rest } = unwrapMeta(
+      audience as SelectAudienceDB & {
+        overrides: (SelectOverrideDB & { flag: SelectFlagDB })[];
+      },
+    );
+    return {
+      ...rest,
+      overrides: overrides.map((override) => {
+        const { flag, ...rest } = unwrapMeta(override);
+        return {
+          ...rest,
+          flag: unwrapMeta(flag),
+        };
+      }),
+    };
   });
 }
 
@@ -415,7 +444,22 @@ export function getAudience({ appId, audienceId }: GetAudienceArgs) {
     return null;
   }
 
-  return unwrapMeta(res);
+  const { overrides, ...rest } = unwrapMeta(
+    res as SelectAudienceDB & {
+      overrides: (SelectOverrideDB & { flag: SelectFlagDB })[];
+    },
+  );
+
+  return {
+    ...rest,
+    overrides: overrides.map((override) => {
+      const { flag, ...rest } = unwrapMeta(override);
+      return {
+        ...rest,
+        flag: unwrapMeta(flag),
+      };
+    }),
+  };
 }
 
 export type CreateAudienceArgs = Omit<
