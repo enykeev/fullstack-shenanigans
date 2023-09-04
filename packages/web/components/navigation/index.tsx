@@ -1,9 +1,8 @@
 import type { JSX } from "solid-js";
 
-import "./state";
+import { navigate } from "./state";
 
 import "./styles.css";
-import { navigate } from "./state";
 
 export function Navigation({ children }: { children: JSX.Element }) {
   return <div class="Navigation">{children}</div>;

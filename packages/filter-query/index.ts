@@ -1,5 +1,5 @@
-import { parse } from "./parser";
 import { check } from "./executor";
+import { parse } from "./parser";
 
 export function filterPredicate(filter: string) {
   const node = parse(filter);

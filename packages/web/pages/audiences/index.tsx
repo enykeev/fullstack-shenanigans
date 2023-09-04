@@ -1,7 +1,8 @@
-import { For, Suspense, createResource } from "solid-js";
+import type { Audience } from "@feature-flag-service/common";
+import { createResource, For, Suspense } from "solid-js";
+
 import { AudienceRow } from "../../components/audience";
 import { Loader } from "../../components/loader";
-import type { Audience } from "@feature-flag-service/common";
 
 export default function AudiencesPage() {
   async function fetchData(): Promise<Audience[]> {

@@ -4,6 +4,7 @@ extends:
 parser: "@typescript-eslint/parser"
 plugins:
   - "@typescript-eslint"
+  - "simple-import-sort"
 ignorePatterns:
   - "node_modules"
   - "dist"
@@ -11,4 +12,13 @@ rules:
   "@typescript-eslint/no-unused-vars":
     - error
     - argsIgnorePattern: "^_"
+  "simple-import-sort/imports": 
+    - "error"
+    - "groups":
+        - ["^\\u0000"]
+        - ["^@?\\w"]
+        - ["^\\.\\.(?!/?$)", "^\\.\\./?$"]
+        - ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"]
+        - ["^.+\\.s?css$"]
+  "simple-import-sort/exports": "error"
 root: true

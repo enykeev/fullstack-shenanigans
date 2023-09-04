@@ -1,7 +1,8 @@
-import { Hono } from "hono";
-import * as store from "../store";
 import { MatchRequest } from "@feature-flag-service/common/models/match";
-import { filterPredicate } from "../../filter-query";
+import { filterPredicate } from "1ql";
+import { Hono } from "hono";
+
+import * as store from "../store";
 
 const router = new Hono<{ Variables: Variables }>();
 

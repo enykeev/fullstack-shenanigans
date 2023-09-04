@@ -1,11 +1,11 @@
-import { For } from "solid-js";
 import {
-  RowData,
+  ColumnDef,
   createSolidTable,
   flexRender,
   getCoreRowModel,
-  ColumnDef,
+  RowData,
 } from "@tanstack/solid-table";
+import { For } from "solid-js";
 
 import "./style.css";
 

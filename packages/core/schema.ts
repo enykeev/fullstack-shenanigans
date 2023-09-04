@@ -1,6 +1,6 @@
 import { AllMetaTypes } from "@feature-flag-service/common";
 import { relations } from "drizzle-orm";
-import { text, sqliteTable, blob, primaryKey } from "drizzle-orm/sqlite-core";
+import { blob, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const flagTable = sqliteTable(
   "flags",

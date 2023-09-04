@@ -1,4 +1,5 @@
-import { run, bench, prepare } from "mitata";
+import { bench, prepare, run } from "mitata";
+
 import { Token, Tokenizer } from "./tokenizer";
 
 let tokenizer: Tokenizer;

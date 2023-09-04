@@ -1,10 +1,11 @@
-import { test, describe, expect, beforeEach } from "bun:test";
+import { beforeEach, describe, expect, test } from "bun:test";
+import { sql } from "drizzle-orm";
+import { Hono } from "hono";
 
-import router from "./flags";
 import * as store from "../store";
 import { ISO8601 } from "../utils";
-import { Hono } from "hono";
-import { sql } from "drizzle-orm";
+
+import router from "./flags";
 
 store.init();
 

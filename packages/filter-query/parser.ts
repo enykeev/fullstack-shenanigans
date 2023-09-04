@@ -1,5 +1,5 @@
-import { Tokenizer } from "./tokenizer";
 import type { Node } from "./ast";
+import { Tokenizer } from "./tokenizer";
 import { traverse } from "./traversal";
 
 export type ParseOpts = {

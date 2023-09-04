@@ -1,6 +1,6 @@
 import type { Audience } from "@feature-flag-service/common";
-import { Show } from "solid-js";
 import { HiOutlineClock } from "solid-icons/hi";
+import { Show } from "solid-js";
 
 import "./styles.css";
 

@@ -1,9 +1,10 @@
 import { Database } from "bun:sqlite";
-import { InferSelectModel, and, eq, sql } from "drizzle-orm";
-import { migrate } from "drizzle-orm/bun-sqlite/migrator";
+import { and, eq, InferSelectModel, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/bun-sqlite";
-import * as schema from "./schema";
+import { migrate } from "drizzle-orm/bun-sqlite/migrator";
 import { SQLiteColumn } from "drizzle-orm/sqlite-core";
+
+import * as schema from "./schema";
 
 const { flagTable, audienceTable, overrideTable } = schema;
 

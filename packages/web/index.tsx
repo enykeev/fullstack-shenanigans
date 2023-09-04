@@ -1,15 +1,14 @@
-import { For, Match, MountableElement, Switch, render } from "solid-js/web";
-
-import { NavItem, Navigation } from "./components/navigation";
-import { navigate, path } from "./components/navigation/state";
-import { Logo } from "./components/logo";
-
-import FlagsPage from "./pages/flags";
-import AudiencesPage from "./pages/audiences";
-import OverridesPage from "./pages/overrides";
-import MissingPage from "./pages/missing";
-
 import "temporal-polyfill/global";
+
+import { For, Match, MountableElement, render, Switch } from "solid-js/web";
+
+import { Logo } from "./components/logo";
+import { Navigation, NavItem } from "./components/navigation";
+import { navigate, path } from "./components/navigation/state";
+import AudiencesPage from "./pages/audiences";
+import FlagsPage from "./pages/flags";
+import MissingPage from "./pages/missing";
+import OverridesPage from "./pages/overrides";
 
 import "./styles.css";
 

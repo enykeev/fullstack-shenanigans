@@ -1,11 +1,11 @@
 /// <reference types="bun-types" />
-import { HTTPException } from "hono/http-exception";
 import { Hono } from "hono";
-import { serveStatic } from "./serveStatic";
+import { HTTPException } from "hono/http-exception";
 
 import api from "./routes/api";
-import { logger } from "./logger";
 import { buildWeb } from "./build";
+import { logger } from "./logger";
+import { serveStatic } from "./serveStatic";
 import { init } from "./store";
 
 init({

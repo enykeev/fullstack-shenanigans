@@ -1,8 +1,9 @@
-import { Hono } from "hono";
-import * as store from "../store";
 import { AllMetaTypes, BaseFlag } from "@feature-flag-service/common";
-import { filterPredicate } from "1ql";
 import { EvaluateRequest } from "@feature-flag-service/common/models/match";
+import { filterPredicate } from "1ql";
+import { Hono } from "hono";
+
+import * as store from "../store";
 
 const router = new Hono<{ Variables: Variables }>();
 

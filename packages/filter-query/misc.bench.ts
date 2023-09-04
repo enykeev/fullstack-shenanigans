@@ -1,6 +1,7 @@
-import { run, bench, group, baseline } from "mitata";
-import { traverse } from "./traversal";
+import { baseline, bench, group, run } from "mitata";
+
 import { Node } from "./ast";
+import { traverse } from "./traversal";
 
 function getNode() {
   const a: Node = {
