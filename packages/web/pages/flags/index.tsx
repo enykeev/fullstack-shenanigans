@@ -11,12 +11,7 @@ import "./style.css";
 
 export default function FlagsPage() {
   async function fetchData(): Promise<Flag[]> {
-    const res = await fetch("/api/flags", {
-      headers: {
-        Authorization: "Bearer secret",
-      },
-    });
-
+    const res = await fetch("/api/flags");
     return res.json();
   }
 

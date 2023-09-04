@@ -11,14 +11,20 @@ export function Navigation({ children }: { children: JSX.Element }) {
 export function NavItem({
   children,
   href,
+  external = false,
   ...rest
 }: {
   children: JSX.Element;
   href: string;
+  external?: boolean;
 } & JSX.HTMLAttributes<HTMLDivElement>) {
   return (
     <div class="Navigation__Item" {...rest}>
-      <Link href={href}>{children}</Link>
+      {!external ? (
+        <Link href={href}>{children}</Link>
+      ) : (
+        <a href={href}>{children}</a>
+      )}
     </div>
   );
 }
@@ -39,4 +45,8 @@ export function Link(props: LinkProps) {
       {props.children}
     </a>
   );
+}
+
+export function NavSpacer() {
+  return <div class="Navigation__Spacer" />;
 }

@@ -3,6 +3,12 @@ import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 
 import api from "./routes/api";
+import {
+  cookiesSessionMiddleware,
+  getSession,
+  login,
+  logout,
+} from "./session/session";
 import { buildWeb } from "./build";
 import { logger } from "./logger";
 import { serveStatic } from "./serveStatic";
@@ -34,6 +40,12 @@ app.use("*", async (c, next) => {
     `${method} ${url} -> ${status}`,
   );
 });
+
+app.use("*", cookiesSessionMiddleware({ secret: "some" }));
+
+app.get("/login", async (c) => await login(c));
+app.get("/logout", async (c) => await logout(c));
+app.get("/session", async (c) => await getSession(c));
 
 app.route("/api", api);
 

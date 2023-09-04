@@ -10,6 +10,10 @@ import overrides from "./overrides";
 const router = new Hono<{ Variables: Variables }>();
 
 router.use("*", async (c, next) => {
+  if (c.get("X-App-Id")) {
+    return await next();
+  }
+
   const header = c.req.headers.get("Authorization");
   if (!header) {
     return c.json({ error: "unauthorized" }, 401);
@@ -28,7 +32,7 @@ router.use("*", async (c, next) => {
 
   c.set("X-App-Id", apiKey.appId);
 
-  await next();
+  return await next();
 });
 
 router.route("/flags", flags);

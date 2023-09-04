@@ -1,9 +1,10 @@
 import "temporal-polyfill/global";
 
+import { createResource } from "solid-js";
 import { For, Match, MountableElement, render, Switch } from "solid-js/web";
 
 import { Logo } from "./components/logo";
-import { Navigation, NavItem } from "./components/navigation";
+import { Navigation, NavItem, NavSpacer } from "./components/navigation";
 import { navigate, path } from "./components/navigation/state";
 import AudiencesPage from "./pages/audiences";
 import FlagsPage from "./pages/flags";
@@ -11,6 +12,10 @@ import MissingPage from "./pages/missing";
 import OverridesPage from "./pages/overrides";
 
 import "./styles.css";
+
+type Session = {
+  appId: string;
+};
 
 const ROUTES = [
   {
@@ -31,6 +36,13 @@ const ROUTES = [
 ];
 
 function Header({ onNavigate }: { onNavigate: (route: string) => void }) {
+  async function fetchData(): Promise<Session[]> {
+    const res = await fetch("/session");
+    return res.json();
+  }
+
+  const [session] = createResource<Session[]>(fetchData);
+
   return (
     <div class="header">
       <Logo />
@@ -42,6 +54,23 @@ function Header({ onNavigate }: { onNavigate: (route: string) => void }) {
             </NavItem>
           )}
         </For>
+        <NavSpacer />
+        <Switch>
+          <Match when={session()}>
+            <NavItem
+              href="/logout"
+              onClick={() => navigate("/logout")}
+              external
+            >
+              Logout
+            </NavItem>
+          </Match>
+          <Match when={!session()}>
+            <NavItem href="/login" onClick={() => navigate("/login")} external>
+              Login
+            </NavItem>
+          </Match>
+        </Switch>
       </Navigation>
     </div>
   );

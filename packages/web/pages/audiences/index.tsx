@@ -6,11 +6,7 @@ import { Loader } from "../../components/loader";
 
 export default function AudiencesPage() {
   async function fetchData(): Promise<Audience[]> {
-    const res = await fetch("/api/audiences", {
-      headers: {
-        Authorization: "Bearer secret",
-      },
-    });
+    const res = await fetch("/api/audiences");
 
     return res.json();
   }
