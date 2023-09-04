@@ -1,5 +1,7 @@
 import { Hono } from "hono";
 
+import * as store from "../store";
+
 import audiences from "./audiences";
 import flags from "./flags";
 import match from "./match";
@@ -18,11 +20,13 @@ router.use("*", async (c, next) => {
     return c.json({ error: "unauthorized" }, 401);
   }
 
-  if (token !== "secret") {
+  const apiKey = store.findApiKey({ apiKey: token });
+
+  if (!apiKey) {
     return c.json({ error: "unauthorized" }, 401);
   }
 
-  c.set("X-App-Id", "some-app-id");
+  c.set("X-App-Id", apiKey.appId);
 
   await next();
 });

@@ -16,6 +16,12 @@ describe("store", () => {
   beforeEach(() => {
     setSystemTime();
     store.db.run(sql`DELETE FROM flags`);
+    store.db.run(sql`DELETE FROM apiKeys`);
+    store.createApiKey({
+      appId: "test",
+      apiKey: "test-key",
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(),
+    });
     store.createFlag({
       appId: "test",
       flagId: "test",
@@ -24,6 +30,70 @@ describe("store", () => {
       type: "boolean",
       value: true,
     });
+  });
+
+  test("listApiKeys", () => {
+    const apiKeys = store.listApiKeys({ appId: "test" });
+    expect(apiKeys).toEqual([
+      {
+        appId: "test",
+        apiKey: "test-key",
+        createdAt: expect.stringMatching(ISO8601),
+        expiresAt: expect.stringMatching(ISO8601),
+      },
+    ]);
+  });
+
+  test("getApiKey", () => {
+    const apiKey = store.getApiKey({ appId: "test", apiKey: "test-key" });
+    expect(apiKey).toEqual({
+      appId: "test",
+      apiKey: "test-key",
+      createdAt: expect.stringMatching(ISO8601),
+      expiresAt: expect.stringMatching(ISO8601),
+    });
+  });
+
+  test("createApiKey", () => {
+    store.createApiKey({
+      appId: "test",
+      apiKey: "test-key2",
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(),
+    });
+    const apiKey = store.getApiKey({ appId: "test", apiKey: "test-key2" });
+    expect(apiKey).toEqual({
+      appId: "test",
+      apiKey: "test-key2",
+      createdAt: expect.stringMatching(ISO8601),
+      expiresAt: expect.stringMatching(ISO8601),
+    });
+  });
+
+  test("deleteApiKey", () => {
+    let apiKey = store.getApiKey({ appId: "test", apiKey: "test-key" });
+    expect(apiKey).not.toEqual(undefined);
+    store.deleteApiKey({
+      appId: "test",
+      apiKey: "test-key",
+    });
+    apiKey = store.getApiKey({ appId: "test", apiKey: "test-key" });
+    expect(apiKey).toEqual(undefined);
+  });
+
+  test("findApiKey", () => {
+    const apiKey = store.findApiKey({ apiKey: "test-key" });
+    expect(apiKey).toEqual({
+      appId: "test",
+      apiKey: "test-key",
+      createdAt: expect.stringMatching(ISO8601),
+      expiresAt: expect.stringMatching(ISO8601),
+    });
+  });
+
+  test("findApiKey with expired key", () => {
+    advanceTime(1000 * 60 * 60 * 24);
+    const apiKey = store.findApiKey({ apiKey: "test-key" });
+    expect(apiKey).toEqual(undefined);
   });
 
   test("listFlags", () => {

@@ -2,6 +2,19 @@ import { AllMetaTypes } from "@feature-flag-service/common";
 import { relations } from "drizzle-orm";
 import { blob, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
+export const apiKeysTable = sqliteTable(
+  "apiKeys",
+  {
+    appId: text("appId").notNull(),
+    apiKey: text("apiKey").notNull(),
+    createdAt: text("createdAt").notNull(),
+    expiresAt: text("expiresAt").notNull(),
+  },
+  (t) => ({
+    pk: primaryKey(t.apiKey),
+  }),
+);
+
 export const flagTable = sqliteTable(
   "flags",
   {

@@ -1,12 +1,14 @@
 import { Database } from "bun:sqlite";
-import { and, eq, InferSelectModel, sql } from "drizzle-orm";
+import { and, eq, gt, InferSelectModel, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/bun-sqlite";
 import { migrate } from "drizzle-orm/bun-sqlite/migrator";
 import { SQLiteColumn } from "drizzle-orm/sqlite-core";
 
 import * as schema from "./schema";
 
-const { flagTable, audienceTable, overrideTable } = schema;
+const DEFAULT_TOKEN_EXPIRE = 1000 * 60 * 60 * 24 * 90;
+
+const { flagTable, audienceTable, overrideTable, apiKeysTable } = schema;
 
 export const sqlite = new Database();
 export const db = drizzle(sqlite, { schema });
@@ -14,6 +16,7 @@ export const db = drizzle(sqlite, { schema });
 export type SelectFlagDB = InferSelectModel<typeof flagTable>;
 export type SelectAudienceDB = InferSelectModel<typeof audienceTable>;
 export type SelectOverrideDB = InferSelectModel<typeof overrideTable>;
+export type SelectApiKeyDB = InferSelectModel<typeof apiKeysTable>;
 
 export type InitArgs = {
   provisionMockData?: boolean;
@@ -44,6 +47,11 @@ export async function init({ provisionMockData = false }: InitArgs = {}) {
   migrate(db, { migrationsFolder: "migrations" });
 
   if (provisionMockData) {
+    createApiKey({
+      appId: "some-app-id",
+      apiKey: "secret",
+    });
+
     createFlag({
       appId: "some-app-id",
       flagId: "maintenance",
@@ -155,6 +163,83 @@ export async function init({ provisionMockData = false }: InitArgs = {}) {
       value: true,
     });
   }
+}
+
+export type ListApiKeysArgs = Pick<SelectApiKeyDB, "appId">;
+
+export function listApiKeys({ appId }: ListApiKeysArgs) {
+  return db.query.apiKeysTable
+    .findMany({
+      where: eq(apiKeysTable.appId, sql.placeholder("appId")),
+    })
+    .prepare()
+    .all({ appId });
+}
+
+export type GetApiKeyArgs = Pick<SelectApiKeyDB, "appId" | "apiKey">;
+
+export function getApiKey({ appId, apiKey }: GetApiKeyArgs) {
+  return db.query.apiKeysTable
+    .findFirst({
+      where: and(
+        eq(apiKeysTable.appId, sql.placeholder("appId")),
+        eq(apiKeysTable.apiKey, sql.placeholder("apiKey")),
+      ),
+    })
+    .prepare()
+    .all({ appId, apiKey });
+}
+
+export function createApiKey({
+  appId,
+  apiKey,
+  createdAt,
+  expiresAt,
+}: {
+  appId: string;
+  apiKey: string;
+  createdAt?: string;
+  expiresAt?: string;
+}) {
+  if (!createdAt) {
+    createdAt = new Date().toISOString();
+  }
+  if (!expiresAt) {
+    expiresAt = new Date(Date.now() + DEFAULT_TOKEN_EXPIRE).toISOString();
+  }
+  return db
+    .insert(apiKeysTable)
+    .values({ appId, apiKey, createdAt, expiresAt })
+    .run();
+}
+
+export type DeleteApiKeyArgs = Pick<SelectApiKeyDB, "appId" | "apiKey">;
+
+export function deleteApiKey({ appId, apiKey }: DeleteApiKeyArgs) {
+  return db
+    .delete(apiKeysTable)
+    .where(
+      and(
+        eq(apiKeysTable.appId, sql.placeholder("appId")),
+        eq(apiKeysTable.apiKey, sql.placeholder("apiKey")),
+      ),
+    )
+    .run({ appId, apiKey });
+}
+
+export type FindApiKeyArgs = Pick<SelectApiKeyDB, "apiKey">;
+
+export function findApiKey({ apiKey }: FindApiKeyArgs) {
+  const res = db.query.apiKeysTable
+    .findFirst({
+      where: and(
+        eq(apiKeysTable.apiKey, sql.placeholder("apiKey")),
+        gt(apiKeysTable.expiresAt, sql.placeholder("now")),
+      ),
+    })
+    .prepare()
+    .all({ apiKey, now: new Date().toISOString() });
+  return res;
 }
 
 export type ListFlagArgs = Pick<SelectFlagDB, "appId">;
