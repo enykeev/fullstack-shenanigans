@@ -91,6 +91,17 @@ describe("Flags Router", () => {
         type: "boolean",
         value: true,
       },
+      {
+        appId: "some-app-id",
+        createdAt: expect.stringMatching(ISO8601),
+        updatedAt: expect.stringMatching(ISO8601),
+        description: "test",
+        flagId: "test-no-override",
+        name: "test",
+        overrides: [],
+        type: "boolean",
+        value: true,
+      },
     ]);
   });
 
@@ -359,6 +370,17 @@ describe("Flags Router", () => {
         ],
         type: "boolean",
         value: false,
+      },
+      {
+        appId: "some-app-id",
+        createdAt: expect.stringMatching(ISO8601),
+        updatedAt: expect.stringMatching(ISO8601),
+        description: "test",
+        flagId: "test-no-override",
+        name: "test",
+        overrides: [],
+        type: "boolean",
+        value: true,
       },
     ]);
   });
