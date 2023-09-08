@@ -1,6 +1,6 @@
 import "temporal-polyfill/global";
 
-import { createResource } from "solid-js";
+import { createResource, Suspense } from "solid-js";
 import { For, Match, MountableElement, render, Switch } from "solid-js/web";
 
 import { Logo } from "./components/logo";
@@ -14,7 +14,8 @@ import OverridesPage from "./pages/overrides";
 import "./styles.css";
 
 type Session = {
-  appId: string;
+  id: string;
+  user: string;
 };
 
 const ROUTES = [
@@ -36,12 +37,12 @@ const ROUTES = [
 ];
 
 function Header({ onNavigate }: { onNavigate: (route: string) => void }) {
-  async function fetchData(): Promise<Session[]> {
-    const res = await fetch("/session");
+  async function fetchData(): Promise<Session> {
+    const res = await fetch("/me");
     return res.json();
   }
 
-  const [session] = createResource<Session[]>(fetchData);
+  const [session] = createResource<Session>(fetchData);
 
   return (
     <div class="header">
@@ -55,22 +56,28 @@ function Header({ onNavigate }: { onNavigate: (route: string) => void }) {
           )}
         </For>
         <NavSpacer />
-        <Switch>
-          <Match when={session()}>
-            <NavItem
-              href="/logout"
-              onClick={() => navigate("/logout")}
-              external
-            >
-              Logout
-            </NavItem>
-          </Match>
-          <Match when={!session()}>
-            <NavItem href="/login" onClick={() => navigate("/login")} external>
-              Login
-            </NavItem>
-          </Match>
-        </Switch>
+        <Suspense>
+          <Switch>
+            <Match when={session()?.id}>
+              <NavItem
+                href="/logout"
+                onClick={() => navigate("/logout")}
+                external
+              >
+                Logout
+              </NavItem>
+            </Match>
+            <Match when={!session()?.id}>
+              <NavItem
+                href="/login"
+                onClick={() => navigate("/login")}
+                external
+              >
+                Login
+              </NavItem>
+            </Match>
+          </Switch>
+        </Suspense>
       </Navigation>
     </div>
   );

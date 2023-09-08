@@ -3,16 +3,14 @@ import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 
 import api from "./routes/api";
-import {
-  cookiesSessionMiddleware,
-  getSession,
-  login,
-  logout,
-} from "./session/session";
+import { callback, login, logout, me, OAuthMiddleware } from "./auth";
 import { buildWeb } from "./build";
+import env from "./env";
 import { logger } from "./logger";
 import { serveStatic } from "./serveStatic";
+import { cookiesSessionMiddleware } from "./session";
 import { init } from "./store";
+import { Variables } from "./types";
 
 init({
   provisionMockData: Bun.env.PROVISION_MOCK_DATA?.toLowerCase() === "true",
@@ -43,9 +41,24 @@ app.use("*", async (c, next) => {
 
 app.use("*", cookiesSessionMiddleware({ secret: "some" }));
 
-app.get("/login", async (c) => await login(c));
-app.get("/logout", async (c) => await logout(c));
-app.get("/session", async (c) => await getSession(c));
+const authMiddleware = OAuthMiddleware(
+  new URL(env.ISSUER),
+  {
+    client_id: env.CLIENT_ID,
+    client_secret: env.CLIENT_SECRET,
+    token_endpoint_auth_method: "client_secret_basic",
+  },
+  new URL(`${env.PUBLIC_URL}/authorization-code/callback`),
+);
+
+app.get("/login", authMiddleware, async (c) => await login(c));
+app.get("/logout", authMiddleware, async (c) => await logout(c));
+app.get(
+  "/authorization-code/callback",
+  authMiddleware,
+  async (c) => await callback(c),
+);
+app.get("/me", async (c) => await me(c));
 
 app.route("/api", api);
 

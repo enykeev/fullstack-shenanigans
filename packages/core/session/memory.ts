@@ -2,16 +2,12 @@ import { SessionStore } from "./base";
 
 const DEFAULT_EXPIRES = 60 * 60 * 24 * 7;
 
+const globalStore: Record<string, { expires: number; data: unknown }> = {};
+
 export class MemorySessionStore<T extends Record<string, unknown>>
-  implements SessionStore
+  implements SessionStore<T>
 {
-  private store: Record<
-    string,
-    {
-      expires: number;
-      data: T;
-    }
-  > = {};
+  private store = globalStore as Record<string, { expires: number; data: T }>;
 
   get(sid: string) {
     return this.store[sid];
@@ -29,7 +25,9 @@ export class MemorySessionStore<T extends Record<string, unknown>>
   }
 
   clear() {
-    this.store = {};
+    Object.keys(this.store).forEach((_, sid) => {
+      delete this.store[sid];
+    });
   }
 
   all() {
