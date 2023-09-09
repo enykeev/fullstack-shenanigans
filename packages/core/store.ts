@@ -4,9 +4,10 @@ import { drizzle } from "drizzle-orm/bun-sqlite";
 import { migrate } from "drizzle-orm/bun-sqlite/migrator";
 import { SQLiteColumn } from "drizzle-orm/sqlite-core";
 
+import env from "./env";
 import * as schema from "./schema";
 
-const DEFAULT_TOKEN_EXPIRE = 1000 * 60 * 60 * 24 * 90;
+const DEFAULT_TOKEN_EXPIRATION = 1000 * 60 * 60 * 24 * 90;
 
 const { flagTable, audienceTable, overrideTable, apiKeysTable } = schema;
 
@@ -50,6 +51,9 @@ export async function init({ provisionMockData = false }: InitArgs = {}) {
     createApiKey({
       appId: "some-app-id",
       apiKey: "secret",
+      expiresAt: new Date(
+        Date.now() + (env.TOKEN_EXPIRATION ?? DEFAULT_TOKEN_EXPIRATION),
+      ).toISOString(),
     });
 
     createFlag({
@@ -205,7 +209,7 @@ export function createApiKey({
     createdAt = new Date().toISOString();
   }
   if (!expiresAt) {
-    expiresAt = new Date(Date.now() + DEFAULT_TOKEN_EXPIRE).toISOString();
+    expiresAt = new Date(Date.now() + DEFAULT_TOKEN_EXPIRATION).toISOString();
   }
   return db
     .insert(apiKeysTable)

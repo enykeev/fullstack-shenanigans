@@ -3,22 +3,25 @@ import { getSignedCookie, setSignedCookie } from "hono/cookie";
 import { CookieOptions } from "hono/utils/cookie";
 import crypto from "node:crypto";
 
+import env from "../env";
 import { SessionData, Variables } from "../types";
 
 import { MemorySessionStore } from "./memory";
 
-const SESSION_COOKIE_NAME = "s";
+const DEFAULT_COOKIE_NAME = "s";
 
 export function cookiesSessionMiddleware({
   secret,
-  name = SESSION_COOKIE_NAME,
+  name = DEFAULT_COOKIE_NAME,
   options,
 }: {
   secret: string;
   name?: string;
   options?: CookieOptions;
 }) {
-  const sessionStore = new MemorySessionStore<SessionData>();
+  const sessionStore = new MemorySessionStore<SessionData>({
+    expires: env.SESSION_EXPIRATION,
+  });
 
   return async (c: Context<{ Variables: Variables }>, next: Next) => {
     let sid = await getSignedCookie(c, secret, name);

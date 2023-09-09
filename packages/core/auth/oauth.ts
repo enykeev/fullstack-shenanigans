@@ -6,6 +6,11 @@ type CodeChallengeContext = {
   codeChallengeMethod: string;
 };
 
+// TODO: I should probably at some point replace all occuranceas of oauth4webapi
+// with my own implemetations of the oauth 2.1 spec. I don't have high confidence
+// in this library and it seems like a good learning exercise considering
+// oauth 2.1 is suppose to be a collection of "good parts" and best practices of
+// oauth.
 export class OAuth {
   issuer: URL;
   client: oauth2.Client;
@@ -105,15 +110,6 @@ export class OAuth {
       this.redirectUri.toString(),
       codeVerifier,
     );
-
-    // TODO: figure out challenges
-    const challenges = oauth2.parseWwwAuthenticateChallenges(grantResponse);
-    if (challenges) {
-      for (const challenge of challenges) {
-        console.log("challenge", challenge);
-      }
-      throw new Error(); // Handle www-authenticate challenges as needed
-    }
 
     const openIdResponse = await oauth2.processAuthorizationCodeOpenIDResponse(
       this.authServer,

@@ -13,7 +13,7 @@ import { init } from "./store";
 import { Variables } from "./types";
 
 init({
-  provisionMockData: Bun.env.PROVISION_MOCK_DATA?.toLowerCase() === "true",
+  provisionMockData: env.PROVISION_MOCK_DATA,
 });
 await buildWeb();
 
@@ -39,7 +39,13 @@ app.use("*", async (c, next) => {
   );
 });
 
-app.use("*", cookiesSessionMiddleware({ secret: "some" }));
+app.use(
+  "*",
+  cookiesSessionMiddleware({
+    name: env.SESSION_COOKIE_NAME,
+    secret: env.SESSION_SECRET,
+  }),
+);
 
 const authMiddleware = OAuthMiddleware(
   new URL(env.ISSUER),
@@ -78,6 +84,6 @@ app.use(
 );
 
 export default {
-  port: 3000,
+  port: env.PORT || 3000,
   fetch: app.fetch,
 };

@@ -1,13 +1,18 @@
 import { SessionStore } from "./base";
 
-const DEFAULT_EXPIRES = 60 * 60 * 24 * 7;
+const DEFAULT_SESSION_EXPIRATION = 60 * 60 * 24 * 7;
 
 const globalStore: Record<string, { expires: number; data: unknown }> = {};
 
 export class MemorySessionStore<T extends Record<string, unknown>>
   implements SessionStore<T>
 {
+  private expires: number;
   private store = globalStore as Record<string, { expires: number; data: T }>;
+
+  constructor({ expires }: { expires?: number } = {}) {
+    this.expires = expires ?? DEFAULT_SESSION_EXPIRATION;
+  }
 
   get(sid: string) {
     return this.store[sid];
@@ -15,7 +20,7 @@ export class MemorySessionStore<T extends Record<string, unknown>>
 
   set(sid: string, data: T, { expires }: { expires?: number } = {}) {
     this.store[sid] = {
-      expires: expires ?? Date.now() + DEFAULT_EXPIRES,
+      expires: Date.now() + (expires ?? this.expires),
       data,
     };
   }
