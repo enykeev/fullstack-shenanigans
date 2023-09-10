@@ -1,4 +1,9 @@
-import type { AllMetaTypes, Context, Flag } from "@feature-flag-service/common";
+import type {
+  AllMetaTypes,
+  Audience,
+  Context,
+  Flag,
+} from "@feature-flag-service/common";
 import deepEqual from "fast-deep-equal";
 import {
   createContext,
@@ -48,11 +53,12 @@ export function FeatureFlagProvider({
 
 export type useFeatureFlagOptions = {
   context?: Context;
+  audienceId?: Audience["audienceId"];
 };
 
 export function useFeatureFlag(
   flagId: Flag["flagId"],
-  { context }: useFeatureFlagOptions = {},
+  { context, audienceId }: useFeatureFlagOptions = {},
 ) {
   const service = useContext(FeatureFlagContext);
   const [flagValue, setFlagValue] = useState(
@@ -67,26 +73,30 @@ export function useFeatureFlag(
   useEffect(() => {
     async function evaluateContext() {
       if (!service) {
-        return undefined;
+        return;
       }
-      if (context) {
-        const overrides = await service.getOverridesForContext(context);
-        const override = overrides.find(
-          (override) => override.flagId === flagId,
-        );
-        if (override) {
-          setFlagValue({
-            type: override.type,
-            value: override.value,
-          } as AllMetaTypes);
-        } else {
-          const flag = service.getDefaultFlagValue(flagId);
-          setFlagValue(flag);
-        }
-      } else {
-        const flag = service.getDefaultFlagValue(flagId);
-        setFlagValue(flag);
-      }
+
+      // TODO: There's a valid reason for evaluating feature flags server side
+      // if number of flags is getting out of hand and we want to avoid
+      // pulling them all down to the client. To this end, I'm going to leave
+      // this snippet in here for now.
+      //
+      // if (context) {
+      //   const overrides = await service.getOverridesForContext(context);
+      //   const override = overrides.find(
+      //     (override) => override.flagId === flagId,
+      //   );
+      //   if (override) {
+      //     setFlagValue({
+      //       type: override.type,
+      //       value: override.value,
+      //     } as AllMetaTypes);
+      //     return;
+      //   }
+      // }
+
+      const flag = service.getFlagValue(flagId, { audienceId, context });
+      setFlagValue(flag);
     }
     evaluateContext().catch((err) => {
       console.error(err);
