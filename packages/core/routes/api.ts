@@ -17,6 +17,7 @@ router.use("*", async (c, next) => {
     "Access-Control-Allow-Headers",
     "Content-Type, Authorization",
   );
+  c.res.headers.set("Access-Control-Max-Age", "86400");
   if (c.req.method === "OPTIONS") {
     return new Response(null, {
       status: 200,
