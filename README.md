@@ -1,4 +1,8 @@
-# feature-flag-service
+# Full-stack shenanigans
+
+I realized that in a past few years working in the same company that I grew attached to a particular stack of technologies and rarely have a need and opportunity to go outside of this stack. This repo is a collection of services interacting with each other. They are not designed to be production ready services, but they still suppose to serve a certain function and be generally useful under a certain set of trade-offs I should be able to reason about.
+
+## feature-flag-service
 
 To install dependencies:
 
@@ -9,7 +13,11 @@ bun install
 To run:
 
 ```bash
-bun run src/index.ts | bunx pino-pretty
+bun run:core
 ```
 
-This project was created using `bun init` in bun v0.6.9. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+To create migrations:
+
+```bash
+bun gen:migration
+```

@@ -16,4 +16,9 @@
 - PostCSS is still the most enjoyable way for me to work with styles. Short of maybe Tailwind, but I wanted to write css by hand this time around.
 - `patch-package` works with bun without a hitch and is still a life saver.
 - `pino` in combination with `pino-pretty` is still pretty enjoyable logging framework, although a way to enforce some structure in logs is still desirable
-- `zod` is a curious validation library for TS although the jury is still out on if you can meкge it with decorator based approach such as TypeORM or TypeGraphQL uses.
+- `zod` is a curious validation library for TS although the jury is still out on if you can merge it with decorator based approach such as TypeORM or TypeGraphQL uses.
+- if you can't find a simple filter query parser, just write it yourself. Manual parsers are fun!
+- `zod` can also work decently well as a replacement for `envalid` to define a schema for your env variables
+- I've already forgot what you're missing by not having any dev tools for your global state management. Recoil is fun, but I do miss the level of introspection Redux provides.
+- Temporal API's are justifiably complicated and are yet to be widely supported. So far, DayJS is still a winner in my eyes when it comes to dealing with timestamps.
+- OAuth 2.1 suppose to be simplified version of OAuth 2.0 with all the best practices in one place and no need to go through another dozen of RFCs to paint a full picture. I'm yet to get through the entire spec, but it may be an interesting exercise to try and implement it myself and replace `oauth4webapi` that is currently used in this repo. 
