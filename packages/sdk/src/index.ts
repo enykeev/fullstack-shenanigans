@@ -1,4 +1,9 @@
-import type { Context, Flag } from "@feature-flag-service/common";
+import type {
+  AllMetaTypes,
+  Context,
+  Flag,
+  Override,
+} from "@feature-flag-service/common";
 
 export type FeatureFlagServiceArgs = {
   endpoint: string;
@@ -38,17 +43,20 @@ export class FeatureFlagService<T extends Context = object> {
     return {
       type: flag.type,
       value: flag.value,
-    };
+    } as AllMetaTypes;
   }
   async getOverridesForContext(context: T) {
-    const res = await fetch(this.endpoint, {
+    const res = await fetch(`${this.endpoint}/api/match`, {
       method: "POST",
       body: JSON.stringify({
         returns: "overrides",
         context,
       }),
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+      },
     });
 
-    return res.json();
+    return (await res.json()) as Override[];
   }
 }

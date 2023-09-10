@@ -120,7 +120,7 @@ export async function init({ provisionMockData = false }: InitArgs = {}) {
       description: "Users that are located in the Netherlands",
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      filter: "user.country == 'nl'",
+      filter: "user.locale == 'nl-NL'",
     });
 
     createOverride({

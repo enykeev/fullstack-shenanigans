@@ -211,7 +211,10 @@ function Header() {
 
 function App() {
   const theme = useSelector((state) => state.app.theme);
-  const kingsDayFlag = useFeatureFlag('holiday-nl-1');
+  const locale = useSelector((state) => state.app.locale);
+  const username = useSelector((state) => state.app.username);
+  const context = { user: { email: username, locale } };
+  const kingsDayFlag = useFeatureFlag('holiday-nl-1', { context });
   return (
     <div className="App" id={kingsDayFlag?.value ? 'KingsDayTheme' : theme}>
       <Header />

@@ -12,6 +12,16 @@
   color: #222;
 }
 
+#KingsDayTheme .LocaleDropdown {
+  background-color: #f90;
+}
+
+#KingsDayTheme .LocaleDropdown__button {
+  border-color: #f70;
+  background-color: #fa0;
+  color: #222;
+}
+
 .Backdrop {
   position: fixed;
   top: 0;
