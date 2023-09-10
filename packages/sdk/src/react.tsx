@@ -14,18 +14,16 @@ import {
   useState,
 } from "react";
 
-import { FeatureFlagService } from ".";
+import { FeatureFlagServiceArgs } from "../dist/index";
+
+import { FeatureFlagListener, FeatureFlagService } from ".";
 
 export const FeatureFlagContext = createContext<FeatureFlagService | undefined>(
   undefined,
 );
 
 export type FeatureFlagProviderProps = {
-  config: {
-    endpoint: string;
-    appId: string;
-    token: string;
-  };
+  config: FeatureFlagServiceArgs;
   children: ReactNode;
 };
 
@@ -51,16 +49,22 @@ export function FeatureFlagProvider({
   );
 }
 
+export function useFeatureFlagsService() {
+  const service = useContext(FeatureFlagContext);
+  return service;
+}
+
 export type useFeatureFlagOptions = {
   context?: Context;
   audienceId?: Audience["audienceId"];
+  live?: boolean;
 };
 
 export function useFeatureFlag(
   flagId: Flag["flagId"],
-  { context, audienceId }: useFeatureFlagOptions = {},
+  { context, audienceId, live = false }: useFeatureFlagOptions = {},
 ) {
-  const service = useContext(FeatureFlagContext);
+  const service = useFeatureFlagsService();
   const [flagValue, setFlagValue] = useState(
     undefined as AllMetaTypes | undefined,
   );
@@ -101,6 +105,17 @@ export function useFeatureFlag(
     evaluateContext().catch((err) => {
       console.error(err);
     });
+    if (live && service) {
+      const fn: FeatureFlagListener = (err) => {
+        if (!err) {
+          evaluateContext();
+        }
+      };
+      service.addListener(fn);
+      return () => {
+        service.removeListener(fn);
+      };
+    }
   }, [service, flagId, contextRef.current]);
   return flagValue;
 }

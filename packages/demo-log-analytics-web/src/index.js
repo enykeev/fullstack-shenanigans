@@ -11,6 +11,7 @@ const featureFlagConfig = {
   endpoint: 'http://localhost:3000',
   appId: 'some-app-id',
   token: 'secret',
+  pollingInterval: 5000,
 };
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
