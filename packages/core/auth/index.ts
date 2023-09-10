@@ -82,5 +82,10 @@ export async function logout(c: Context<{ Variables: Variables }>) {
 export async function me(c: Context<{ Variables: Variables }>) {
   const sid = c.get("X-Session-Id");
   const session = c.get("sessionStore").get(sid);
-  return c.json(session?.data.user || {});
+  const user = session?.data.user;
+  const appId = session?.data.appId;
+  return c.json({
+    user,
+    appId,
+  });
 }

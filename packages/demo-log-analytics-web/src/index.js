@@ -5,12 +5,21 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {store} from './store';
 import {Provider} from 'react-redux';
+import { FeatureFlagProvider } from '@feature-flag-service/sdk/react';
+
+const featureFlagConfig = {
+  endpoint: 'http://localhost:3000',
+  appId: 'some-app-id',
+  token: 'secret',
+};
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <FeatureFlagProvider config={featureFlagConfig}>
+        <App />
+      </FeatureFlagProvider>
     </Provider>
   </React.StrictMode>
 );

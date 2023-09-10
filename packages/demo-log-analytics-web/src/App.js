@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setFilter } from './store/reducers/filter'
 import { login } from './store/reducers/user'
 import { setLocale } from './store/reducers/app'
+import { useFeatureFlag } from '@feature-flag-service/sdk/react';
 
 import './App.css';
 
@@ -210,8 +211,9 @@ function Header() {
 
 function App() {
   const theme = useSelector((state) => state.app.theme);
+  const kingsDayFlag = useFeatureFlag('holiday-nl-1');
   return (
-    <div className="App" id={theme}>
+    <div className="App" id={kingsDayFlag?.value ? 'KingsDayTheme' : theme}>
       <Header />
       <div className="App__body">
         <LogViewer />

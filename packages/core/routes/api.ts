@@ -10,6 +10,21 @@ import overrides from "./overrides";
 
 const router = new Hono<{ Variables: Variables }>();
 
+router.use("*", async (c, next) => {
+  c.res.headers.set("Access-Control-Allow-Origin", "*");
+  c.res.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  c.res.headers.set(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization",
+  );
+  if (c.req.method === "OPTIONS") {
+    return new Response(null, {
+      status: 200,
+      headers: c.res.headers,
+    });
+  }
+  return await next();
+});
 router.use("*", BearerMiddleware());
 
 router.route("/flags", flags);
