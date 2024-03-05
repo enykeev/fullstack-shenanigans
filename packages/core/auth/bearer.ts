@@ -9,7 +9,7 @@ export const BearerMiddleware = () => {
       return await next();
     }
 
-    const header = c.req.headers.get("Authorization");
+    const header = c.req.header("Authorization");
     if (!header) {
       return c.json({ error: "unauthorized" }, 401);
     }

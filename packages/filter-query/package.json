@@ -4,6 +4,6 @@
   "type": "module",
   "dependencies": {},
   "devDependencies": {
-    "mitata": "^0.1.6"
+    "mitata": "^0.1.11"
   }
 }
