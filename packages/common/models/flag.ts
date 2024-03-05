@@ -4,7 +4,7 @@ export const BaseFlag = z.object({
   appId: z.string(),
   flagId: z.string(),
   name: z.string(),
-  description: z.string().nullable(),
+  description: z.string().optional(),
   createdAt: z.string(),
   updatedAt: z.string(),
   type: z.string(),
@@ -41,6 +41,34 @@ export const AllMetaTypes = z.union([
 
 export type AllMetaTypes = z.infer<typeof AllMetaTypes>;
 
+export const AllMetaTypesOptional = z.union([
+  BooleanFlagMeta.partial(),
+  StringFlagMeta.partial(),
+  NumberFlagMeta.partial(),
+]);
+
+export type AllMetaTypesOptional = z.infer<typeof AllMetaTypesOptional>;
+
 export const Flag = BaseFlag.and(AllMetaTypes);
 
 export type Flag = z.infer<typeof Flag>;
+
+export const PostFlagBody = BaseFlag.pick({
+  flagId: true,
+  name: true,
+  description: true,
+}).and(AllMetaTypes);
+
+export type PostFlagBody = z.infer<typeof PostFlagBody>;
+
+export const PutFlagBody = BaseFlag.pick({
+  name: true,
+  description: true,
+})
+  .partial({
+    name: true,
+    description: true,
+  })
+  .and(AllMetaTypesOptional);
+
+export type PutFlagBody = z.infer<typeof PutFlagBody>;

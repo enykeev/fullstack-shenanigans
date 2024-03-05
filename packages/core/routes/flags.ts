@@ -1,4 +1,4 @@
-import { AllMetaTypes, BaseFlag } from "@feature-flag-service/common";
+import { PostFlagBody, PutFlagBody } from "@feature-flag-service/common";
 import { EvaluateRequest } from "@feature-flag-service/common/models/match";
 import { filterPredicate } from "1ql";
 import { Hono } from "hono";
@@ -24,12 +24,6 @@ router.get("/:flagId", (c) => {
   return c.json(flag);
 });
 
-export const PostFlagBody = BaseFlag.pick({
-  flagId: true,
-  name: true,
-  description: true,
-}).and(AllMetaTypes);
-
 router.post("/", async (c) => {
   const appId = c.get("X-App-Id");
   const params = PostFlagBody.safeParse(await c.req.json());
@@ -41,14 +35,16 @@ router.post("/", async (c) => {
   if (existingFlag) {
     return c.json({ error: "already exists" }, 409);
   }
-  store.createFlag({ ...params.data, appId, flagId });
+  const { description, ...rest } = params.data;
+  store.createFlag({
+    ...rest,
+    description: description || null,
+    appId,
+    flagId,
+  });
   const flag = store.getFlag({ appId, flagId });
   return c.json(flag);
 });
-
-export const PutFlagBody = BaseFlag.pick({ name: true, description: true }).and(
-  AllMetaTypes,
-);
 
 router.put("/:flagId", async (c) => {
   const appId = c.get("X-App-Id");
@@ -61,7 +57,16 @@ router.put("/:flagId", async (c) => {
   if (!existingFlag) {
     return c.json({ error: "not found" }, 404);
   }
-  store.updateFlag({ ...existingFlag, ...params.data });
+  //eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { overrides, updatedAt, ...rest } = existingFlag;
+  const { name, description, type, value } = params.data;
+  const updatedFlag = Object.assign({}, rest, {
+    name,
+    description,
+    type,
+    value,
+  });
+  store.updateFlag(updatedFlag);
   const flag = store.getFlag({ appId, flagId });
   return c.json(flag);
 });

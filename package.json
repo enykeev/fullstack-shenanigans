@@ -32,7 +32,9 @@
   },
   "scripts": {
     "prepare": "husky install",
+    "build:sdk": "bun --cwd packages/sdk build",
     "gen:migration": "drizzle-kit generate:sqlite --schema packages/core/schema.ts --out migrations",
-    "run:core": "bun run packages/core/index.ts | bunx pino-pretty"
+    "run:core": "bun run packages/core/index.ts | bunx pino-pretty",
+    "run:cli": "bun run packages/cli/index.ts"
   }
 }

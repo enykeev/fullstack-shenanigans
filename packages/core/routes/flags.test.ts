@@ -274,6 +274,7 @@ describe("Flags Router", () => {
         name: "test2",
         description: "test2",
         type: "boolean",
+        value: 1,
       }),
     });
     const res = await testRouter.request(req);

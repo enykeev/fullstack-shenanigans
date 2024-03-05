@@ -4,9 +4,104 @@ import type {
   Context,
   Flag,
   FlagWithOverrides,
+  MatchRequest,
   Override,
+  PostFlagBody,
+  PutFlagBody,
 } from "@feature-flag-service/common";
 import { filterPredicate } from "1ql";
+
+function makeClient({
+  endpoint,
+  token,
+  fetcher,
+}: {
+  endpoint: string;
+  token: string;
+  fetcher: typeof fetch;
+}) {
+  return async function (path: string, opts: RequestInit = {}) {
+    const res = await fetcher(`${endpoint}${path}`, {
+      ...opts,
+      headers: {
+        ...opts.headers,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (res.status >= 400 && res.status < 500) {
+      const message = (await res.json()).error;
+      throw new Error(message);
+    }
+    return await res.json();
+  };
+}
+
+export type FeatureFlagAPIArgs = {
+  endpoint: string;
+  appId: string;
+  token: string;
+  fetcher?: (input: URL | RequestInfo, init?: RequestInit) => Promise<Response>;
+};
+
+export class FeatureFlagAPI {
+  private appId: string;
+  private client: (path: string, opts?: RequestInit) => Promise<unknown>;
+
+  constructor({ endpoint, appId, token, fetcher = fetch }: FeatureFlagAPIArgs) {
+    this.appId = appId;
+    this.client = makeClient({ endpoint, token, fetcher });
+  }
+
+  async getFlags() {
+    const res = await this.client("/api/flags");
+    return res as FlagWithOverrides[];
+  }
+
+  async getFlag(flagId: Flag["flagId"]) {
+    const res = await this.client(`/api/flags/${flagId}`);
+    return res as FlagWithOverrides;
+  }
+
+  async createFlag(flag: PostFlagBody) {
+    const res = await this.client(`/api/flags`, {
+      method: "POST",
+      body: JSON.stringify(flag),
+    });
+    return res as FlagWithOverrides;
+  }
+
+  async updateFlag(flag: PutFlagBody & { flagId: Flag["flagId"] }) {
+    const res = await this.client(`/api/flags/${flag.flagId}`, {
+      method: "PUT",
+      body: JSON.stringify(flag),
+    });
+    return res as FlagWithOverrides;
+  }
+
+  async match(
+    opts: MatchRequest & { returns: "overrides" },
+  ): Promise<Override[]>;
+  async match(
+    opts: MatchRequest & { returns: "flags" },
+  ): Promise<FlagWithOverrides[]>;
+  async match(
+    opts: MatchRequest & { returns: "audiences" },
+  ): Promise<Audience[]>;
+  async match(opts: MatchRequest) {
+    const res = await this.client(`/api/match`, {
+      method: "POST",
+      body: JSON.stringify(opts),
+    });
+    switch (opts.returns) {
+      case "overrides":
+        return res;
+      case "flags":
+        return res;
+      case "audiences":
+        return res;
+    }
+  }
+}
 
 export type FeatureFlagServiceArgs = {
   endpoint: string;
@@ -21,9 +116,7 @@ export type FeatureFlagListener = (
 ) => void;
 
 export class FeatureFlagService<T extends Context = object> {
-  private endpoint: string;
-  private appId: string;
-  private token: string;
+  private client: FeatureFlagAPI;
   private pollingInterval: number | undefined;
   private pollingTimer: Timer | undefined;
   private abortController: AbortController | undefined;
@@ -35,9 +128,7 @@ export class FeatureFlagService<T extends Context = object> {
     token,
     pollingInterval,
   }: FeatureFlagServiceArgs) {
-    this.endpoint = endpoint;
-    this.appId = appId;
-    this.token = token;
+    this.client = new FeatureFlagAPI({ endpoint, appId, token });
     this.pollingInterval = pollingInterval;
   }
   async init() {
@@ -64,13 +155,7 @@ export class FeatureFlagService<T extends Context = object> {
     }
     this.abortController = new AbortController();
     try {
-      const res = await fetch(`${this.endpoint}/api/flags`, {
-        headers: {
-          Authorization: `Bearer ${this.token}`,
-        },
-        signal: this.abortController.signal,
-      });
-      this.flags = (await res.json()) as FlagWithOverrides[];
+      this.flags = await this.client.getFlags();
       this.listeners.forEach((listener) => listener(null, this.flags));
     } catch (e) {
       this.listeners.forEach((listener) => listener(e as Error, this.flags));
@@ -126,17 +211,9 @@ export class FeatureFlagService<T extends Context = object> {
     } as AllMetaTypes;
   }
   async getOverridesForContext(context: T) {
-    const res = await fetch(`${this.endpoint}/api/match`, {
-      method: "POST",
-      body: JSON.stringify({
-        returns: "overrides",
-        context,
-      }),
-      headers: {
-        Authorization: `Bearer ${this.token}`,
-      },
-    });
-
-    return (await res.json()) as Override[];
+    return (await this.client.match({
+      returns: "overrides",
+      context,
+    })) satisfies Override[];
   }
 }
