@@ -1,6 +1,6 @@
 import { AllMetaTypes } from "@feature-flag-service/common";
 import { relations } from "drizzle-orm";
-import { blob, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const apiKeysTable = sqliteTable(
   "apiKeys",
@@ -24,7 +24,7 @@ export const flagTable = sqliteTable(
     description: text("description"),
     createdAt: text("createdAt").notNull(),
     updatedAt: text("updatedAt").notNull(),
-    meta: blob("meta", { mode: "json" }).notNull().$type<AllMetaTypes>(),
+    meta: text("meta", { mode: "json" }).notNull().$type<AllMetaTypes>(),
   },
   (t) => ({
     pk: primaryKey(t.appId, t.flagId),
@@ -40,7 +40,7 @@ export const audienceTable = sqliteTable(
     description: text("description"),
     createdAt: text("createdAt").notNull(),
     updatedAt: text("updatedAt").notNull(),
-    meta: blob("meta", { mode: "json" }).notNull().$type<{ filter: string }>(),
+    meta: text("meta", { mode: "json" }).notNull().$type<{ filter: string }>(),
   },
   (t) => ({
     pk: primaryKey(t.appId, t.audienceId),
@@ -56,7 +56,7 @@ export const overrideTable = sqliteTable(
     audienceId: text("audienceId").notNull(),
     createdAt: text("createdAt").notNull(),
     updatedAt: text("updatedAt").notNull(),
-    meta: blob("meta", { mode: "json" }).notNull().$type<AllMetaTypes>(),
+    meta: text("meta", { mode: "json" }).notNull().$type<AllMetaTypes>(),
   },
   (t) => ({
     pk: primaryKey(t.appId, t.overrideId),
