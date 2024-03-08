@@ -14,9 +14,11 @@ import {
   useState,
 } from "react";
 
-import { type FeatureFlagServiceArgs } from "../dist/index";
-
-import { type FeatureFlagListener, FeatureFlagService } from ".";
+import {
+  type FeatureFlagListener,
+  FeatureFlagService,
+  type FeatureFlagServiceArgs,
+} from ".";
 
 export const FeatureFlagContext = createContext<FeatureFlagService | undefined>(
   undefined,
