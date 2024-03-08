@@ -1,9 +1,9 @@
 import {
-  ColumnDef,
+  type ColumnDef,
   createSolidTable,
   flexRender,
   getCoreRowModel,
-  RowData,
+  type RowData,
 } from "@tanstack/solid-table";
 import { For } from "solid-js";
 

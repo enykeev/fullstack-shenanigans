@@ -1,6 +1,6 @@
 import { bench, prepare, run } from "mitata";
 
-import { Token, Tokenizer } from "./tokenizer";
+import { type Token, Tokenizer } from "./tokenizer";
 
 let tokenizer: Tokenizer;
 let result: Token | undefined;
