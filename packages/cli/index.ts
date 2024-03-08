@@ -67,7 +67,6 @@ program
       token: "secret",
     });
     const flags = await client.getFlags();
-    console.log(flags);
     await Bun.write(Bun.stdout, drawTable(FLAG_COLS, flags) + "\n");
   });
 
