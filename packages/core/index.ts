@@ -1,4 +1,4 @@
-import { Serve } from "bun";
+import { type Serve } from "bun";
 
 import { getApp } from "./app";
 import { buildWeb } from "./build";

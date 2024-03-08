@@ -1,4 +1,4 @@
-import type { Node } from "./ast";
+import { type Node } from "./ast";
 
 export function check(obj: Record<string, unknown>, stage?: Node): unknown {
   if (!stage) {

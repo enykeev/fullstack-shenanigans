@@ -2,7 +2,7 @@ import autoprefixer from "autoprefixer";
 import * as esbuild from "esbuild";
 import { solidPlugin } from "esbuild-plugin-solid";
 import { sassPlugin } from "esbuild-sass-plugin";
-import postcss, { AcceptedPlugin } from "postcss";
+import postcss, { type AcceptedPlugin } from "postcss";
 import postcssNested from "postcss-nested";
 import postcssPresetEnv from "postcss-preset-env";
 

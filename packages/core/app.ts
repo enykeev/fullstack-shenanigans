@@ -7,7 +7,7 @@ import type { Env } from "./env";
 import { logger } from "./logger";
 import { serveStatic } from "./serveStatic";
 import { cookiesSessionMiddleware } from "./session";
-import { Variables } from "./types";
+import { type Variables } from "./types";
 
 export function getApp(environment: Env) {
   const app = new Hono<{ Variables: Variables }>();

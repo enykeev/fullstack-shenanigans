@@ -7,16 +7,16 @@ import type {
 import deepEqual from "fast-deep-equal";
 import {
   createContext,
-  ReactNode,
+  type ReactNode,
   useContext,
   useEffect,
   useRef,
   useState,
 } from "react";
 
-import { FeatureFlagServiceArgs } from "../dist/index";
+import { type FeatureFlagServiceArgs } from "../dist/index";
 
-import { FeatureFlagListener, FeatureFlagService } from ".";
+import { type FeatureFlagListener, FeatureFlagService } from ".";
 
 export const FeatureFlagContext = createContext<FeatureFlagService | undefined>(
   undefined,

@@ -1,5 +1,5 @@
 import { OAuth } from "./auth/oauth";
-import { SessionStore } from "./session/base";
+import { type SessionStore } from "./session/base";
 
 export type SessionData = {
   appId?: string;

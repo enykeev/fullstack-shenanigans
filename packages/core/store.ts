@@ -1,5 +1,5 @@
 import { Database } from "bun:sqlite";
-import { and, eq, gt, InferSelectModel, sql } from "drizzle-orm";
+import { and, eq, gt, type InferSelectModel, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/bun-sqlite";
 import { migrate } from "drizzle-orm/bun-sqlite/migrator";
 import { SQLiteColumn } from "drizzle-orm/sqlite-core";

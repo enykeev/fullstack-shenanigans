@@ -1,6 +1,6 @@
 import { baseline, bench, group, run } from "mitata";
 
-import { Node } from "./ast";
+import { type Node } from "./ast";
 import { traverse } from "./traversal";
 
 function getNode() {
@@ -55,12 +55,12 @@ group("Deleting vs setting to undefined", () => {
 
   bench("delete nodes", () => {
     const a: Record<string, string | undefined> = { b: "c" };
-    delete a.b;
+    delete a["b"];
   });
 
   bench("set nodes to undefined", () => {
     const a: Record<string, string | undefined> = { b: "c" };
-    a.b = undefined;
+    a["b"] = undefined;
   });
 
   // Result: Deleting a property is about 4x slower than setting it to undefined

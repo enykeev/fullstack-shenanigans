@@ -146,7 +146,7 @@ export class Tokenizer {
       if (match && match.groups) {
         const token: Token = {
           tag: matchers[i].tag,
-          value: match.groups.value,
+          value: match.groups["value"],
           start: this.index,
           end: this.index + match[0].length,
         };

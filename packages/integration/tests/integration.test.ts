@@ -2,8 +2,11 @@ import { FlagWithOverrides } from "@feature-flag-service/common";
 import { getApp } from "@feature-flag-service/core/app";
 import { addHook, clearHooks } from "@feature-flag-service/core/logger";
 import { init } from "@feature-flag-service/core/store";
-import { FeatureFlagAPI, FeatureFlagAPIArgs } from "@feature-flag-service/sdk";
-import { serve, Server } from "bun";
+import {
+  FeatureFlagAPI,
+  type FeatureFlagAPIArgs,
+} from "@feature-flag-service/sdk";
+import { serve, type Server } from "bun";
 import {
   afterAll,
   beforeAll,

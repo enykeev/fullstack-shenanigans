@@ -5,7 +5,7 @@ import { filterPredicate } from "1ql";
 import { Hono } from "hono";
 
 import * as store from "../store";
-import { Variables } from "../types";
+import { type Variables } from "../types";
 
 const router = new Hono<{ Variables: Variables }>();
 

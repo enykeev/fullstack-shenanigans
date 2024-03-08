@@ -1,4 +1,4 @@
-import { SessionStore } from "./base";
+import { type SessionStore } from "./base";
 
 const DEFAULT_SESSION_EXPIRATION = 60 * 60 * 24 * 7;
 

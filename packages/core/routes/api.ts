@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 
 import { BearerMiddleware } from "../auth/bearer";
-import { Variables } from "../types";
+import { type Variables } from "../types";
 
 import audiences from "./audiences";
 import flags from "./flags";

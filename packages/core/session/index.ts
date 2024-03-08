@@ -1,10 +1,10 @@
-import { Context, Next } from "hono";
+import { type Context, type Next } from "hono";
 import { getSignedCookie, setSignedCookie } from "hono/cookie";
-import { CookieOptions } from "hono/utils/cookie";
+import { type CookieOptions } from "hono/utils/cookie";
 import crypto from "node:crypto";
 
 import env from "../env";
-import { SessionData, Variables } from "../types";
+import { type SessionData, type Variables } from "../types";
 
 import { MemorySessionStore } from "./memory";
 

@@ -1,4 +1,4 @@
-import pino, { LogFn, Logger } from "pino";
+import pino, { type LogFn, type Logger } from "pino";
 
 type LogSignature<T extends object> = (
   obj: T,

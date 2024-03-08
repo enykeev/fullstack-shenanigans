@@ -1,8 +1,8 @@
-import { Context } from "hono";
+import { type Context } from "hono";
 import { deleteCookie } from "hono/cookie";
 import * as oauth2 from "oauth4webapi";
 
-import { Variables } from "../types";
+import { type Variables } from "../types";
 
 import { OAuth } from "./oauth";
 
@@ -61,7 +61,7 @@ export async function callback(c: Context<{ Variables: Variables }>) {
     appId: "some-app-id",
     user: {
       id: claims.sub,
-      email: claims.email! as string,
+      email: claims["email"] as string,
     },
     authToken: response.access_token,
   });

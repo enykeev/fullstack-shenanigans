@@ -3,7 +3,7 @@ import { sql } from "drizzle-orm";
 import { Hono } from "hono";
 
 import * as store from "../store";
-import { Variables } from "../types";
+import { type Variables } from "../types";
 import { ISO8601 } from "../utils";
 
 import router from "./flags";

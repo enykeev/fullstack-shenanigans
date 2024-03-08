@@ -1,4 +1,4 @@
-import type { Node } from "./ast";
+import { type Node } from "./ast";
 
 export function traverse(node: Node | undefined, fn: (node: Node) => void) {
   if (!node) {

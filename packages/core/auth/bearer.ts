@@ -1,7 +1,7 @@
-import { Context, Next } from "hono";
+import { type Context, type Next } from "hono";
 
 import * as store from "../store";
-import { Variables } from "../types";
+import { type Variables } from "../types";
 
 export const BearerMiddleware = () => {
   return async (c: Context<{ Variables: Variables }>, next: Next) => {

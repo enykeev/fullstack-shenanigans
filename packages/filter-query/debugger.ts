@@ -1,4 +1,4 @@
-import type { Node } from "./ast";
+import { type Node } from "./ast";
 
 export function printAST(node: Node | undefined, level = 0) {
   if (!node) {
