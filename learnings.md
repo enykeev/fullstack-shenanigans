@@ -21,4 +21,14 @@
 - `zod` can also work decently well as a replacement for `envalid` to define a schema for your env variables
 - I've already forgot what you're missing by not having any dev tools for your global state management. Recoil is fun, but I do miss the level of introspection Redux provides.
 - Temporal API's are justifiably complicated and are yet to be widely supported. So far, DayJS is still a winner in my eyes when it comes to dealing with timestamps.
-- OAuth 2.1 suppose to be simplified version of OAuth 2.0 with all the best practices in one place and no need to go through another dozen of RFCs to paint a full picture. I'm yet to get through the entire spec, but it may be an interesting exercise to try and implement it myself and replace `oauth4webapi` that is currently used in this repo. 
+- OAuth 2.1 suppose to be simplified version of OAuth 2.0 with all the best practices in one place and no need to go through another dozen of RFCs to paint a full picture. I'm yet to get through the entire spec, but it may be an interesting exercise to try and implement it myself and replace `oauth4webapi` that is currently used in this repo.
+- After a long haitus, upgrading dependencies ended up being easier than anticipated. There were some minor breaking changes in Hono, and sqlite\drizzle, but pretty much everything else worked straight out of the box.
+- Newer versions of Bun introduced some curious QoL improvements I want to remember of:
+  - https://bun.sh/docs/runtime/jsx#logging
+  - https://bun.sh/docs/runtime/jsx#prop-punning
+  - https://bun.sh/docs/runtime/env#expansion
+  - https://bun.sh/docs/runtime/hot#hot-mode
+  - https://bun.sh/docs/runtime/autoimport
+  - https://bun.sh/docs/runtime/debugger
+- Github Actions have improved significantly over the years and warrant a fresh look. New types of events (https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows) look particularly curious.
+- It might be time to re-evaluate Bun.build and Bun.transpile maturity.
