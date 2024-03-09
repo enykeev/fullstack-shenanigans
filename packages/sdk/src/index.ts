@@ -44,6 +44,7 @@ export type FeatureFlagAPIArgs = {
 };
 
 export class FeatureFlagAPI {
+  // @ts-expect-error appId is not being used yet
   private appId: string;
   private client: (path: string, opts?: RequestInit) => Promise<unknown>;
 
