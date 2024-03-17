@@ -7,16 +7,16 @@
   &__Item {
     a {
       display: block;
-  
+
       padding: 8px;
       margin: 8px;
-  
+
       border-radius: 3px;
-  
+
       text-decoration: none;
       color: inherit;
       font-weight: bold;
-  
+
       &:hover {
         background: #444;
       }
@@ -27,4 +27,3 @@
     flex: 1;
   }
 }
-

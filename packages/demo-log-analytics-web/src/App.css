@@ -58,7 +58,7 @@
   width: 48px;
   height: 32px;
   pointer-events: none;
-  fill: #61DAFB;
+  fill: #61dafb;
 }
 
 .Header__spacer {
@@ -166,7 +166,7 @@
 .LogList {
   flex: 1;
   overflow: auto;
-} 
+}
 
 .LogListItem {
   display: flex;

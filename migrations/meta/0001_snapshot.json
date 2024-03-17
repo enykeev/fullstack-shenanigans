@@ -98,10 +98,7 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {
         "audiences_appId_audienceId_pk": {
-          "columns": [
-            "appId",
-            "audienceId"
-          ]
+          "columns": ["appId", "audienceId"]
         }
       },
       "uniqueConstraints": {}
@@ -163,10 +160,7 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {
         "flags_appId_flagId_pk": {
-          "columns": [
-            "appId",
-            "flagId"
-          ]
+          "columns": ["appId", "flagId"]
         }
       },
       "uniqueConstraints": {}
@@ -228,10 +222,7 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {
         "overrides_appId_overrideId_pk": {
-          "columns": [
-            "appId",
-            "overrideId"
-          ]
+          "columns": ["appId", "overrideId"]
         }
       },
       "uniqueConstraints": {}

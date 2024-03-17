@@ -29,7 +29,7 @@
     // Interops
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    
+
     "types": ["web", "bun-types"]
   }
 }

@@ -1,20 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import {store} from './store';
-import {Provider} from 'react-redux';
-import { FeatureFlagProvider } from '@feature-flag-service/sdk/react';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { store } from "./store";
+import { Provider } from "react-redux";
+import { FeatureFlagProvider } from "@feature-flag-service/sdk/react";
 
 const featureFlagConfig = {
-  endpoint: 'http://localhost:3000',
-  appId: 'some-app-id',
-  token: 'secret',
+  endpoint: "http://localhost:3000",
+  appId: "some-app-id",
+  token: "secret",
   pollingInterval: 5000,
 };
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
@@ -22,7 +22,7 @@ root.render(
         <App />
       </FeatureFlagProvider>
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function

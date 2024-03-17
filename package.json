@@ -28,7 +28,10 @@
   },
   "dependencies": {},
   "lint-staged": {
-    "*.(ts|tsx)": ["eslint --cache --fix", "prettier -w"]
+    "*.(ts|tsx)": [
+      "eslint --cache --fix",
+      "prettier -w"
+    ]
   },
   "scripts": {
     "prepare": "husky install",

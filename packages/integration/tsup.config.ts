@@ -1,5 +1,5 @@
 import type { BuildOptions } from "esbuild";
-import { defineConfig, Options } from "tsup";
+import { defineConfig, type Options } from "tsup";
 import * as preset from "tsup-preset-solid";
 
 const preset_options: preset.PresetOptions = {

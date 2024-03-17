@@ -1,5 +1,5 @@
 .AudienceRow {
-  display: grid; 
+  display: grid;
   grid:
     "title controls" auto
     "content controls" 1fr
@@ -48,5 +48,6 @@
     flex: 1;
   }
 
-  &__overrides {}
+  &__overrides {
+  }
 }

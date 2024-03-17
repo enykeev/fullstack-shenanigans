@@ -2,8 +2,8 @@ name: Tests
 on:
   push:
     branches:
-      - 'main'
-      - 'releases/**'
+      - "main"
+      - "releases/**"
 jobs:
   build:
     name: build-app
@@ -20,6 +20,6 @@ jobs:
 
       - name: Build SDK
         run: bun --cwd packages/sdk build
-        
+
       - name: Test app
         run: bun test

@@ -1,23 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  theme: 'DefaultTheme',
-  locale: 'en-GB',
-}
+  theme: "DefaultTheme",
+  locale: "en-GB",
+};
 
 export const appSlice = createSlice({
-  name: 'app',
+  name: "app",
   initialState,
   reducers: {
     setTheme: (state, action) => {
-      state.filter = action.payload
+      state.filter = action.payload;
     },
     setLocale: (state, action) => {
-      state.locale = action.payload
-    }
+      state.locale = action.payload;
+    },
   },
-})
+});
 
-export const { setTheme, setLocale } = appSlice.actions
+export const { setTheme, setLocale } = appSlice.actions;
 
-export default appSlice.reducer
+export default appSlice.reducer;
