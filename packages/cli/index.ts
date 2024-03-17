@@ -1,4 +1,4 @@
-import { FeatureFlagAPI } from "@feature-flag-service/sdk";
+import { FeatureFlagClient } from "@feature-flag-service/sdk";
 import cliui from "cliui";
 import { Command } from "commander";
 import ora from "ora";
@@ -61,7 +61,7 @@ program
   .command("list")
   .description("List all flags")
   .action(async () => {
-    const client = new FeatureFlagAPI({
+    const client = new FeatureFlagClient({
       endpoint: "http://localhost:3000",
       appId: "some-app-id",
       token: "secret",
@@ -75,36 +75,36 @@ program
   .description("Get flag by ID")
   .argument("<flag>", "string to split")
   .action(async (flagName: string) => {
-    const client = new FeatureFlagAPI({
+    const client = new FeatureFlagClient({
       endpoint: "http://localhost:3000",
       appId: "some-app-id",
       token: "secret",
     });
-    const flag = await client.getFlag(flagName);
+    const flag = await client.getFlag({ flagId: flagName });
     await Bun.write(Bun.stdout, drawTable(FLAG_COLS, [flag]) + "\n");
   });
 
 const CreateOpts = z
   .object({
     name: z.string().optional(),
-    description: z.string().optional(),
-    value: z.string(),
+    description: z.string().nullable(),
     type: z.enum(["boolean", "number", "string"]),
+    value: z.string(),
   })
-  .transform((flag) => {
-    const type = flag.type;
+  .transform((doc) => {
+    const { type, value: potentialValue, ...rest } = doc;
     switch (type) {
       case "boolean": {
-        const value = booleanParamSchema.parse(flag.value);
-        return { ...flag, type, value };
+        const value = booleanParamSchema.parse(potentialValue);
+        return { ...rest, type, value };
       }
       case "number": {
-        const value = z.coerce.number().parse(flag.value);
-        return { ...flag, type, value };
+        const value = z.coerce.number().parse(potentialValue);
+        return { ...rest, type, value };
       }
       case "string": {
-        const value = z.string().parse(flag.value);
-        return { ...flag, type, value };
+        const value = z.string().parse(potentialValue);
+        return { ...rest, type, value };
       }
     }
   });
@@ -118,17 +118,45 @@ program
   .requiredOption("-v, --value <value>", "Value of the flag")
   .requiredOption("-t, --type <type>", "Type of the flag")
   .action(async (flagName: string, options: unknown) => {
-    const params = CreateOpts.parse(options);
-    const client = new FeatureFlagAPI({
+    const { name, description, type, value } = CreateOpts.parse(options);
+    const client = new FeatureFlagClient({
       endpoint: "http://localhost:3000",
       appId: "some-app-id",
       token: "secret",
     });
-    const flag = await client.createFlag({
-      flagId: flagName,
-      name: flagName,
-      ...params,
-    });
+    let flag;
+    switch (type) {
+      case "boolean": {
+        flag = await client.createFlag({
+          flagId: flagName,
+          name: name || flagName,
+          description,
+          type,
+          value,
+        });
+        break;
+      }
+      case "string": {
+        flag = await client.createFlag({
+          flagId: flagName,
+          name: name || flagName,
+          description,
+          type,
+          value,
+        });
+        break;
+      }
+      case "number": {
+        flag = await client.createFlag({
+          flagId: flagName,
+          name: name || flagName,
+          description,
+          type,
+          value,
+        });
+        break;
+      }
+    }
     await Bun.write(Bun.stdout, drawTable(FLAG_COLS, [flag]) + "\n");
   });
 
@@ -139,20 +167,23 @@ const UpdateOpts = z
     value: z.string().optional(),
     type: z.enum(["boolean", "number", "string"]).optional(),
   })
-  .transform((flag) => {
-    const type = flag.type;
+  .transform((doc) => {
+    const { type, value: potentialValue, ...rest } = doc;
     switch (type) {
       case "boolean": {
-        const value = booleanParamSchema.parse(flag.value);
-        return { ...flag, type, value };
+        const value = booleanParamSchema.parse(potentialValue);
+        return { ...rest, type, value };
       }
       case "number": {
-        const value = z.coerce.number().parse(flag.value);
-        return { ...flag, type, value };
+        const value = z.coerce.number().parse(potentialValue);
+        return { ...rest, type, value };
       }
       case "string": {
-        const value = z.string().parse(flag.value);
-        return { ...flag, type, value };
+        const value = z.string().parse(potentialValue);
+        return { ...rest, type, value };
+      }
+      default: {
+        return { ...rest, type: undefined, value: undefined };
       }
     }
   });
@@ -166,17 +197,53 @@ program
   .option("-v, --value <value>", "Value of the flag")
   .option("-t, --type <type>", "Type of the flag")
   .action(async (flagName: string, options: unknown) => {
-    const params = UpdateOpts.parse(options);
-    const client = new FeatureFlagAPI({
+    const { name, description, type, value } = UpdateOpts.parse(options);
+    const client = new FeatureFlagClient({
       endpoint: "http://localhost:3000",
       appId: "some-app-id",
       token: "secret",
     });
     try {
-      const flag = await client.updateFlag({
-        flagId: flagName,
-        ...params,
-      });
+      let flag;
+      switch (type) {
+        case "boolean": {
+          flag = await client.updateFlag({
+            flagId: flagName,
+            name,
+            description,
+            type,
+            value,
+          });
+          break;
+        }
+        case "string": {
+          flag = await client.updateFlag({
+            flagId: flagName,
+            name,
+            description,
+            type,
+            value,
+          });
+          break;
+        }
+        case "number": {
+          flag = await client.updateFlag({
+            flagId: flagName,
+            name,
+            description,
+            type,
+            value,
+          });
+          break;
+        }
+        default: {
+          flag = await client.updateFlag({
+            flagId: flagName,
+            name,
+            description,
+          });
+        }
+      }
       await Bun.write(Bun.stdout, drawTable(FLAG_COLS, [flag]) + "\n");
     } catch (e) {
       await Bun.write(Bun.stdout, `Error updating flag: ${e}\n`);
@@ -195,7 +262,7 @@ program
         headers: {
           Authorization: "Bearer secret",
         },
-      }).catch((e) => new Response(e.message, { status: 500 }));
+      });
 
       if (!res.ok) {
         spinner.color = "red";
@@ -203,7 +270,7 @@ program
         return;
       }
 
-      const flag = await res.json<{ value: string | boolean }>();
+      const flag: { value: string | boolean } = await res.json();
 
       spinner.color = "yellow";
       spinner.text = `Flag value: ${flag.value.toString()}`;

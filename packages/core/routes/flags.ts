@@ -1,5 +1,13 @@
-import { PostFlagBody, PutFlagBody } from "@feature-flag-service/common";
+import {
+  FlagWithOverrides,
+  PostFlagBody,
+  PutFlagBody,
+} from "@feature-flag-service/common";
 import { EvaluateRequest } from "@feature-flag-service/common/models/match";
+import {
+  validateArray,
+  validateValue,
+} from "@feature-flag-service/common/utils/schema";
 import { filterPredicate } from "1ql";
 import { Hono } from "hono";
 
@@ -11,7 +19,7 @@ const router = new Hono<{ Variables: Variables }>();
 router.get("/", (c) => {
   const appId = c.get("X-App-Id");
   const flags = store.listFlags({ appId });
-  return c.json(flags);
+  return c.json(validateArray(flags)(FlagWithOverrides));
 });
 
 router.get("/:flagId", (c) => {
@@ -21,7 +29,7 @@ router.get("/:flagId", (c) => {
   if (!flag) {
     return c.json({ error: "not found" }, 404);
   }
-  return c.json(flag);
+  return c.json(validateValue(flag)(FlagWithOverrides));
 });
 
 router.post("/", async (c) => {
@@ -43,7 +51,7 @@ router.post("/", async (c) => {
     flagId,
   });
   const flag = store.getFlag({ appId, flagId });
-  return c.json(flag);
+  return c.json(validateValue(flag)(FlagWithOverrides));
 });
 
 router.put("/:flagId", async (c) => {
@@ -68,7 +76,7 @@ router.put("/:flagId", async (c) => {
   });
   store.updateFlag(updatedFlag);
   const flag = store.getFlag({ appId, flagId });
-  return c.json(flag);
+  return c.json(validateValue(flag)(FlagWithOverrides));
 });
 
 router.delete("/:flagId", async (c) => {
@@ -79,7 +87,7 @@ router.delete("/:flagId", async (c) => {
     return c.json({ error: "not found" }, 404);
   }
   store.deleteFlag({ appId, flagId });
-  return c.json(existingFlag);
+  return c.json(validateValue(existingFlag)(FlagWithOverrides));
 });
 
 const EvaluateBody = EvaluateRequest;
@@ -92,7 +100,7 @@ router.post("/evaluate", async (c) => {
   }
   const { context } = params.data;
   const flags = store.listFlags({ appId });
-  const res = flags.map((flag) => {
+  const matchingFlags = flags.map((flag) => {
     for (const override of flag.overrides) {
       const predicate = filterPredicate(override.audience.filter);
       if (predicate(context)) {
@@ -105,7 +113,7 @@ router.post("/evaluate", async (c) => {
     }
     return flag;
   });
-  return c.json(res);
+  return c.json(validateArray(matchingFlags)(FlagWithOverrides));
 });
 
 export default router;

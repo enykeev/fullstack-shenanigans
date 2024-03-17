@@ -1,15 +1,36 @@
 import {
   AllMetaTypes,
-  Audience,
   Context,
   Flag,
   FlagWithOverrides,
   MatchRequest,
-  Override,
   PostFlagBody,
   PutFlagBody,
+  validateValue,
 } from "@feature-flag-service/common";
 import { filterPredicate } from "1ql";
+
+import type {
+  AnyFlag,
+  AnyOverride,
+  Audience,
+  BooleanFlag,
+  CreateBooleanFlagArgs,
+  CreateNumberFlagArgs,
+  CreateStringFlagArgs,
+  FeatureFlagClientConfig,
+  GetFlagArgs,
+  MatchAudiencesArgs,
+  MatchFlagsArgs,
+  MatchOverridesArgs,
+  NumberFlag,
+  StringFlag,
+  UpdateBooleanFlagArgs,
+  UpdateNumberFlagArgs,
+  UpdateStringFlagArgs,
+} from "./types";
+
+export type * from "./types";
 
 function makeClient({
   endpoint,
@@ -36,62 +57,71 @@ function makeClient({
   };
 }
 
-export type FeatureFlagAPIArgs = {
-  endpoint: string;
-  appId: string;
-  token: string;
-  fetcher?: (input: URL | RequestInfo, init?: RequestInit) => Promise<Response>;
-};
-
-export class FeatureFlagAPI {
+export class FeatureFlagClient {
   // @ts-expect-error appId is not being used yet
   private appId: string;
   private client: (path: string, opts?: RequestInit) => Promise<unknown>;
 
-  constructor({ endpoint, appId, token, fetcher = fetch }: FeatureFlagAPIArgs) {
+  /**
+   * Constructor
+   *
+   * @param config - Initial configuration object
+   */
+  constructor({
+    endpoint,
+    appId,
+    token,
+    fetcher = fetch,
+  }: FeatureFlagClientConfig) {
     this.appId = appId;
     this.client = makeClient({ endpoint, token, fetcher });
   }
 
   async getFlags() {
     const res = await this.client("/api/flags");
-    return res as FlagWithOverrides[];
+    return res as AnyFlag[];
   }
 
-  async getFlag(flagId: Flag["flagId"]) {
+  async getFlag(flag: GetFlagArgs) {
+    const { flagId } = flag;
     const res = await this.client(`/api/flags/${flagId}`);
-    return res as FlagWithOverrides;
+    return res as AnyFlag;
   }
 
-  async createFlag(flag: PostFlagBody) {
+  async createFlag(flag: CreateBooleanFlagArgs): Promise<BooleanFlag>;
+  async createFlag(flag: CreateStringFlagArgs): Promise<StringFlag>;
+  async createFlag(flag: CreateNumberFlagArgs): Promise<NumberFlag>;
+  async createFlag(
+    flag: CreateBooleanFlagArgs | CreateStringFlagArgs | CreateNumberFlagArgs,
+  ) {
     const res = await this.client(`/api/flags`, {
       method: "POST",
-      body: JSON.stringify(flag),
+      body: JSON.stringify(validateValue(flag)(PostFlagBody)),
     });
-    return res as FlagWithOverrides;
+    return validateValue(res)(FlagWithOverrides);
   }
 
-  async updateFlag(flag: PutFlagBody & { flagId: Flag["flagId"] }) {
-    const res = await this.client(`/api/flags/${flag.flagId}`, {
+  async updateFlag(flag: UpdateBooleanFlagArgs): Promise<BooleanFlag>;
+  async updateFlag(flag: UpdateStringFlagArgs): Promise<StringFlag>;
+  async updateFlag(flag: UpdateNumberFlagArgs): Promise<NumberFlag>;
+  async updateFlag(
+    flag: UpdateBooleanFlagArgs | UpdateStringFlagArgs | UpdateNumberFlagArgs,
+  ) {
+    const { flagId, ...flagBody } = flag;
+    const res = await this.client(`/api/flags/${flagId}`, {
       method: "PUT",
-      body: JSON.stringify(flag),
+      body: JSON.stringify(validateValue(flagBody)(PutFlagBody)),
     });
-    return res as FlagWithOverrides;
+    return validateValue(res)(FlagWithOverrides);
   }
 
-  async match(
-    opts: MatchRequest & { returns: "overrides" },
-  ): Promise<Override[]>;
-  async match(
-    opts: MatchRequest & { returns: "flags" },
-  ): Promise<FlagWithOverrides[]>;
-  async match(
-    opts: MatchRequest & { returns: "audiences" },
-  ): Promise<Audience[]>;
+  async match(opts: MatchOverridesArgs): Promise<AnyOverride[]>;
+  async match(opts: MatchFlagsArgs): Promise<AnyFlag[]>;
+  async match(opts: MatchAudiencesArgs): Promise<Audience[]>;
   async match(opts: MatchRequest) {
     const res = await this.client(`/api/match`, {
       method: "POST",
-      body: JSON.stringify(opts),
+      body: JSON.stringify(validateValue(opts)(MatchRequest)),
     });
     switch (opts.returns) {
       case "overrides":
@@ -111,17 +141,14 @@ export type FeatureFlagServiceArgs = {
   pollingInterval?: number;
 };
 
-export type FeatureFlagListener = (
-  err: Error | null,
-  flags: FlagWithOverrides[],
-) => void;
+export type FeatureFlagListener = (err: Error | null, flags: AnyFlag[]) => void;
 
 export class FeatureFlagService<T extends Context = object> {
-  private client: FeatureFlagAPI;
+  private client: FeatureFlagClient;
   private pollingInterval: number | undefined;
   private pollingTimer: Timer | undefined;
   private abortController: AbortController | undefined;
-  private flags: FlagWithOverrides[] = [];
+  private flags: AnyFlag[] = [];
   private listeners: FeatureFlagListener[] = [];
   constructor({
     endpoint,
@@ -129,7 +156,7 @@ export class FeatureFlagService<T extends Context = object> {
     token,
     pollingInterval,
   }: FeatureFlagServiceArgs) {
-    this.client = new FeatureFlagAPI({ endpoint, appId, token });
+    this.client = new FeatureFlagClient({ endpoint, appId, token });
     this.pollingInterval = pollingInterval;
   }
   async init() {
@@ -215,6 +242,6 @@ export class FeatureFlagService<T extends Context = object> {
     return (await this.client.match({
       returns: "overrides",
       context,
-    })) satisfies Override[];
+    })) satisfies AnyOverride[];
   }
 }

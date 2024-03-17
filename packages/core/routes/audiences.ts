@@ -1,4 +1,9 @@
-import { Audience } from "@feature-flag-service/common";
+import {
+  Audience,
+  AudienceWithOverrides,
+  validateArray,
+  validateValue,
+} from "@feature-flag-service/common";
 import { EvaluateRequest } from "@feature-flag-service/common/models/match";
 import { filterPredicate } from "1ql";
 import { Hono } from "hono";
@@ -11,7 +16,7 @@ const router = new Hono<{ Variables: Variables }>();
 router.get("/", (c) => {
   const appId = c.get("X-App-Id");
   const audiences = store.listAudiences({ appId });
-  return c.json(audiences);
+  return c.json(validateArray(audiences)(AudienceWithOverrides));
 });
 
 router.get("/:audienceId", (c) => {
@@ -21,7 +26,7 @@ router.get("/:audienceId", (c) => {
   if (!audience) {
     return c.json({ error: "not found" }, 404);
   }
-  return c.json(audience);
+  return c.json(validateValue(audience)(AudienceWithOverrides));
 });
 
 export const PostAudienceBody = Audience.pick({
@@ -44,7 +49,7 @@ router.post("/", async (c) => {
   }
   store.createAudience({ ...params.data, appId, audienceId });
   const audience = store.getAudience({ appId, audienceId });
-  return c.json(audience);
+  return c.json(validateValue(audience)(AudienceWithOverrides));
 });
 
 const PutAudienceBody = Audience.pick({
@@ -66,7 +71,7 @@ router.put("/:audienceId", async (c) => {
   }
   store.updateAudience({ ...existingAudience, ...params.data });
   const audience = store.getAudience({ appId, audienceId });
-  return c.json(audience);
+  return c.json(validateValue(audience)(AudienceWithOverrides));
 });
 
 router.delete("/:audienceId", async (c) => {
@@ -77,7 +82,7 @@ router.delete("/:audienceId", async (c) => {
     return c.json({ error: "not found" }, 404);
   }
   store.deleteAudience({ appId, audienceId });
-  return c.json(existingAudience);
+  return c.json(validateValue(existingAudience)(AudienceWithOverrides));
 });
 
 const EvaluateBody = EvaluateRequest;
@@ -90,10 +95,10 @@ router.post("/evaluate", async (c) => {
   }
   const { context } = params.data;
   const audiences = store.listAudiences({ appId });
-  const res = audiences.filter(({ filter }) => {
+  const matchingAudiences = audiences.filter(({ filter }) => {
     return filterPredicate(filter)(context);
   });
-  return c.json(res);
+  return c.json(validateArray(matchingAudiences)(AudienceWithOverrides));
 });
 
 export default router;

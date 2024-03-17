@@ -1,4 +1,9 @@
-import { AllMetaTypes } from "@feature-flag-service/common";
+import {
+  AllMetaTypes,
+  ExpandedOverride,
+  validateArray,
+  validateValue,
+} from "@feature-flag-service/common";
 import { EvaluateRequest } from "@feature-flag-service/common/models/match";
 import { BaseOverride } from "@feature-flag-service/common/models/override";
 import { filterPredicate } from "1ql";
@@ -11,18 +16,18 @@ const router = new Hono<{ Variables: Variables }>();
 
 router.get("/", (c) => {
   const appId = c.get("X-App-Id");
-  const flags = store.listOverrides({ appId });
-  return c.json(flags);
+  const overrides = store.listOverrides({ appId });
+  return c.json(validateArray(overrides)(ExpandedOverride));
 });
 
 router.get("/:overrideId", (c) => {
   const appId = c.get("X-App-Id");
   const { overrideId } = c.req.param();
-  const flag = store.getOverride({ appId, overrideId });
-  if (!flag) {
+  const override = store.getOverride({ appId, overrideId });
+  if (!override) {
     return c.json({ error: "not found" }, 404);
   }
-  return c.json(flag);
+  return c.json(validateValue(override)(ExpandedOverride));
 });
 
 export const PostOverrideBody = BaseOverride.pick({
@@ -38,13 +43,13 @@ router.post("/", async (c) => {
     return c.json({ error: "invalid params" }, 400);
   }
   const { overrideId } = params.data;
-  const existingFlag = store.getOverride({ appId, overrideId });
-  if (existingFlag) {
+  const existingOverride = store.getOverride({ appId, overrideId });
+  if (existingOverride) {
     return c.json({ error: "already exists" }, 409);
   }
   store.createOverride({ ...params.data, appId, overrideId });
-  const flag = store.getOverride({ appId, overrideId });
-  return c.json(flag);
+  const override = store.getOverride({ appId, overrideId });
+  return c.json(validateValue(override)(ExpandedOverride));
 });
 
 export const PutOverrideBody = BaseOverride.pick({}).and(AllMetaTypes);
@@ -56,24 +61,24 @@ router.put("/:overrideId", async (c) => {
   if (!params.success) {
     return c.json({ error: "invalid params" }, 400);
   }
-  const existingFlag = store.getOverride({ appId, overrideId });
-  if (!existingFlag) {
+  const existingOverride = store.getOverride({ appId, overrideId });
+  if (!existingOverride) {
     return c.json({ error: "not found" }, 404);
   }
-  store.updateOverride({ ...existingFlag, ...params.data });
-  const flag = store.getOverride({ appId, overrideId });
-  return c.json(flag);
+  store.updateOverride({ ...existingOverride, ...params.data });
+  const override = store.getOverride({ appId, overrideId });
+  return c.json(validateValue(override)(ExpandedOverride));
 });
 
 router.delete("/:overrideId", async (c) => {
   const appId = c.get("X-App-Id");
   const { overrideId } = c.req.param();
-  const existingFlag = store.getOverride({ appId, overrideId });
-  if (!existingFlag) {
+  const existingOverride = store.getOverride({ appId, overrideId });
+  if (!existingOverride) {
     return c.json({ error: "not found" }, 404);
   }
   store.deleteOverride({ appId, overrideId });
-  return c.json(existingFlag);
+  return c.json(validateValue(existingOverride)(ExpandedOverride));
 });
 
 const EvaluateBody = EvaluateRequest;
@@ -86,10 +91,10 @@ router.post("/evaluate", async (c) => {
   }
   const { context } = params.data;
   const overrides = store.listOverrides({ appId });
-  const res = overrides.filter(({ audience }) => {
+  const matchingOverrides = overrides.filter(({ audience }) => {
     return filterPredicate(audience.filter)(context);
   });
-  return c.json(res);
+  return c.json(validateArray(matchingOverrides)(ExpandedOverride));
 });
 
 export default router;

@@ -3,8 +3,8 @@ import { getApp } from "@feature-flag-service/core/app";
 import { addHook, clearHooks } from "@feature-flag-service/core/logger";
 import { init } from "@feature-flag-service/core/store";
 import {
-  FeatureFlagAPI,
-  type FeatureFlagAPIArgs,
+  FeatureFlagClient,
+  type FeatureFlagClientConfig,
 } from "@feature-flag-service/sdk";
 import { serve, type Server } from "bun";
 import {
@@ -19,7 +19,7 @@ import {
 import { getMockAuthServer } from "../src/auth";
 import { LogLinesStore } from "../src/logstore";
 
-function makeFetcher(core: Server): FeatureFlagAPIArgs["fetcher"] {
+function makeFetcher(core: Server): FeatureFlagClientConfig["fetcher"] {
   return async (input, init) => {
     const reqInit = init ? { ...init, url: input } : (input as Request);
     const req = new Request(reqInit.url.toString(), {
@@ -30,14 +30,14 @@ function makeFetcher(core: Server): FeatureFlagAPIArgs["fetcher"] {
 }
 
 describe("Integration tests", () => {
-  const GENERIC_HOSTNAME = "http://0.0.0.0:3000";
+  let hostname: string;
   let core: Server;
   let auth: Server;
-  let sdk: FeatureFlagAPI;
-  let unauthSDK: FeatureFlagAPI;
+  let sdk: FeatureFlagClient;
+  let unauthSDK: FeatureFlagClient;
 
   function makeAuthenticatedRequest(url: string, opts: RequestInit = {}) {
-    return new Request(`${GENERIC_HOSTNAME}${url}`, {
+    return new Request(`${hostname}${url}`, {
       ...opts,
       headers: {
         Authorization: "Bearer secret",
@@ -70,17 +70,19 @@ describe("Integration tests", () => {
       SESSION_COOKIE_NAME: "test-session-cookie-name",
       SESSION_SECRET: "some-secret",
     };
+    hostname = `http://0.0.0.0:${randomPort}`;
     core = serve({
+      port: randomPort,
       fetch: getApp(env).fetch,
     });
-    sdk = new FeatureFlagAPI({
-      endpoint: GENERIC_HOSTNAME,
+    sdk = new FeatureFlagClient({
+      endpoint: hostname,
       appId: "test-client-id",
       token: "secret",
       fetcher: makeFetcher(core),
     });
-    unauthSDK = new FeatureFlagAPI({
-      endpoint: GENERIC_HOSTNAME,
+    unauthSDK = new FeatureFlagClient({
+      endpoint: hostname,
       appId: "test-client-id",
       token: "bad-secret",
       fetcher: makeFetcher(core),
@@ -102,12 +104,10 @@ describe("Integration tests", () => {
     const httpLogs = logStore.filter({
       logEvent: "httpResponse",
       method: "GET",
-      url: `${GENERIC_HOSTNAME}/version`,
+      url: `${hostname}/version`,
     });
     expect(res.status).toBe(200);
-    expect(httpLogs.get("msg")).toContain(
-      `GET ${GENERIC_HOSTNAME}/version -> 200`,
-    );
+    expect(httpLogs.get("msg")).toContain(`GET ${hostname}/version -> 200`);
   });
 
   it("should return a 404 for a /404 route", async () => {
@@ -115,10 +115,10 @@ describe("Integration tests", () => {
     const httpLogs = logStore.filter({
       logEvent: "httpResponse",
       method: "GET",
-      url: `${GENERIC_HOSTNAME}/404`,
+      url: `${hostname}/404`,
     });
     expect(res.status).toBe(404);
-    expect(httpLogs.get("msg")).toContain(`GET ${GENERIC_HOSTNAME}/404 -> 404`);
+    expect(httpLogs.get("msg")).toContain(`GET ${hostname}/404 -> 404`);
   });
 
   it("should return a list of flags", async () => {
@@ -126,41 +126,37 @@ describe("Integration tests", () => {
     const httpLogs = logStore.filter({
       logEvent: "httpResponse",
       method: "GET",
-      url: `${GENERIC_HOSTNAME}/api/flags`,
+      url: `${hostname}/api/flags`,
     });
     expect(res.length).toBeGreaterThan(0);
     for (const item of res) {
       FlagWithOverrides.parse(item);
     }
-    expect(httpLogs.get("msg")).toContain(
-      `GET ${GENERIC_HOSTNAME}/api/flags -> 200`,
-    );
+    expect(httpLogs.get("msg")).toContain(`GET ${hostname}/api/flags -> 200`);
   });
 
   it("should return 401 for a list of flags without auth", async () => {
-    const res = await unauthSDK.getFlags().catch((e: Error) => e);
+    const res = (await unauthSDK.getFlags().catch((e: Error) => e)) as Error;
     const httpLogs = logStore.filter({
       logEvent: "httpResponse",
       method: "GET",
-      url: `${GENERIC_HOSTNAME}/api/flags`,
+      url: `${hostname}/api/flags`,
     });
     expect(res).toBeInstanceOf(Error);
-    expect((res as Error).message).toBe("unauthorized");
-    expect(httpLogs.get("msg")).toContain(
-      `GET ${GENERIC_HOSTNAME}/api/flags -> 401`,
-    );
+    expect(res.message).toBe("unauthorized");
+    expect(httpLogs.get("msg")).toContain(`GET ${hostname}/api/flags -> 401`);
   });
 
   it("should return a flag", async () => {
-    const res = await sdk.getFlag("maintenance");
+    const res = await sdk.getFlag({ flagId: "maintenance" });
     const httpLogs = logStore.filter({
       logEvent: "httpResponse",
       method: "GET",
-      url: `${GENERIC_HOSTNAME}/api/flags/maintenance`,
+      url: `${hostname}/api/flags/maintenance`,
     });
     FlagWithOverrides.parse(res);
     expect(httpLogs.get("msg")).toContain(
-      `GET ${GENERIC_HOSTNAME}/api/flags/maintenance -> 200`,
+      `GET ${hostname}/api/flags/maintenance -> 200`,
     );
   });
 
@@ -169,11 +165,11 @@ describe("Integration tests", () => {
     const httpLogs = logStore.filter({
       logEvent: "httpResponse",
       method: "GET",
-      url: `${GENERIC_HOSTNAME}/api/flags/maintenance`,
+      url: `${hostname}/api/flags/maintenance`,
     });
     expect(res.status).toBe(401);
     expect(httpLogs.get("msg")).toContain(
-      `GET ${GENERIC_HOSTNAME}/api/flags/maintenance -> 401`,
+      `GET ${hostname}/api/flags/maintenance -> 401`,
     );
   });
 
@@ -184,11 +180,11 @@ describe("Integration tests", () => {
     const httpLogs = logStore.filter({
       logEvent: "httpResponse",
       method: "GET",
-      url: `${GENERIC_HOSTNAME}/api/flags/does-not-exist`,
+      url: `${hostname}/api/flags/does-not-exist`,
     });
     expect(res.status).toBe(404);
     expect(httpLogs.get("msg")).toContain(
-      `GET ${GENERIC_HOSTNAME}/api/flags/does-not-exist -> 404`,
+      `GET ${hostname}/api/flags/does-not-exist -> 404`,
     );
   });
 
@@ -208,12 +204,10 @@ describe("Integration tests", () => {
     const httpLogs = logStore.filter({
       logEvent: "httpResponse",
       method: "POST",
-      url: `${GENERIC_HOSTNAME}/api/flags`,
+      url: `${hostname}/api/flags`,
     });
     expect(res.status).toBe(200);
-    expect(httpLogs.get("msg")).toContain(
-      `POST ${GENERIC_HOSTNAME}/api/flags -> 200`,
-    );
+    expect(httpLogs.get("msg")).toContain(`POST ${hostname}/api/flags -> 200`);
   });
 
   // NEXT: we should start using SDK here as it's what we're building our contract against, not the raw api calls

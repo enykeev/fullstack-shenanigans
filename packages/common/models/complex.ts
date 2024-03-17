@@ -4,18 +4,38 @@ import { Audience } from "./audience";
 import { Flag } from "./flag";
 import { Override } from "./override";
 
-export const OverrideWithAudience = Override.and(
+export const ExpandedOverride = Override.and(
   z.object({
     audience: Audience,
+    flag: Flag,
   }),
 );
 
-export type OverrideWithAudience = z.infer<typeof OverrideWithAudience>;
+export type ExpandedOverride = z.infer<typeof ExpandedOverride>;
 
 export const FlagWithOverrides = Flag.and(
   z.object({
-    overrides: z.array(OverrideWithAudience),
+    overrides: z.array(
+      Override.and(
+        z.object({
+          audience: Audience,
+        }),
+      ),
+    ),
   }),
 );
 
 export type FlagWithOverrides = z.infer<typeof FlagWithOverrides>;
+
+export const AudienceWithOverrides = Audience.and(
+  z.object({
+    overrides: z.array(
+      Override.and(
+        z.object({
+          flag: Flag,
+        }),
+      ),
+    ),
+  }),
+);
+export type AudienceWithOverrides = z.infer<typeof AudienceWithOverrides>;

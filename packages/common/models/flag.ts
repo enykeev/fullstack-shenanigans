@@ -4,7 +4,7 @@ export const BaseFlag = z.object({
   appId: z.string(),
   flagId: z.string(),
   name: z.string(),
-  description: z.string().optional(),
+  description: z.string().nullable(),
   createdAt: z.string(),
   updatedAt: z.string(),
   type: z.string(),
