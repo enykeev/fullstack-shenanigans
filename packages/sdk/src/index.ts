@@ -52,7 +52,12 @@ function makeClient({
       },
     });
     if (res.status >= 400 && res.status < 500) {
-      const message = (await res.json()).error;
+      let message;
+      if (res.headers.get("content-type")?.startsWith("application/json")) {
+        message = (await res.json()).error;
+      } else {
+        message = await res.text();
+      }
       throw new Error(message);
     }
     return await res.json();
