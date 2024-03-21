@@ -67,7 +67,12 @@ router.put("/:flagId", async (c) => {
   }
   //eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { overrides, updatedAt, ...rest } = existingFlag;
-  const { name, description, type, value } = params.data;
+  const {
+    name,
+    description,
+    type = rest.type,
+    value = rest.value,
+  } = params.data;
   const updatedFlag = Object.assign({}, rest, {
     name,
     description,

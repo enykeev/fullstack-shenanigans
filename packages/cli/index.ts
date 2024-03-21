@@ -167,6 +167,13 @@ const UpdateOpts = z
     value: z.string().optional(),
     type: z.enum(["boolean", "number", "string"]).optional(),
   })
+  .refine((doc) => {
+    const { type, value } = doc;
+    return (
+      (type === undefined && value === undefined) ||
+      (type !== undefined && value !== undefined)
+    );
+  }, "type and value need to be defined together")
   .transform((doc) => {
     const { type, value: potentialValue, ...rest } = doc;
     switch (type) {
