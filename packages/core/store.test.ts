@@ -1,8 +1,8 @@
+import { ISO8601 } from "@feature-flag-service/common/utils/test";
 import { beforeEach, describe, expect, setSystemTime, test } from "bun:test";
 import { sql } from "drizzle-orm";
 
 import * as store from "./store";
-import { ISO8601 } from "./utils";
 
 store.init();
 

@@ -1,4 +1,5 @@
 import { FlagWithOverrides } from "@feature-flag-service/common";
+import { ISO8601 } from "@feature-flag-service/common/utils/test";
 import { getApp } from "@feature-flag-service/core/app";
 import { addHook, clearHooks } from "@feature-flag-service/core/logger";
 import { init } from "@feature-flag-service/core/store";
@@ -35,15 +36,6 @@ describe("Integration tests", () => {
   let auth: Server;
   let sdk: FeatureFlagClient;
   let unauthSDK: FeatureFlagClient;
-
-  function makeAuthenticatedRequest(url: string, opts: RequestInit = {}) {
-    return new Request(`${hostname}${url}`, {
-      ...opts,
-      headers: {
-        Authorization: "Bearer secret",
-      },
-    });
-  }
 
   const logStore = new LogLinesStore();
 
@@ -101,114 +93,344 @@ describe("Integration tests", () => {
 
   it("should return current version", async () => {
     const res = await core.fetch("/version");
+    expect(res.status).toBe(200);
     const httpLogs = logStore.filter({
       logEvent: "httpResponse",
       method: "GET",
       url: `${hostname}/version`,
     });
-    expect(res.status).toBe(200);
     expect(httpLogs.get("msg")).toContain(`GET ${hostname}/version -> 200`);
   });
 
   it("should return a 404 for a /404 route", async () => {
     const res = await core.fetch("/404");
+    expect(res.status).toBe(404);
     const httpLogs = logStore.filter({
       logEvent: "httpResponse",
       method: "GET",
       url: `${hostname}/404`,
     });
-    expect(res.status).toBe(404);
     expect(httpLogs.get("msg")).toContain(`GET ${hostname}/404 -> 404`);
   });
 
   it("should return a list of flags", async () => {
     const res = await sdk.getFlags();
-    const httpLogs = logStore.filter({
-      logEvent: "httpResponse",
-      method: "GET",
-      url: `${hostname}/api/flags`,
-    });
     expect(res.length).toBeGreaterThan(0);
     for (const item of res) {
       FlagWithOverrides.parse(item);
     }
-    expect(httpLogs.get("msg")).toContain(`GET ${hostname}/api/flags -> 200`);
-  });
-
-  it("should return 401 for a list of flags without auth", async () => {
-    const res = (await unauthSDK.getFlags().catch((e: Error) => e)) as Error;
     const httpLogs = logStore.filter({
       logEvent: "httpResponse",
       method: "GET",
       url: `${hostname}/api/flags`,
     });
+    expect(httpLogs.get("msg")).toContain(`GET ${hostname}/api/flags -> 200`);
+  });
+
+  it("should throw an error for a list of flags without auth", async () => {
+    const promise = unauthSDK.getFlags();
+    const res = (await promise.catch((e: Error) => e)) as Error;
     expect(res).toBeInstanceOf(Error);
     expect(res.message).toBe("unauthorized");
+    const httpLogs = logStore.filter({
+      logEvent: "httpResponse",
+      method: "GET",
+      url: `${hostname}/api/flags`,
+    });
     expect(httpLogs.get("msg")).toContain(`GET ${hostname}/api/flags -> 401`);
   });
 
   it("should return a flag", async () => {
     const res = await sdk.getFlag({ flagId: "maintenance" });
+    FlagWithOverrides.parse(res);
     const httpLogs = logStore.filter({
       logEvent: "httpResponse",
       method: "GET",
       url: `${hostname}/api/flags/maintenance`,
     });
-    FlagWithOverrides.parse(res);
     expect(httpLogs.get("msg")).toContain(
       `GET ${hostname}/api/flags/maintenance -> 200`,
     );
   });
 
-  it("should return 401 for a flag without auth", async () => {
-    const res = await core.fetch("/api/flags/maintenance");
+  it("should throw an error for a flag without auth", async () => {
+    const promise = unauthSDK.getFlag({ flagId: "maintenance" });
+    const res = (await promise.catch((e: Error) => e)) as Error;
+    expect(res).toBeInstanceOf(Error);
+    expect(res.message).toBe("unauthorized");
     const httpLogs = logStore.filter({
       logEvent: "httpResponse",
       method: "GET",
       url: `${hostname}/api/flags/maintenance`,
     });
-    expect(res.status).toBe(401);
     expect(httpLogs.get("msg")).toContain(
       `GET ${hostname}/api/flags/maintenance -> 401`,
     );
   });
 
-  it("should return 404 for a flag that doesn't exist", async () => {
-    const res = await core.fetch(
-      makeAuthenticatedRequest("/api/flags/does-not-exist"),
-    );
+  it("should throw an error for a flag that doesn't exist", async () => {
+    const promise = sdk.getFlag({ flagId: "does-not-exist" });
+    await expect(promise).rejects.toThrow("not found");
     const httpLogs = logStore.filter({
       logEvent: "httpResponse",
       method: "GET",
       url: `${hostname}/api/flags/does-not-exist`,
     });
-    expect(res.status).toBe(404);
     expect(httpLogs.get("msg")).toContain(
       `GET ${hostname}/api/flags/does-not-exist -> 404`,
     );
   });
 
   it("should create a flag", async () => {
-    const res = await core.fetch(
-      makeAuthenticatedRequest("/api/flags", {
-        method: "POST",
-        body: JSON.stringify({
-          flagId: "test-flag",
-          name: "test-flag",
-          description: "test flag",
-          type: "boolean",
-          value: true,
-        }),
-      }),
-    );
+    const res = await sdk.createFlag({
+      flagId: "test-flag",
+      name: "test-flag",
+      description: "test flag",
+      type: "boolean",
+      value: true,
+    });
+    expect(res).toEqual({
+      appId: "some-app-id",
+      flagId: "test-flag",
+      name: "test-flag",
+      description: "test flag",
+      createdAt: expect.stringMatching(ISO8601),
+      updatedAt: expect.stringMatching(ISO8601),
+      type: "boolean",
+      value: true,
+      overrides: [],
+    });
     const httpLogs = logStore.filter({
       logEvent: "httpResponse",
       method: "POST",
       url: `${hostname}/api/flags`,
     });
-    expect(res.status).toBe(200);
     expect(httpLogs.get("msg")).toContain(`POST ${hostname}/api/flags -> 200`);
   });
 
-  // NEXT: we should start using SDK here as it's what we're building our contract against, not the raw api calls
+  it("should throw an error for an attempt to create a flag without auth", async () => {
+    const promise = unauthSDK.createFlag({
+      flagId: "test-flag",
+      name: "test-flag",
+      description: "test flag",
+      type: "boolean",
+      value: true,
+    });
+    const res = (await promise.catch((e: Error) => e)) as Error;
+    expect(res).toBeInstanceOf(Error);
+    expect(res.message).toBe("unauthorized");
+    const httpLogs = logStore.filter({
+      logEvent: "httpResponse",
+      method: "POST",
+      url: `${hostname}/api/flags`,
+    });
+    expect(httpLogs.get("msg")).toContain(`POST ${hostname}/api/flags -> 401`);
+  });
+
+  it("should throw an error for an attempt to create a flag that already exist", async () => {
+    const promise = sdk.createFlag({
+      flagId: "maintenance",
+      name: "maintenance",
+      description: "test flag",
+      type: "boolean",
+      value: true,
+    });
+    await expect(promise).rejects.toThrow("already exists");
+    const httpLogs = logStore.filter({
+      logEvent: "httpResponse",
+      method: "POST",
+      url: `${hostname}/api/flags`,
+    });
+    expect(httpLogs.get("msg")).toContain(`POST ${hostname}/api/flags -> 409`);
+  });
+
+  it("should update a flag", async () => {
+    try {
+      await sdk.deleteFlag({
+        flagId: "test-create-flag",
+      });
+    } catch (e) {
+      // Do nothing
+    }
+    await sdk.createFlag({
+      flagId: "test-create-flag",
+      name: "test-flag",
+      description: "test flag",
+      type: "boolean",
+      value: true,
+    });
+    const res = await sdk.updateFlag({
+      flagId: "test-create-flag",
+      name: "updated-test-flag",
+      description: "updated test flag",
+      type: "boolean",
+      value: true,
+    });
+    expect(res).toEqual({
+      appId: "some-app-id",
+      flagId: "test-create-flag",
+      name: "updated-test-flag",
+      description: "updated test flag",
+      createdAt: expect.stringMatching(ISO8601),
+      updatedAt: expect.stringMatching(ISO8601),
+      type: "boolean",
+      value: true,
+      overrides: [],
+    });
+    const httpLogs = logStore.filter({
+      logEvent: "httpResponse",
+      method: "PUT",
+      url: `${hostname}/api/flags/test-create-flag`,
+    });
+    expect(httpLogs.get("msg")).toContain(
+      `PUT ${hostname}/api/flags/test-create-flag -> 200`,
+    );
+  });
+
+  it("should throw an error for an attempt to update a flag without auth", async () => {
+    try {
+      await sdk.deleteFlag({
+        flagId: "test-create-flag",
+      });
+    } catch (e) {
+      // Do nothing
+    }
+    await sdk.createFlag({
+      flagId: "test-create-flag",
+      name: "test-flag",
+      description: "test flag",
+      type: "boolean",
+      value: true,
+    });
+    const promise = unauthSDK.updateFlag({
+      flagId: "test-create-flag",
+      name: "updated-test-flag",
+      description: "updated test flag",
+      type: "boolean",
+      value: true,
+    });
+    const res = (await promise.catch((e: Error) => e)) as Error;
+    expect(res).toBeInstanceOf(Error);
+    expect(res.message).toBe("unauthorized");
+    const httpLogs = logStore.filter({
+      logEvent: "httpResponse",
+      method: "PUT",
+      url: `${hostname}/api/flags/test-create-flag`,
+    });
+    expect(httpLogs.get("msg")).toContain(
+      `PUT ${hostname}/api/flags/test-create-flag -> 401`,
+    );
+  });
+
+  it("should throw an error for an attempt to update a flag that doesn't exist", async () => {
+    try {
+      await sdk.deleteFlag({
+        flagId: "test-create-flag",
+      });
+    } catch (e) {
+      // Do nothing
+    }
+    const promise = sdk.updateFlag({
+      flagId: "test-create-flag",
+      name: "updated-test-flag",
+      description: "updated test flag",
+      type: "boolean",
+      value: true,
+    });
+    await expect(promise).rejects.toThrow("not found");
+    const httpLogs = logStore.filter({
+      logEvent: "httpResponse",
+      method: "PUT",
+      url: `${hostname}/api/flags/test-create-flag`,
+    });
+    expect(httpLogs.get("msg")).toContain(
+      `PUT ${hostname}/api/flags/test-create-flag -> 404`,
+    );
+  });
+
+  it("should delete a flag", async () => {
+    try {
+      await sdk.createFlag({
+        flagId: "test-delete-flag",
+        name: "test-flag",
+        description: "test flag",
+        type: "boolean",
+        value: true,
+      });
+    } catch (e) {
+      // Do nothing
+    }
+    const res = await sdk.deleteFlag({
+      flagId: "test-delete-flag",
+    });
+    expect(res).toEqual({
+      appId: "some-app-id",
+      flagId: "test-delete-flag",
+      name: "test-flag",
+      description: "test flag",
+      createdAt: expect.stringMatching(ISO8601),
+      updatedAt: expect.stringMatching(ISO8601),
+      type: "boolean",
+      value: true,
+      overrides: [],
+    });
+    const httpLogs = logStore.filter({
+      logEvent: "httpResponse",
+      method: "DELETE",
+      url: `${hostname}/api/flags/test-delete-flag`,
+    });
+    expect(httpLogs.get("msg")).toContain(
+      `DELETE ${hostname}/api/flags/test-delete-flag -> 200`,
+    );
+  });
+
+  it("should throw an error for an attempt to delete a flag without auth", async () => {
+    try {
+      await sdk.createFlag({
+        flagId: "test-delete-flag",
+        name: "test-flag",
+        description: "test flag",
+        type: "boolean",
+        value: true,
+      });
+    } catch (e) {
+      // Do nothing
+    }
+    const promise = unauthSDK.deleteFlag({
+      flagId: "test-delete-flag",
+    });
+    const res = (await promise.catch((e: Error) => e)) as Error;
+    expect(res).toBeInstanceOf(Error);
+    expect(res.message).toBe("unauthorized");
+    const httpLogs = logStore.filter({
+      logEvent: "httpResponse",
+      method: "DELETE",
+      url: `${hostname}/api/flags/test-delete-flag`,
+    });
+    expect(httpLogs.get("msg")).toContain(
+      `DELETE ${hostname}/api/flags/test-delete-flag -> 401`,
+    );
+  });
+
+  it("should throw an error for an attempt to delete a flag that doesn't exist", async () => {
+    try {
+      await sdk.deleteFlag({
+        flagId: "test-delete-flag",
+      });
+    } catch (e) {
+      // Do nothing
+    }
+    const promise = sdk.deleteFlag({
+      flagId: "test-delete-flag",
+    });
+    await expect(promise).rejects.toThrow("not found");
+    const httpLogs = logStore.filter({
+      logEvent: "httpResponse",
+      method: "DELETE",
+      url: `${hostname}/api/flags/test-delete-flag`,
+    });
+    expect(httpLogs.get("msg")).toContain(
+      `DELETE ${hostname}/api/flags/test-delete-flag -> 404`,
+    );
+  });
 });

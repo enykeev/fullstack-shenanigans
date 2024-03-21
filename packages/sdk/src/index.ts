@@ -1,8 +1,10 @@
 import {
   AllMetaTypes,
   Context,
+  DeleteFlagBody,
   Flag,
   FlagWithOverrides,
+  GetFlagBody,
   MatchRequest,
   PostFlagBody,
   PutFlagBody,
@@ -63,7 +65,14 @@ export class FeatureFlagClient {
   private client: (path: string, opts?: RequestInit) => Promise<unknown>;
 
   /**
-   * Constructor
+   * To use Feature Flag Client, it needs to be initialized with a configuration object.
+   *
+   * The configuration object could include:
+   * - URL of an endpoint for a Feature Flag service
+   * - Identifier of the application for which to feature flags are defined
+   * - Authentication token attached to this application on the Feature Flag service
+   *
+   * The function returns an instance of a client.
    *
    * @param config - Initial configuration object
    */
@@ -77,17 +86,66 @@ export class FeatureFlagClient {
     this.client = makeClient({ endpoint, token, fetcher });
   }
 
+  /**
+   * Returns a list of all the flags created for the application.
+   *
+   * Returns an empty array if no flags are defined.
+   *
+   * ```ts
+   * const sdk = new FeatureFlagClient({
+   *   endpoint: hostname,
+   *   appId: "test-client-id",
+   *   token: "secret"
+   * });
+   * const flags = await sdk.getFlags();
+   * ```
+   */
   async getFlags() {
     const res = await this.client("/api/flags");
     return res as AnyFlag[];
   }
 
+  /**
+   * Returns single flag with a certain flagId.
+   *
+   * Throws an error if flag does not exist.
+   *
+   * ```ts
+   * const sdk = new FeatureFlagClient({
+   *   endpoint: hostname,
+   *   appId: "test-client-id",
+   *   token: "secret"
+   * });
+   * const flag = await sdk.getFlag({ flagId: "maintenance" });
+   * if (flag.value) {
+   *   ...
+   * }
+   * ```
+   */
   async getFlag(flag: GetFlagArgs) {
-    const { flagId } = flag;
+    const { flagId } = validateValue(flag)(GetFlagBody);
     const res = await this.client(`/api/flags/${flagId}`);
     return res as AnyFlag;
   }
 
+  /**
+   * Creates a single flag of a particular type.
+   *
+   * Allows defining human-readable name, description and setting default value for the flag.
+   *
+   * Returns newly created flag.
+   *
+   * Throws an error if flag with this id already exists.
+   *
+   * ```ts
+   * const sdk = new FeatureFlagClient({
+   *   endpoint: hostname,
+   *   appId: "test-client-id",
+   *   token: "secret"
+   * });
+   * const flag = await sdk.createFlag({ flagId: "maintenance", type: 'boolean', value: false });
+   *
+   */
   async createFlag(flag: CreateBooleanFlagArgs): Promise<BooleanFlag>;
   async createFlag(flag: CreateStringFlagArgs): Promise<StringFlag>;
   async createFlag(flag: CreateNumberFlagArgs): Promise<NumberFlag>;
@@ -101,6 +159,24 @@ export class FeatureFlagClient {
     return validateValue(res)(FlagWithOverrides);
   }
 
+  /**
+   * Updates a single flag matching flagId provided.
+   *
+   * Allows changing human-readable name, description changing its default value.
+   *
+   * Returns updated flag.
+   *
+   * Throws an error if flag with this id does not exist.
+   *
+   * ```ts
+   * const sdk = new FeatureFlagClient({
+   *   endpoint: hostname,
+   *   appId: "test-client-id",
+   *   token: "secret"
+   * });
+   * const flag = await sdk.createFlag({ flagId: "maintenance", type: 'boolean', value: false });
+   *
+   */
   async updateFlag(flag: UpdateBooleanFlagArgs): Promise<BooleanFlag>;
   async updateFlag(flag: UpdateStringFlagArgs): Promise<StringFlag>;
   async updateFlag(flag: UpdateNumberFlagArgs): Promise<NumberFlag>;
@@ -111,6 +187,31 @@ export class FeatureFlagClient {
     const res = await this.client(`/api/flags/${flagId}`, {
       method: "PUT",
       body: JSON.stringify(validateValue(flagBody)(PutFlagBody)),
+    });
+    return validateValue(res)(FlagWithOverrides);
+  }
+
+  /**
+   * Deletes a single flag matching flagId provided.
+   *
+   * Returns deleted flag.
+   *
+   * Throws an error if flag with this id does not exist.
+   *
+   * ```ts
+   * const sdk = new FeatureFlagClient({
+   *   endpoint: hostname,
+   *   appId: "test-client-id",
+   *   token: "secret"
+   * });
+   * const flag = await sdk.deleteFlag({ flagId: "maintenance" });
+   *
+   */
+  async deleteFlag(flag: GetFlagArgs) {
+    const { flagId, ...flagBody } = flag;
+    const res = await this.client(`/api/flags/${flagId}`, {
+      method: "DELETE",
+      body: JSON.stringify(validateValue(flagBody)(DeleteFlagBody)),
     });
     return validateValue(res)(FlagWithOverrides);
   }

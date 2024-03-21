@@ -53,6 +53,12 @@ export const Flag = BaseFlag.and(AllMetaTypes);
 
 export type Flag = z.infer<typeof Flag>;
 
+export const GetFlagBody = BaseFlag.pick({
+  flagId: true,
+});
+
+export type GetFlagBody = z.infer<typeof GetFlagBody>;
+
 export const PostFlagBody = BaseFlag.pick({
   flagId: true,
   name: true,
@@ -72,3 +78,9 @@ export const PutFlagBody = BaseFlag.pick({
   .and(AllMetaTypesOptional);
 
 export type PutFlagBody = z.infer<typeof PutFlagBody>;
+
+export const DeleteFlagBody = BaseFlag.pick({
+  flagId: true,
+});
+
+export type DeleteFlagBody = z.infer<typeof DeleteFlagBody>;

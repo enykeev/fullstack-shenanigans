@@ -1,10 +1,10 @@
+import { ISO8601 } from "@feature-flag-service/common/utils/test";
 import { beforeEach, describe, expect, test } from "bun:test";
 import { sql } from "drizzle-orm";
 import { Hono } from "hono";
 
 import * as store from "../store";
 import { type Variables } from "../types";
-import { ISO8601 } from "../utils";
 
 import router from "./audiences";
 
